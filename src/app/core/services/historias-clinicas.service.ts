@@ -9,6 +9,7 @@ import { HistoriaClinica } from '../interfaces/historia-clinica.model';
 
 export class HistoriasClinicasApiService {
     private apiUrl = 'localhost/api/historias_clinicas/';
+    private apiUrlArchivos = 'localhost/api/archivos_adjuntos/';
 
   constructor(private http: HttpClient) {}
 
@@ -35,6 +36,20 @@ export class HistoriasClinicasApiService {
   // Eliminar Historia Clinica
   eliminarHistoriaClinica(idHistoriaClinica: number): Observable<any> {
     return this.http.post(`${this.apiUrl}eliminar-historia-clinica.php`, { idHistoriaClinica: idHistoriaClinica });
+  }
+
+  /* Archivos Adjuntos */
+  /* Obtener Archivos Adjuntos */
+  getArchivosAdjuntos(idHistoriaClinica: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}cargar-archivos.php?idHistoriaClinica=${idHistoriaClinica}`);
+  }
+  /* Eliminar Archivo */
+  eliminarFoto(idArchivo: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}eliminar-archivo.php`, { idArchivo: idArchivo });
+  }
+  /* Agregar Archivo */
+  agregarArchivo(formData: FormData): Observable<any>{
+    return this.http.post(`${this.apiUrl}subir-archivos.php`, formData);
   }
 
 }
