@@ -1,42 +1,55 @@
-<!-- Sidebar para desktop con hover -->
-<nav class="hidden md:flex group flex-col bg-gray-800 text-white h-screen transition-all duration-300 w-16 hover:w-64 overflow-hidden">
+<!-- Sidebar -->
+<nav class="hidden md:flex group flex-col bg-gray-800 text-white h-full transition-all duration-300 w-16 hover:w-64 overflow-hidden">
+  <div>
+    <div class="h-16 flex items-center justify-start px-4">
+      <span class="text-xl font-bold whitespace-nowrap hidden group-hover:inline">Mi Clínica</span>
+    </div>
 
-  <!-- Espacio arriba para logo o título -->
-  <div class="h-16 flex items-center justify-start px-4">
-    <span class="text-xl font-bold whitespace-nowrap hidden group-hover:inline">Mi Clínica</span>
+    <ul class="flex flex-col mt-4">
+      <li routerLink="/dashboard" routerLinkActive="bg-gray-700"
+          class="flex items-center px-2 py-4 hover:bg-gray-700 cursor-pointer transition-colors duration-200">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span class="ml-2 whitespace-nowrap hidden group-hover:inline">Dashboard</span>
+      </li>
+
+      <li routerLink="/pacientes" routerLinkActive="bg-gray-700"
+          class="flex items-center px-2 py-4 hover:bg-gray-700 cursor-pointer transition-colors duration-200">
+        <span class="material-symbols-outlined">badge</span>
+        <span class="ml-2 whitespace-nowrap hidden group-hover:inline">Pacientes</span>
+      </li>
+
+      <li routerLink="/configuracion" routerLinkActive="bg-gray-700"
+          class="flex items-center px-2 py-4 hover:bg-gray-700 cursor-pointer transition-colors duration-200">
+        <span class="material-symbols-outlined">settings</span>
+        <span class="ml-2 whitespace-nowrap hidden group-hover:inline">Configuración</span>
+      </li>
+    </ul>
   </div>
 
-  <!-- Menú -->
-  <ul class="flex flex-col mt-4 space-y-1">
-    <li class="flex items-center ms-2 p-2 hover:bg-gray-700 cursor-pointer">
-      <span class="material-symbols-outlined">dashboard</span>
-      <span class="ml-2 whitespace-nowrap hidden group-hover:inline">Dashboard</span>
-    </li>
-
-    <li class="flex items-center ms-2 p-2 hover:bg-gray-700 cursor-pointer">
-      <span class="material-symbols-outlined">badge</span>
-      <span class="ml-2 whitespace-nowrap hidden group-hover:inline">Pacientes</span>
-    </li>
-
-    <li class="flex items-center ms-2 p-2 hover:bg-gray-700 cursor-pointer">
-      <span class="material-symbols-outlined">settings</span>
-      <span class="ml-2 whitespace-nowrap hidden group-hover:inline">Configuración</span>
-    </li>
-  </ul>
+  <div class="">
+    <a routerLink="/configuracion" class="flex items-center px-2 py-4 hover:bg-gray-700 cursor-pointer transition-colors duration-200">
+        <span class="material-symbols-outlined">logout</span>
+        <span class="ml-2 whitespace-nowrap hidden group-hover:inline">Cerrar Session</span>
+    </a>
+    <p class="text-sm"></p>
+    <span class="ml-2 text-sm whitespace-nowrap hidden group-hover:inline">Hecho por Santiago Zelaya.</span>
+  </div>
 </nav>
 
-<!-- Bottom bar para móviles -->
+<!-- Bottom Bar -->
 <nav class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white flex justify-around p-2 md:hidden z-50">
-    <button class="flex flex-col items-center">
-        <span class="material-symbols-outlined">dashboard</span>
-        <span class="text-xs">Dashboard</span>
-    </button>
-    <button class="flex flex-col items-center">
-        <span class="material-symbols-outlined">badge</span>
-        <span class="text-xs">Pacientes</span>
-    </button>
-    <button class="flex flex-col items-center">
-        <span class="material-symbols-outlined">settings</span>
-      <span class="text-xs">Configuración</span>
-    </button>
+  <button routerLink="/pacientes" routerLinkActive="text-blue-400" class="flex flex-col items-center">
+    <span class="material-symbols-outlined">badge</span>
+    <span class="text-xs">Pacientes</span>
+  </button>
+
+  <button routerLink="/dashboard" routerLinkActive="text-blue-400" class="flex flex-col items-center">
+    <span class="material-symbols-outlined">dashboard</span>
+    <span class="text-xs">Dashboard</span>
+  </button>
+
+  <button routerLink="/configuracion" routerLinkActive="text-blue-400" class="flex flex-col items-center">
+    <span class="material-symbols-outlined">settings</span>
+    <span class="text-xs">Configuración</span>
+  </button>
 </nav>
