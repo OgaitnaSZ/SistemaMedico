@@ -1,0 +1,113 @@
+<section class="p-6 max-w-6xl mx-auto space-y-6">
+    <!-- Encabezado del perfil -->
+    <div class="flex items-end justify-between mb-6">
+        <div class="flex flex-col space-x-4">
+            <button routerLink="/pacientes" class="group flex items-center text-blue-600">
+                <span class="material-symbols-outlined mr-1 transition-transform duration-200 ease-in-out group-hover:-translate-x-1">arrow_back</span>
+                Volver
+            </button>
+            <h1 class="text-4xl font-semibold">Perfil del Paciente</h1>
+        </div>
+        <div class="flex items-center space-x-2">
+            <button  class="flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+            <span class="material-symbols-outlined mr-1">edit</span> Editar
+            </button>
+
+            <button  class="flex items-center bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+            <span class="material-symbols-outlined mr-1">delete</span> Eliminar
+            </button>
+        </div>
+    </div>
+
+  <!-- Datos del paciente -->
+  <div class="bg-white rounded-xl shadow-md p-6 flex flex-col md:flex-row gap-6">
+    <div class="flex justify-center items-center">
+      <img src="https://ui-avatars.com/api/?name={{ paciente.nombre }}+{{ paciente.apellido }}&background=0D8ABC&color=fff&size=128"
+        alt="Avatar"
+        class="rounded-full w-32 h-32 border-4 border-blue-500 shadow-md">
+    </div>
+
+    <!-- Información -->
+    <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
+      <div>
+        <p class="text-sm text-gray-500">Nombre</p>
+        <p class="font-medium text-lg">{{ paciente.nombre }}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Apellido</p>
+        <p class="font-medium text-lg">{{ paciente.apellido }}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Género</p>
+        <p class="font-medium text-lg">{{ paciente.genero }}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">DNI</p>
+        <p class="font-medium text-lg">{{ paciente.dni }}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Fecha de Nacimiento</p>
+        <p class="font-medium text-lg">{{ paciente.fechaNacimiento | date:'dd/MM/yyyy' }}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Teléfono</p>
+        <p class="font-medium text-lg">{{ paciente.telefono }}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Email</p>
+        <p class="font-medium text-lg">{{ paciente.email }}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Dirección</p>
+        <p class="font-medium text-lg">{{ paciente.direccion }}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Fecha de Creación</p>
+        <p class="font-medium text-lg">{{ paciente.created_at | date:'dd/MM/yyyy' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Historia clínica -->
+  <div class="bg-white rounded-xl shadow-md p-6 space-y-6">
+    <h3 class="text-xl font-semibold text-gray-800">Historia Clínica</h3>
+
+    <div *ngFor="let consulta of historialClinico" class="border rounded-lg p-4 space-y-2">
+      <div class="flex justify-between items-center">
+        <p class="text-gray-600 font-semibold">Consulta del {{ consulta.fecha | date:'dd/MM/yyyy' }}</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+        <div>
+          <p class="text-sm text-gray-500">Motivo</p>
+          <p class="font-medium">{{ consulta.motivo_consulta }}</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Diagnóstico</p>
+          <p class="font-medium">{{ consulta.diagnostico }}</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Tratamiento</p>
+          <p class="font-medium">{{ consulta.tratamiento }}</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Observaciones</p>
+          <p class="font-medium">{{ consulta.observaciones }}</p>
+        </div>
+      </div>
+
+      <!-- Archivos adjuntos -->
+      <div class="pt-2">
+        <p class="text-sm text-gray-500 mb-2">Archivos Adjuntos:</p>
+        <ul class="list-disc list-inside space-y-1 text-blue-600 text-sm">
+          <li>
+            <a target="_blank" class="hover:underline">Radiografia</a>
+          </li>
+            <li>
+            <a target="_blank" class="hover:underline">Analisis de Sangre</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
