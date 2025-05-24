@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { Paciente } from '../../core/interfaces/paciente.model';
 import { PacientesApiService } from '../../core/services/pacientes.service';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
@@ -8,7 +9,7 @@ import { debounceTime, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-pacientes',
-  imports: [CommonModule, FormsModule, InfiniteScrollDirective],
+  imports: [CommonModule, FormsModule, InfiniteScrollDirective, RouterLink],
   templateUrl: './pacientes.component.html',
   styleUrl: './pacientes.component.css'
 })

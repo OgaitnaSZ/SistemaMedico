@@ -1,0 +1,40 @@
+<section class="space-y-6">
+    <h3 class="text-xl font-semibold text-gray-800">Historia Clínica</h3>
+    <div *ngFor="let consulta of historialClinico" class="border rounded-lg p-4 space-y-2">
+        <div class="flex justify-between items-center">
+        <p class="text-gray-600 font-semibold">Consulta del {{ consulta.fecha | date:'dd/MM/yyyy' }}</p>
+        </div>
+    
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+        <div>
+            <p class="text-sm text-gray-500">Motivo</p>
+            <p class="font-medium">{{ consulta.motivo_consulta }}</p>
+        </div>
+        <div>
+            <p class="text-sm text-gray-500">Diagnóstico</p>
+            <p class="font-medium">{{ consulta.diagnostico }}</p>
+        </div>
+        <div>
+            <p class="text-sm text-gray-500">Tratamiento</p>
+            <p class="font-medium">{{ consulta.tratamiento }}</p>
+        </div>
+        <div>
+            <p class="text-sm text-gray-500">Observaciones</p>
+            <p class="font-medium">{{ consulta.observaciones }}</p>
+        </div>
+        </div>
+    
+        <!-- Archivos adjuntos -->
+        <div class="pt-2">
+        <p class="text-sm text-gray-500 mb-2">Archivos Adjuntos:</p>
+        <ul class="list-disc list-inside space-y-1 text-blue-600 text-sm">
+            <li>
+            <a target="_blank" class="hover:underline">Radiografia</a>
+            </li>
+            <li>
+            <a target="_blank" class="hover:underline">Analisis de Sangre</a>
+            </li>
+        </ul>
+        </div>
+    </div>
+</section>

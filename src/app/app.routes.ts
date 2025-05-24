@@ -16,6 +16,7 @@ export const routes: Routes = [
             { path: 'dashboard', component: DashboardComponent },
             { path: 'configuracion', component: ConfiguracionComponent },
             { path: 'pacientes', component: PacientesComponent },
+            { path: 'paciente/:id', component: PacienteComponent },
         ]
     },
     { path: '**', redirectTo: '' }
