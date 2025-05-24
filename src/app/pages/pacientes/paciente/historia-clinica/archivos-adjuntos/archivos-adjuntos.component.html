@@ -1,0 +1,20 @@
+<section *ngIf="archivoAdjuntos.length>0">
+    <p class="text-sm text-gray-500 mb-2">Archivos Adjuntos:</p>
+    <ul class="list-disc list-inside space-y-1 text-blue-600 text-sm ">
+        <li *ngFor="let archivo of archivoAdjuntos" class="group flex items-center justify-between relative">
+            <div class="flex items-center space-x-2">
+                <a target="_blank" [href]="'assets/' + archivo.path"
+                class="hover:underline transform group-hover:translate-x-5 group-hover:ms-1 transition-transform duration-200">
+                    {{ archivo.path }}
+                </a>
+                <p class="text-gray-400 text-sm group-hover:translate-x-5 group-hover:ms-1">{{ archivo.created_at }}</p>
+            </div>
+        
+            <!-- Botón de eliminar -->
+            <a class="absolute left-0 text-red-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer material-symbols-outlined" 
+            (click)="eliminarArchivo(archivo.idArchivo, archivo.path)">
+                delete 
+            </a>
+        </li>
+    </ul>
+</section>
