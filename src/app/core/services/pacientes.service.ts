@@ -8,17 +8,13 @@ import { Paciente } from '../interfaces/paciente.model';
 })
 
 export class PacientesApiService {
-    private apiUrl = 'localhost/SistemaMedicoUI/api/pacientes';
+    private apiUrl = 'http://localhost/SistemaMedicoUI/api/pacientes/';
 
   constructor(private http: HttpClient) {}
 
   // Listar Pacientes
-  getPacientes(parametros: string): Observable<any> {
-    if (parametros != '' && parametros != null && parametros != undefined){
-      return this.http.get(`${this.apiUrl}listar-pacientes.php?parametros=${parametros}`);
-    }else{
-      return this.http.get(`${this.apiUrl}listar-pacientes.php`);
-    }
+  getPacientes(page: number, limit: number, search: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}listar-pacientes.php?page=${page}&limit=${limit}&search=${search}`);
   }
 
   // Obtener Paciente por Id
