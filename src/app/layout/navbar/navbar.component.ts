@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { LoginService } from '../../core/services/login.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,4 +11,10 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class NavbarComponent {
   collapsed: boolean = true;
+
+  constructor(private loginService: LoginService){}
+
+  cerrarSession(){
+    this.loginService.logout();
+  }
 }

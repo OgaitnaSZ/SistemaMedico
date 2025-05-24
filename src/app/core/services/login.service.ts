@@ -6,12 +6,12 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class LoginService {
-  private apiUrl = 'localhost/SistemaMedicoUI/api/usuarios/login.php';
+  private apiUrl = 'http://localhost/SistemaMedicoUI/api/usuarios/login.php';
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(email: string, pass: string) {
-    return this.http.post<{ token: string ; idUsuario: number ; rol: string}>(this.apiUrl, { email, pass });
+  login(user: string, pass: string) {
+    return this.http.post<{ token: string }>(this.apiUrl, { user, pass });
   }
 
   setToken(token: string) {

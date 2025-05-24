@@ -11,28 +11,38 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  email = '';
+  user = '';
   pass = '';
   error = '';
 
   constructor(private login: LoginService, private router: Router, private route: ActivatedRoute) {}
 
   onLogin() {
-    this.login.login(this.email, this.pass).subscribe(
-      (res) => {
-        // Verifica si se recibe el token
-        console.log(res);
-        if (res.token) {
-          this.login.setToken(res.token);  // Guarda el token
-          this.router.navigate(['/hospedajes']);  // Redirige al usuario
-        } else {
-          this.error = 'Token no recibido';
+    if(this.validarDatos()){
+      this.login.login(this.user, this.pass).subscribe(
+        (res) => {
+          if (res.token) {
+            this.login.setToken(res.token);  // Guarda el token
+            this.router.navigate(['/dashboard']);  // Redirige al usuario
+          } else {
+            this.error = 'Token no recibido';
+          }
+        },
+        (err) => {
+          // Muestra el error si las credenciales son incorrectas
+          this.error = err.error?.message || 'Error inesperado';
         }
-      },
-      (err) => {
-        // Muestra el error si las credenciales son incorrectas
-        this.error = 'Datos incorrectos.'
-      }
-    );
+      );
+    }else{
+      this.error = 'Faltan datos.';
+        setTimeout(() => {
+          this.error = '';
+        }, 3000);
+    }
   }
+
+  validarDatos(): boolean {
+    return (this.user != '' && this.pass != '')
+  }
+
 }

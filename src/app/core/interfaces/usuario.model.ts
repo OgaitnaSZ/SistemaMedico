@@ -1,7 +1,7 @@
 export interface Usuario {
   idUsuario: number;
   nombre: string;
-  email: string;
+  user: string;
   password: string; // Hash
   created_at: Date;
 }

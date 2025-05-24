@@ -29,7 +29,7 @@
   <div class="">
     <a routerLink="/configuracion" class="flex items-center px-2 py-4 hover:bg-gray-700 cursor-pointer transition-colors duration-200">
         <span class="material-symbols-outlined">logout</span>
-        <span class="ml-2 whitespace-nowrap hidden group-hover:inline">Cerrar Session</span>
+        <span class="ml-2 whitespace-nowrap hidden group-hover:inline" (click)="cerrarSession()">Cerrar Session</span>
     </a>
     <p class="text-sm"></p>
     <span class="ml-2 text-sm text-gray-500 whitespace-nowrap hidden group-hover:inline">Hecho por Santiago Zelaya.</span>
