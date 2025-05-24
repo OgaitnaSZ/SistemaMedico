@@ -23,7 +23,6 @@ export class PacienteComponent {
       const id = params.get('id');
       if (id) {
         this.idPaciente = +id; // Convierte a número
-        console.log('ID de Paciente:', this.idPaciente);
       } else {
         console.log('ID de Paciente no encontrado');
       }

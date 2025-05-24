@@ -27,7 +27,7 @@ export class HistoriaClinicaComponent {
         },
         (error) => {
           console.error('Error al cargar historia clinica:', error.error);
-          this.mensaje = "Historia clinica no encontrada";
+          this.mensaje = "Este paciente no tiene historia clinica";
         }
       );
     }

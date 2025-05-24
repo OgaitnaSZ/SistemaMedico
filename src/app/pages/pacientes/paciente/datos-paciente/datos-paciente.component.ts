@@ -34,7 +34,6 @@ export class DatosPacienteComponent {
     if (this.idPaciente !== null && this.idPaciente !== undefined && this.idPaciente > 0) {
       this.pacienteService.getPaciente(this.idPaciente).subscribe(
         (data) => {
-          console.log(data);
           this.paciente = data;
         },
         (error) => {

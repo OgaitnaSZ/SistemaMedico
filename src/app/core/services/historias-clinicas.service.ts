@@ -8,19 +8,14 @@ import { HistoriaClinica } from '../interfaces/historia-clinica.model';
 })
 
 export class HistoriasClinicasApiService {
-    private apiUrl = 'localhost/api/historias_clinicas/';
+    private apiUrl = 'http://localhost/SistemaMedicoUI/api/historias_clinicas/';
     private apiUrlArchivos = 'localhost/api/archivos_adjuntos/';
 
   constructor(private http: HttpClient) {}
 
   // Listar Historias Clinicas de un paciente
   getHistoriasClinicas(idPaciente: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}listar-historias-clinicas.php?idPaciente=${idPaciente}`);
-  }
-
-  // Obtener Historia Clinica
-  getHistoriaClinica(idHistoriaClinica: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}listar-historia-clinica.php?idHistoriaClinica=${idHistoriaClinica}`);
+    return this.http.post(`${this.apiUrl}listar-historias-clinicas.php`, { idPaciente: idPaciente });
   }
 
   // Crear Historia Clinica
