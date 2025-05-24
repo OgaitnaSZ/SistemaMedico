@@ -8,7 +8,7 @@ import { Paciente } from '../interfaces/paciente.model';
 })
 
 export class PacientesApiService {
-    private apiUrl = 'localhost/api/pacientes/';
+    private apiUrl = 'localhost/SistemaMedicoUI/api/pacientes';
 
   constructor(private http: HttpClient) {}
 

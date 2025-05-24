@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class LoginService {
-  private apiUrl = 'localhost';
+  private apiUrl = 'localhost/SistemaMedicoUI/api/usuarios/login.php';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -17,26 +17,9 @@ export class LoginService {
   setToken(token: string) {
     localStorage.setItem('token', token);
   }
-  setRol(rol: string) {
-    console.log("Intentando guardar rol: "+rol)
-    localStorage.setItem('rol', rol);
-  }
 
   getToken() {
     return localStorage.getItem('token');
-  }
-  getRol() {
-    return localStorage.getItem('rol');
-  }
-
-  setUserId(idUsuario: number) {
-    localStorage.setItem('idUsuario', idUsuario.toString());
-    localStorage.setItem('testClave', "testValor");
-  }
-
-  getUserId(): number | null {
-    const id = localStorage.getItem('idUsuario');
-    return id ? parseInt(id, 10) : null;
   }
 
   isLoggedIn(): boolean {
