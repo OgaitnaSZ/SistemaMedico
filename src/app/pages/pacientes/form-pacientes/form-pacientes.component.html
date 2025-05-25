@@ -4,23 +4,23 @@
           <span class="material-symbols-outlined mr-1 transition-transform duration-200 ease-in-out group-hover:-translate-x-1">arrow_back</span>
           Volver
       </a>
-      <h1 class="text-4xl font-semibold">Agregar Nuevo Paciente</h1>
+      <h1 class="text-4xl font-semibold">{{ title }}</h1>
     </div>
 
      <form (ngSubmit)="guardarPaciente()" class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-white rounded-lg shadow">
       <div>
         <label class="text-sm text-gray-500">Nombre *</label>
-        <input type="text" [(ngModel)]="pacienteNuevo.nombre" name="nombre" class="w-full border p-2 rounded-lg" required>
+        <input type="text" [(ngModel)]="paciente.nombre" name="nombre" class="w-full border p-2 rounded-lg" required>
       </div>
     
       <div>
         <label class="text-sm text-gray-500">Apellido *</label>
-        <input type="text" [(ngModel)]="pacienteNuevo.apellido" name="apellido" class="w-full border p-2 rounded-lg" required>
+        <input type="text" [(ngModel)]="paciente.apellido" name="apellido" class="w-full border p-2 rounded-lg" required>
       </div>
     
       <div>
         <label class="text-sm text-gray-500">Género *</label>
-        <select [(ngModel)]="pacienteNuevo.genero" name="genero" class="w-full border p-2 rounded-lg" required>
+        <select [(ngModel)]="paciente.genero" name="genero" class="w-full border p-2 rounded-lg" required>
           <option value="">Seleccione</option>
           <option value="Masculino">Masculino</option>
           <option value="Femenino">Femenino</option>
@@ -30,27 +30,27 @@
     
       <div>
         <label class="text-sm text-gray-500">DNI *</label>
-        <input type="text" [(ngModel)]="pacienteNuevo.dni" name="dni" class="w-full border p-2 rounded-lg" required>
+        <input type="text" [(ngModel)]="paciente.dni" name="dni" class="w-full border p-2 rounded-lg" required>
       </div>
     
       <div>
         <label class="text-sm text-gray-500">Fecha de Nacimiento *</label>
-        <input type="date" [(ngModel)]="pacienteNuevo.fechaNacimiento" name="fechaNacimiento" class="w-full border p-2 rounded-lg" required>
+        <input type="date" [(ngModel)]="paciente.fechaNacimiento" name="fechaNacimiento" class="w-full border p-2 rounded-lg" required>
       </div>
     
       <div>
         <label class="text-sm text-gray-500">Teléfono</label>
-        <input type="text" [(ngModel)]="pacienteNuevo.telefono" name="telefono" class="w-full border p-2 rounded-lg">
+        <input type="text" [(ngModel)]="paciente.telefono" name="telefono" class="w-full border p-2 rounded-lg">
       </div>
     
       <div>
         <label class="text-sm text-gray-500">Email</label>
-        <input type="email" [(ngModel)]="pacienteNuevo.email" name="email" class="w-full border p-2 rounded-lg">
+        <input type="email" [(ngModel)]="paciente.email" name="email" class="w-full border p-2 rounded-lg">
       </div>
     
       <div>
         <label class="text-sm text-gray-500">Dirección</label>
-        <input type="text" [(ngModel)]="pacienteNuevo.direccion" name="direccion" class="w-full border p-2 rounded-lg">
+        <input type="text" [(ngModel)]="paciente.direccion" name="direccion" class="w-full border p-2 rounded-lg">
       </div>
     
       <div class="col-span-full mt-4">

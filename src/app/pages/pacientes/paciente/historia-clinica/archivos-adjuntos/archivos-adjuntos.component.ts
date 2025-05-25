@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ArchivoAdjunto } from '../../../../../core/interfaces/archivo-adjunto.model';
 import { HistoriasClinicasApiService } from '../../../../../core/services/historias-clinicas.service';
+import { empty } from 'rxjs';
 
 @Component({
   selector: 'app-archivos-adjuntos',
@@ -44,6 +45,7 @@ export class ArchivosAdjuntosComponent {
   
   subirArchivos(event: Event) {
     event.preventDefault();
+    console.log(this.idHistoriaClinica);
     if (this.idHistoriaClinica !== null && this.idHistoriaClinica !== undefined && this.idHistoriaClinica > 0) {
       const formData = new FormData();
       this.archivosSeleccionados.forEach(file => formData.append('archivos[]', file));
@@ -52,6 +54,9 @@ export class ArchivosAdjuntosComponent {
       this.historiaClinicaService.agregarArchivo(formData).subscribe(
         (data) => {
           console.log("Archivo subido con exito");
+          this.cargarArchivos();
+          this.verSubir = false;
+          formData.delete;
         },
         (error) => {
           console.error('Error al agregar archivos adjuntos:', error.error);
