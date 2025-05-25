@@ -18,8 +18,14 @@ export class HistoriasClinicasApiService {
     return this.http.post(`${this.apiUrl}listar-historias-clinicas.php`, { idPaciente: idPaciente });
   }
 
+  // Obtener Historia clinica por Id
+  getHistoriaClinica(idHistoriaClinica: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}listar-historia-clinicas.php?idHistoriaClinica=${idHistoriaClinica}`);
+  }
+
   // Crear Historia Clinica
   crearHistoriaClinica(historiaClinica: HistoriaClinica): Observable<any> {
+    console.log(historiaClinica);
     return this.http.post(`${this.apiUrl}crear-historia-clinica.php`, historiaClinica);
   }
 

@@ -86,7 +86,7 @@ export class FormPacientesComponent {
     this.pacienteService.editarPaciente(this.paciente).subscribe(
       (response) => {
         console.log('Paciente actualizado:', response);
-        this.router.navigate(['/pacientes']);
+        this.router.navigate(['/paciente', this.paciente.idPaciente]);
       },
       (error) => {
         console.error('Error al actualizar paciente:', error);
