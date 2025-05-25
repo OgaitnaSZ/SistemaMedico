@@ -57,17 +57,15 @@ export class PacientesComponent {
           // Agregar los pacientes al array existente
           this.pacientes.push(...response.data);  // spread para agregar múltiples elementos
           this.pagina++;
-          this.hayPacientes = true;
         }
         this.cargando = false;
       },
       (error) => {
         this.error = error.error.message;
-        this.hayPacientes = false;
         this.cargando = false;
       }
     );
-
+    console.log(this.pacientes);
   }
 
   calcularEdad(fechaNacimiento?: string | Date): number | null {

@@ -44,6 +44,7 @@ export class HistoriasClinicasApiService {
   }
   /* Agregar Archivo */
   agregarArchivo(formData: FormData): Observable<any>{
+    console.log(formData.keys);
     return this.http.post(`${this.apiUrlArchivos}subir-archivos.php`, formData);
   }
 

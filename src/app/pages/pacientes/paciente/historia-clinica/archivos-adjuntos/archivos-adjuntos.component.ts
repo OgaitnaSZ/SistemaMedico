@@ -12,6 +12,7 @@ import { HistoriasClinicasApiService } from '../../../../../core/services/histor
 export class ArchivosAdjuntosComponent {
   @Input() idHistoriaClinica: number | undefined; // ID recibido del componente padre
   mensaje: string = '';
+  verSubir: boolean = false;
 
   constructor(private historiaClinicaService: HistoriasClinicasApiService){}
 
@@ -22,7 +23,6 @@ export class ArchivosAdjuntosComponent {
   }
 
   cargarArchivos(){
-    // Cargar historia clinica
     if (this.idHistoriaClinica !== null && this.idHistoriaClinica !== undefined && this.idHistoriaClinica > 0) {
       this.historiaClinicaService.getArchivosAdjuntos(this.idHistoriaClinica).subscribe(
         (data) => {
@@ -30,6 +30,32 @@ export class ArchivosAdjuntosComponent {
         },
         (error) => {
           console.error('Error al cargar archivos adjuntos:', error.error);
+        }
+      );
+    }
+  }
+
+  // Subir archivo
+  archivosSeleccionados: File[] = [];
+
+  onFileSelected(event: any) {
+    this.archivosSeleccionados = Array.from(event.target.files);
+  }
+  
+  subirArchivos(event: Event) {
+    event.preventDefault();
+    if (this.idHistoriaClinica !== null && this.idHistoriaClinica !== undefined && this.idHistoriaClinica > 0) {
+      const formData = new FormData();
+      this.archivosSeleccionados.forEach(file => formData.append('archivos[]', file));
+      formData.append('IdHistoriaClinica', this.idHistoriaClinica.toString());
+
+      this.historiaClinicaService.agregarArchivo(formData).subscribe(
+        (data) => {
+          console.log("Archivo subido con exito");
+        },
+        (error) => {
+          console.error('Error al agregar archivos adjuntos:', error.error);
+          this.mensaje = 'Error al agregar archivos.';
         }
       );
     }
@@ -44,8 +70,7 @@ export class ArchivosAdjuntosComponent {
           this.mensaje = 'Elimnacion exitosa.';
         },
         (error) => {
-          console.error('Error al eliminar hospedaje:', error);
-          this.mensaje = 'Error al eliminar hospedaje.';
+          this.mensaje = 'Error al eliminar archivo.';
         }
       );
     }

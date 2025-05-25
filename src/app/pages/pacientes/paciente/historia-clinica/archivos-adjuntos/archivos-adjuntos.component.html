@@ -1,6 +1,38 @@
-<section *ngIf="archivoAdjuntos.length>0">
-    <p class="text-sm text-gray-500 mb-2">Archivos Adjuntos:</p>
-    <ul class="list-disc list-inside space-y-1 text-blue-600 text-sm ">
+<section>
+    <div class="flex items-center space-x-1">
+        <p class="text-sm text-gray-500">Archivos Adjuntos:</p>
+        <a class="text-blue-600 cursor-pointer flex items-center group overflow-hidden" (click)="verSubir = true">
+            <span class="material-symbols-outlined transition-transform duration-300">
+                add_circle
+            </span>
+            <span
+                class="ml-1 whitespace-nowrap overflow-hidden max-w-0 group-hover:max-w-xs transition-all duration-500 ease-in-out">
+                Agregar Archivos
+            </span>
+        </a>
+    </div>
+
+    <!-- Subida de archivos -->
+    <div class="p-4 bg-white rounded-lg shadow border border-gray-200 max-w-md mx-auto" *ngIf="verSubir">
+        <form (submit)="subirArchivos($event)" enctype="multipart/form-data" class="space-y-4">
+            <div class="flex justify-between items-center">
+                <label class="block text-sm font-medium text-gray-700">Seleccionar archivo</label>
+                <p (click)="verSubir = false" class="text-red-400 material-symbols-outlined cursor-pointer">close</p>
+            </div>
+            <input
+                type="file" multiple
+                (change)="onFileSelected($event)"
+                class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
+            <div class="flex justify-end">
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    Subir
+                </button>
+            </div>
+        </form>
+    </div>
+
+
+    <ul class="list-disc list-inside space-y-1 text-blue-600 text-sm" *ngIf="archivoAdjuntos.length>0">
         <li *ngFor="let archivo of archivoAdjuntos" class="group flex items-center justify-between relative">
             <div class="flex items-center space-x-2">
                 <a target="_blank" [href]="'assets/' + archivo.path"
@@ -17,4 +49,5 @@
             </a>
         </li>
     </ul>
+    <p class="text-gray-500">{{ mensaje }}</p>
 </section>
