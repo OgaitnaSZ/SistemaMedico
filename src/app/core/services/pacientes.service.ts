@@ -28,12 +28,12 @@ export class PacientesApiService {
     return this.http.post(`${this.apiUrl}crear-paciente.php`, paciente);
   }
 
-  // Eliminar Hospedaje
+  // Eliminar Paciente
   eliminarPaciente(idPaciente: number): Observable<any> {
     return this.http.post(`${this.apiUrl}eliminar-paciente.php`, { idPaciente: idPaciente });
   }
 
-  // Editar Hospedaje
+  // Editar Paciente
   editarPaciente(paciente: Paciente): Observable<any> {
     return this.http.post(`${this.apiUrl}editar-paciente.php`, paciente);
   }

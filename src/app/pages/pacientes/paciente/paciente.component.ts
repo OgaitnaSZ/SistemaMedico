@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { DatosPacienteComponent } from './datos-paciente/datos-paciente.component';
 import { HistoriaClinicaComponent } from './historia-clinica/historia-clinica.component';
 import { PacientesApiService } from '../../../core/services/pacientes.service';
-import { HistoriaClinica } from '../../../core/interfaces/historia-clinica.model';
 
 @Component({
   selector: 'app-paciente',
@@ -14,8 +13,11 @@ import { HistoriaClinica } from '../../../core/interfaces/historia-clinica.model
 })
 export class PacienteComponent {
   idPaciente: number = 0;
+  mensaje: string = '';
 
-  constructor(private route: ActivatedRoute, private pacienteService: PacientesApiService){}
+  constructor(private route: ActivatedRoute, 
+              private pacienteService: PacientesApiService,
+              private router: Router){}
 
   ngOnInit(){
     // Obtener el parámetro 'id' de la ruta
@@ -27,5 +29,19 @@ export class PacienteComponent {
         console.log('ID de Paciente no encontrado');
       }
     });
+  }
+
+  eliminarPaciente(){
+    if (confirm(`¿Estás seguro de que deseas eliminar el paciente}?`)) {
+      this.pacienteService.eliminarPaciente(this.idPaciente).subscribe(
+        (response) => {
+          console.log('Elimnacion exitosa:', response);
+          this.router.navigate(['/pacientes']);
+        },
+        (error) => {
+          this.mensaje = "Error al eliminar el paciente.";
+        }
+      );
+    }
   }
 }
