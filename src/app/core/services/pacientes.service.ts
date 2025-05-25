@@ -24,6 +24,7 @@ export class PacientesApiService {
 
   // Crear Paciente
   crearPaciente(paciente: Paciente): Observable<any> {
+    console.log(paciente);
     return this.http.post(`${this.apiUrl}crear-paciente.php`, paciente);
   }
 

@@ -5,6 +5,7 @@ import { ConfiguracionComponent } from './pages/configuracion/configuracion.comp
 import { PacienteComponent } from './pages/pacientes/paciente/paciente.component';
 import { LoginComponent } from './pages/login/login.component';
 import { authGuard } from './auth.guard';
+import { AgregarPacienteComponent } from './pages/pacientes/agregar-paciente/agregar-paciente.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent},
@@ -17,6 +18,7 @@ export const routes: Routes = [
             { path: 'configuracion', component: ConfiguracionComponent },
             { path: 'pacientes', component: PacientesComponent },
             { path: 'paciente/:id', component: PacienteComponent },
+            { path: 'agregar-paciente', component: AgregarPacienteComponent },
         ]
     },
     { path: '**', redirectTo: '' }

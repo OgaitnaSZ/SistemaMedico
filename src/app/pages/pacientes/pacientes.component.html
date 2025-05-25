@@ -5,9 +5,9 @@
         <input type="text" placeholder="Buscar por nombre o DNI..." 
             class="w-full sm:w-64 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             [(ngModel)]="terminoBusqueda" (ngModelChange)="buscarPacientes()">
-        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+        <a class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer" routerLink="/agregar-paciente">
         + Nuevo Paciente
-        </button>
+        </a>
     </div>
 </div>
 
