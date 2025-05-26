@@ -13,8 +13,25 @@
 
 <section class="space-y-6" *ngIf="historialClinico.length>0 else noConsultas">
     <div *ngFor="let consulta of historialClinico" class="border rounded-lg p-4 space-y-2">
+        <div *ngIf="idEditando === consulta.idHistoriaClinica">
+            <button class="w-full text-right text-red-400 material-symbols-outlined cursor-pointer" (click)="idEditando = 0">close</button>
+            <app-form-consulta 
+                (onFormularioEnviado)="actualizarDatos()" 
+                [idHistoriaClinica]="consulta.idHistoriaClinica">
+            </app-form-consulta>
+        </div>
+
         <div class="flex justify-between items-center">
             <p class="text-gray-600 font-semibold">Consulta del {{ consulta.fecha | date:'dd/MM/yyyy' }}</p>
+            <div class="flex space-x-2">
+                <a (click)="idEditando = consulta.idHistoriaClinica" class="flex items-center text-yellow-500 hover:text-yellow-600 rounded-lg transition-colors duration-200 cursor-pointer">
+                    <span class="material-symbols-outlined mr-1">edit</span>
+                </a>
+                <a (click)="eliminarConsulta(consulta.idHistoriaClinica)"
+                class="flex items-center text-red-600 hover:text-red-700 rounded-lg transition-colors duration-200 cursor-pointer">
+                <span class="material-symbols-outlined mr-1">delete</span>
+                </a>
+            </div>
         </div>
     
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">

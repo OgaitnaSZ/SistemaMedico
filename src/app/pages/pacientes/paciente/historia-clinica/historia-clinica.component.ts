@@ -15,6 +15,7 @@ export class HistoriaClinicaComponent {
   @Input() idPaciente: number | undefined; // ID recibido del componente padre
   mensaje: string = '';
   agregarConsulta: boolean = false;
+  idEditando: number | null = null;
     
   constructor(private historiaClinicaService: HistoriasClinicasApiService){}
   
@@ -26,6 +27,7 @@ export class HistoriaClinicaComponent {
 
   actualizarDatos(){
     this.agregarConsulta = false;
+    this.idEditando = 0;
     this.cargarHistoriasClinicas();
   }
 
@@ -38,6 +40,20 @@ export class HistoriaClinicaComponent {
         (error) => {
           console.error('Error al cargar historia clinica:', error.error);
           this.mensaje = "Este paciente no tiene historia clinica";
+        }
+      );
+    }
+  }
+
+  eliminarConsulta(idHistoriaClinica: number){
+    if (confirm(`¿Estás seguro de que deseas eliminar la consulta}?`)) {
+      this.historiaClinicaService.eliminarHistoriaClinica(idHistoriaClinica).subscribe(
+        (response) => {
+          console.log('Elimnacion exitosa:', response);
+          this.cargarHistoriasClinicas();
+        },
+        (error) => {
+          this.mensaje = "Error al eliminar el paciente.";
         }
       );
     }

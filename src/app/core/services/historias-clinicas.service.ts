@@ -20,7 +20,7 @@ export class HistoriasClinicasApiService {
 
   // Obtener Historia clinica por Id
   getHistoriaClinica(idHistoriaClinica: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}listar-historia-clinicas.php?idHistoriaClinica=${idHistoriaClinica}`);
+    return this.http.get(`${this.apiUrl}listar-historia-clinica.php?idHistoriaClinica=${idHistoriaClinica}`);
   }
 
   // Crear Historia Clinica
