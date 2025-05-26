@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginService } from '../../core/services/login.service';
-import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -15,7 +15,7 @@ export class LoginComponent {
   pass = '';
   error = '';
 
-  constructor(private login: LoginService, private router: Router, private route: ActivatedRoute) {}
+  constructor(private login: LoginService, private router: Router) {}
 
   onLogin() {
     if(this.validarDatos()){
@@ -23,6 +23,7 @@ export class LoginComponent {
         (res) => {
           if (res.token) {
             this.login.setToken(res.token);  // Guarda el token
+            this.login.setUserId(res.idUsuario);  // Guardar ID de usuario
             this.router.navigate(['/dashboard']);  // Redirige al usuario
           } else {
             this.error = 'Token no recibido';
