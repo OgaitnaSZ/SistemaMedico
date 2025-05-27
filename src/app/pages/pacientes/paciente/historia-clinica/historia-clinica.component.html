@@ -1,20 +1,20 @@
 <section class="flex justify-between">
     <h3 class="text-xl font-semibold text-gray-800">Historia Clínica</h3>
-    <a class="bg-blue-600 text-white px-4 py-2 mb-6 rounded-lg hover:bg-blue-700 transition cursor-pointer" 
+    <button class="bg-blue-600 text-white px-4 py-2 mb-6 rounded-lg hover:bg-blue-700 transition" 
         (click)="agregarConsulta = true" *ngIf="!agregarConsulta">
         + Nueva Consulta
-    </a>
+    </button>
 </section>
 
 <section *ngIf="agregarConsulta" class="bg-gray-50 border border-gray-200 p-4 rounded-lg mb-6 mt-6">
-    <button class="w-full text-right text-red-400 material-symbols-outlined cursor-pointer" (click)="agregarConsulta = false">close</button>
+    <button class="w-full text-right text-red-400 material-symbols-outlined" (click)="agregarConsulta = false">close</button>
     <app-form-consulta (onFormularioEnviado)="actualizarDatos()"></app-form-consulta>
 </section>
 
 <section class="space-y-6" *ngIf="historialClinico.length>0 else noConsultas">
     <div *ngFor="let consulta of historialClinico" class="border rounded-lg p-4 space-y-2">
         <div *ngIf="idEditando === consulta.idHistoriaClinica">
-            <button class="w-full text-right text-red-400 material-symbols-outlined cursor-pointer" (click)="idEditando = 0">close</button>
+            <button class="w-full text-right text-red-400 material-symbols-outlined" (click)="idEditando = 0">close</button>
             <app-form-consulta 
                 (onFormularioEnviado)="actualizarDatos()" 
                 [idHistoriaClinica]="consulta.idHistoriaClinica">
@@ -24,13 +24,13 @@
         <div class="flex justify-between items-center">
             <p class="text-gray-600 font-semibold">Consulta del {{ consulta.fecha | date:'dd/MM/yyyy' }}</p>
             <div class="flex space-x-2">
-                <a (click)="idEditando = consulta.idHistoriaClinica" class="flex items-center text-yellow-500 hover:text-yellow-600 rounded-lg transition-colors duration-200 cursor-pointer">
+                <button (click)="idEditando = consulta.idHistoriaClinica" class="flex items-center text-yellow-500 hover:text-yellow-600 rounded-lg transition-colors duration-200">
                     <span class="material-symbols-outlined mr-1">edit</span>
-                </a>
-                <a (click)="eliminarConsulta(consulta.idHistoriaClinica)"
-                class="flex items-center text-red-600 hover:text-red-700 rounded-lg transition-colors duration-200 cursor-pointer">
+                </button>
+                <button (click)="eliminarConsulta(consulta.idHistoriaClinica)"
+                class="flex items-center text-red-600 hover:text-red-700 rounded-lg transition-colors duration-200">
                 <span class="material-symbols-outlined mr-1">delete</span>
-                </a>
+                </button>
             </div>
         </div>
     

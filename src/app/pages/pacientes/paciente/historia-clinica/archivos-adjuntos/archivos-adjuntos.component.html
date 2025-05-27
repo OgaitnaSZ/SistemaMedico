@@ -1,7 +1,7 @@
 <section>
     <div class="flex items-center space-x-1">
         <p class="text-sm text-gray-500">Archivos Adjuntos:</p>
-        <a class="text-blue-600 cursor-pointer flex items-center group overflow-hidden" (click)="verSubir = true">
+        <button class="text-blue-600 flex items-center group overflow-hidden" (click)="verSubir = true">
             <span class="material-symbols-outlined transition-transform duration-300">
                 add_circle
             </span>
@@ -9,7 +9,7 @@
                 class="ml-1 whitespace-nowrap overflow-hidden max-w-0 group-hover:max-w-xs transition-all duration-500 ease-in-out">
                 Agregar Archivos
             </span>
-        </a>
+        </button>
     </div>
 
     <!-- Subida de archivos -->
@@ -17,14 +17,14 @@
         <form (submit)="subirArchivos($event)" enctype="multipart/form-data" class="space-y-4">
             <div class="flex justify-between items-center">
                 <label class="block text-sm font-medium text-gray-700">Seleccionar archivo</label>
-                <p (click)="verSubir = false" class="text-red-400 material-symbols-outlined cursor-pointer">close</p>
+                <p (click)="verSubir = false" class="text-red-400 material-symbols-outlined">close</p>
             </div>
             <input
                 type="file" multiple
                 (change)="onFileSelected($event)"
-                class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
+                class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
             <div class="flex justify-end">
-                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg cursor-pointer hover:bg-blue-700 transition-colors">
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                     Subir
                 </button>
             </div>
@@ -43,10 +43,10 @@
             </div>
         
             <!-- Botón de eliminar -->
-            <a class="absolute left-0 text-red-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer material-symbols-outlined" 
+            <button class="absolute left-0 text-red-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200 material-symbols-outlined" 
             (click)="eliminarArchivo(archivo.idArchivo, archivo.path)">
                 delete 
-            </a>
+            </button>
         </li>
     </ul>
     <p class="text-gray-500">{{ mensaje }}</p>
