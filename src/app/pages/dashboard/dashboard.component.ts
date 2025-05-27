@@ -38,7 +38,6 @@ export class DashboardComponent {
   cargarEstadisticas(){
     this.dashboardService.getEstadisticas().subscribe(
       (response)=>{
-        console.log(response);
         this.dashboard = response;
         this.calcularTotales();
       },

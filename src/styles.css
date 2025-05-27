@@ -1,5 +1,10 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 a, button{
     cursor: pointer !important;
+}
+
+.switch{
+    font-size: 16px;
 }

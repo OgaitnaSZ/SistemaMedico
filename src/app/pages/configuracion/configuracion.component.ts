@@ -89,6 +89,9 @@ export class ConfiguracionComponent {
         console.log("Error al cargar datos del usuario.", error);
       }
     )
+
+    // Cargar modo oscuro
+    this.isDark = localStorage.getItem('theme') === 'dark';
   }
 
   toggleTheme() {
@@ -96,8 +99,10 @@ export class ConfiguracionComponent {
     const html = document.documentElement;
     if (this.isDark) {
       html.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
     } else {
       html.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
     }
   }
 

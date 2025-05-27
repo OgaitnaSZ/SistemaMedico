@@ -12,4 +12,12 @@ import { NgClass, NgIf } from '@angular/common';
 export class AppComponent {
   title = 'app-sistema-medico';
   constructor(public router: Router) {}
+
+  ngOnInit(): void {
+    const isDark = localStorage.getItem('theme') === 'dark';
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    }
+  }
+
 }
