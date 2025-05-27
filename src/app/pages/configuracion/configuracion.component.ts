@@ -46,19 +46,18 @@ export class ConfiguracionComponent {
   
   onChangePass() {
     if (this.validarCambioDePassword()) {
-      this.login.actualizarDatos(this.idUsuario, this.nombre, this.user, this.oldPass, this.newPass).subscribe({
-        next: (response) => {
-          console.log("Datos actualizados con éxito:", response);
-          this.success = 'Datos actualizados correctamente.';
+      this.login.actualizarDatos(this.idUsuario, this.nombre, this.user, this.oldPass, this.newPass).subscribe(
+        (response) => {
+          this.login.setUserName(this.nombre);
           this.resetMensajes();
           this.resetPasswords();
         },
-        error: (err) => {
+        (err) => {
           console.log("Error al actualizar datos:", err);
           this.error = err.error?.message || 'Error inesperado al actualizar los datos.';
           this.resetMensajes();
         }
-      });
+      );
     } else {
       this.error = 'Las contraseñas no coincidan o los datos están incompletos.';
       this.resetMensajes();

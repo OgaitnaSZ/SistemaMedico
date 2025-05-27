@@ -26,6 +26,7 @@ export class LoginService {
     localStorage.setItem('idUsuario', idUsuario.toString());
   }
   setUserName(nombre: string) {
+    console.log(nombre);
     localStorage.setItem('nombre', nombre);
   }
 
