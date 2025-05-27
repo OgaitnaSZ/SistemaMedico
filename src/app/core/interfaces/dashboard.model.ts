@@ -1,13 +1,13 @@
 export interface Dashboard {
-  statsUltimos7Dias: {
-    [dia: string]: DiaEstadistica; // ejemplo: "lunes", "martes"
-  };
+  statsUltimos7Dias: DiaEstadisticaConDia[];
   ultimoPaciente: UltimoPaciente | null;
   ultimas10Consultas: Consulta[];
   ultimos10Archivos: Archivo[];
 }
 
-export interface DiaEstadistica {
+export interface DiaEstadisticaConDia {
+  dia: string;
+  fecha?: string;   
   pacientes: number;
   consultas: number;
   archivos: number;
@@ -17,6 +17,7 @@ export interface UltimoPaciente {
   idPaciente: number;
   nombre: string;
   apellido: string;
+  fechaNacimiento: string;
   dni: string;
   genero: string;
   ultima_visita: Date;
@@ -24,8 +25,7 @@ export interface UltimoPaciente {
 
 export interface Consulta {
   idPaciente: string;
-  nombre: string;
-  apellido: string;
+  nombreCompleto: string;
   fecha: Date; 
 }
 

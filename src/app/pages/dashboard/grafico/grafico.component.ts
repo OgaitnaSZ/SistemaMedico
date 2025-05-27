@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartOptions, ChartData } from 'chart.js';
+import { DiaEstadisticaConDia } from '../../../core/interfaces/dashboard.model';
 
 @Component({
   selector: 'app-grafico',
@@ -11,7 +12,7 @@ import { ChartOptions, ChartData } from 'chart.js';
   styleUrl: './grafico.component.css'
 })
 export class GraficoComponent {
-  @Input() estadisticas: any; 
+  @Input() estadisticas: DiaEstadisticaConDia[] = []; 
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   opciones = ['consultas', 'archivos', 'pacientes'];
@@ -27,7 +28,7 @@ export class GraficoComponent {
     datasets: [
       {
         label: 'Historias Clínicas',
-        data: [5, 8, 6, 10, 7, 9, 12],
+        data: [0, 0, 0, 0, 0, 0, 0],
         borderColor: 'rgb(59, 130, 246)',
         backgroundColor: 'rgba(59, 130, 246, 0.2)',
         tension: 0.4,
@@ -48,15 +49,31 @@ export class GraficoComponent {
   }
 
   actualizarDatosDelGrafico(): void {
-    const diasOrdenados = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
-
-    const datos = diasOrdenados.map(dia => {
-      const stat = this.estadisticas[dia];
-      return stat ? stat[this.tipoSeleccionado] ?? 0 : 0;
-    });
-
+    const labels = this.estadisticas.map(d => d.dia);
+  
+    const pacientesData = this.estadisticas.map(d => d.pacientes);
+    const consultasData = this.estadisticas.map(d => d.consultas);
+    const archivosData = this.estadisticas.map(d => d.archivos);
+  
+    // Datos segun tipo seleccionado
+    let datosSeleccionados: number[];
+    switch (this.tipoSeleccionado) {
+      case 'pacientes':
+        datosSeleccionados = pacientesData;
+        break;
+      case 'consultas':
+        datosSeleccionados = consultasData;
+        break;
+      case 'archivos':
+        datosSeleccionados = archivosData;
+        break;
+      default:
+        datosSeleccionados = []; 
+    }
+  
     this.chartData.datasets[0].label = this.obtenerEtiqueta(this.tipoSeleccionado);
-    this.chartData.datasets[0].data = datos;
+    this.chartData.datasets[0].data = datosSeleccionados;
+    this.chartData.labels = labels;
     this.chart?.update();
   }
 

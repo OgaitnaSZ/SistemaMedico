@@ -20,7 +20,7 @@ export class DashboardComponent {
   nombre: string = 'Doctor';
   
   dashboard: Dashboard = {
-    statsUltimos7Dias: {},
+    statsUltimos7Dias: [],
     ultimoPaciente: null,
     ultimas10Consultas: [],
     ultimos10Archivos: []
@@ -56,10 +56,26 @@ export class DashboardComponent {
   }
 
   totalPorMetrica(
-    stats: { [dia: string]: { pacientes: number; consultas: number; archivos: number } },
+    stats: { pacientes: number; consultas: number; archivos: number }[],
     metrica: 'pacientes' | 'consultas' | 'archivos'
   ): number {
-    return Object.values(stats).reduce((total, dia) => total + (dia[metrica] || 0), 0);
+    return stats.reduce((total, dia) => total + (dia[metrica] || 0), 0);
   }
 
+  calcularEdad(fechaNacimiento?: string | Date): number | null {
+    if (!fechaNacimiento) return null;
+    const fecha = new Date(fechaNacimiento); // conversion de string a Date
+    if (isNaN(fecha.getTime())) return null;
+
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - fecha.getFullYear();
+    const mes = hoy.getMonth() - fecha.getMonth();
+    const dia = hoy.getDate() - fecha.getDate();
+  
+    if (mes < 0 || (mes === 0 && dia < 0)) {
+      edad--;
+    }
+  
+    return edad;
+  }
 }

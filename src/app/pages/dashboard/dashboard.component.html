@@ -1,5 +1,5 @@
 <section class="p-5">
-    <h1 class="text-5xl font-medium">{{ nombre }}</h1>
+    <h1 class="text-5xl font-medium">Bienvenido, {{ nombre }}</h1>
 </section>
 
 <!-- Top Cards -->
@@ -30,7 +30,7 @@
         </div>
 
         <div class="space-y-1">
-            <p><strong>Edad:</strong> {{ 20 }}</p>
+            <p><strong>Edad:</strong> {{ calcularEdad(dashboard.ultimoPaciente?.fechaNacimiento) }}</p>
             <p><strong>Género:</strong> {{ dashboard.ultimoPaciente?.genero }}</p>
             <p><strong>Visita:</strong> {{ dashboard.ultimoPaciente?.ultima_visita| date: "dd/MM/Y" }}</p>
             <a [routerLink]="['/paciente', dashboard.ultimoPaciente?.idPaciente]"
@@ -47,7 +47,7 @@
     class="md:w-1/2"
     [titulo]="'Últimas Consultas'"
     [items]="dashboard.ultimas10Consultas"
-    labelField="nombre"
+    labelField="nombreCompleto"
     dateField="fecha"
     linkBase="/paciente"
     verTodasLink="/pacientes"

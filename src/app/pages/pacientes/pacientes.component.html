@@ -38,7 +38,7 @@
             <td class="px-6 py-4 whitespace-nowrap">{{ paciente?.nombre }}, {{ paciente?.apellido }}</td>
             <td class="px-6 py-4">{{ paciente?.dni }}</td>
             <td class="px-6 py-4">{{ paciente?.genero }}</td>
-            <td class="px-6 py-4">{{ paciente?.fechaNacimiento ? calcularEdad(paciente?.fechaNacimiento) : 'N/A'  }}</td>
+            <td class="px-6 py-4">{{ paciente?.fechaNacimiento ? calcularEdad(paciente?.fechaNacimiento) : 'N/A' }}</td>
             <td class="px-6 py-4 flex justify-center gap-3 text-sm">
               <a [routerLink]="['/paciente', paciente.idPaciente]" class="text-blue-600 hover:underline"><span class="material-symbols-outlined">lab_profile</span></a>
             </td>
