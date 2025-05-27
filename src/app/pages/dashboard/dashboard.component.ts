@@ -1,22 +1,24 @@
 import { Component } from '@angular/core';
-import { BaseChartDirective } from 'ng2-charts';
-import { ChartOptions, ChartData } from 'chart.js';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { TopCardComponent } from '../../layout/shared/top-card/top-card.component';
+import { ListadoDashboardComponent } from '../../layout/shared/listado-dashboard/listado-dashboard.component';
+import { GraficoComponent } from './grafico/grafico.component';
 import { DashboardService } from '../../core/services/dashboard.service';
-import { Paciente } from '../../core/interfaces/paciente.model';
+import { LoginService } from '../../core/services/login.service';
 import { Dashboard } from '../../core/interfaces/dashboard.model';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [BaseChartDirective, CommonModule, BaseChartDirective, RouterLink],
+  imports: [CommonModule, RouterLink, TopCardComponent, ListadoDashboardComponent, GraficoComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-  constructor(private dashboardService: DashboardService){}
+  constructor(private dashboardService: DashboardService, private login: LoginService){}
 
-  nombre: string = '';
+  nombre: string = 'Doctor';
+  
   dashboard: Dashboard = {
     statsUltimos7Dias: {},
     ultimoPaciente: null,
@@ -24,66 +26,40 @@ export class DashboardComponent {
     ultimos10Archivos: []
   };
 
+  totalPacientes: number = 0;
+  totalConsultas: number = 0;
+  totalArchivos: number = 0;
 
   ngOnInit(){
+    this.nombre = this.login.getUserName();
     this.cargarEstadisticas();
   }
-
-  chartOptions: ChartOptions = {
-    responsive: true,
-    plugins: { legend: { display: false } },
-  };
-  
-  chartData: ChartData<'line'> = {
-    labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
-    datasets: [
-      {
-        label: 'Historias Clínicas',
-        data: [5, 8, 6, 10, 7, 9, 12],
-        borderColor: 'rgb(59, 130, 246)',
-        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-        tension: 0.4,
-        fill: true,
-        type: 'line'
-      },
-    ],
-  };
-
-  fechaTest: Date = new Date();
-
-  ultimoPaciente: Paciente = {
-    idPaciente:  0,
-    nombre: 'Maria',
-    apellido: 'Gomez',
-    genero: 'Mujer',
-    dni: '123',
-    fechaNacimiento: this.fechaTest,
-    telefono: '123',
-    email: 'maria@gmail.com',
-    direccion: 'Av. Roca 1200',
-    created_at: this.fechaTest,
-  };
-
-  pacientes = Array.from({ length: 10 }).map((_, i) => ({
-    nombre: `Paciente ${i + 1}`,
-    fecha: `2025-05-${20 - i}`,
-  }));
-
-  archivos = Array.from({ length: 10 }).map((_, i) => ({
-    nombre: `archivo_${i + 1}.pdf`,
-    fecha: `2025-05-${20 - i}`,
-  }));
 
   cargarEstadisticas(){
     this.dashboardService.getEstadisticas().subscribe(
       (response)=>{
         console.log(response);
         this.dashboard = response;
-        console.log(this.dashboard);
+        this.calcularTotales();
       },
       (error)=>{
         console.log("Error al obtener estadisticas: ", error)
       }
     )
   }
+
+  calcularTotales(): void {
+    const stats = this.dashboard.statsUltimos7Dias;
+    this.totalPacientes = this.totalPorMetrica(stats, 'pacientes');
+    this.totalConsultas = this.totalPorMetrica(stats, 'consultas');
+    this.totalArchivos = this.totalPorMetrica(stats, 'archivos');
+  }
+
+  totalPorMetrica(
+    stats: { [dia: string]: { pacientes: number; consultas: number; archivos: number } },
+    metrica: 'pacientes' | 'consultas' | 'archivos'
+  ): number {
+    return Object.values(stats).reduce((total, dia) => total + (dia[metrica] || 0), 0);
+  }
+
 }

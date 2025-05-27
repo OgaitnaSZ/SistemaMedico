@@ -1,0 +1,17 @@
+<div class="bg-white p-4 rounded-xl shadow w-full">
+  <div class="flex flex-row justify-between items-center mb-2" *ngIf="verTodasLink">
+    <p class="text-lg font-semibold">{{ titulo }}</p>
+    <a [routerLink]="verTodasLink" class="text-blue-600 font-bold hover:underline">Ver Todas</a>
+  </div>
+  <p class="text-lg font-semibold mb-2" *ngIf="!verTodasLink">{{ titulo }}</p>
+
+  <ul>
+    <li *ngFor="let item of items" class="flex justify-between py-2">
+      <p>{{ item[labelField] }}</p>
+      <p>{{ item[dateField] }}</p>
+      <a [routerLink]="[linkBase, item.idPaciente || item.path]">
+        <span class="material-symbols-outlined hover:text-blue-600">{{ icon }}</span>
+      </a>
+    </li>
+  </ul>
+</div>

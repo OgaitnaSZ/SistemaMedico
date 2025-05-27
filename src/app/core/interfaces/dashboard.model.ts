@@ -14,19 +14,19 @@ export interface DiaEstadistica {
 }
 
 export interface UltimoPaciente {
+  idPaciente: number;
   nombre: string;
   apellido: string;
   dni: string;
   genero: string;
   ultima_visita: Date;
-  id_consulta: number;
 }
 
 export interface Consulta {
+  idPaciente: string;
   nombre: string;
   apellido: string;
   fecha: Date; 
-  idHistoria: number;
 }
 
 export interface Archivo {

@@ -1,0 +1,26 @@
+<div class="flex flex-col gap-2">
+  <!-- Selector de tipo de dato -->
+  <div class="flex justify-between">
+    <p class="text-lg font-semibold mb-2">Historias Clínicas (7 días)</p>
+    <div class="flex justify-end mb-4">
+      <label for="tipo" class="mr-2 text-sm font-medium text-gray-700 self-center">Filtrar por:</label>
+      <select
+        id="tipo"
+        [(ngModel)]="tipoSeleccionado"
+        (change)="onTipoChange()"
+        class="border border-gray-300 rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+      >
+        <option *ngFor="let opcion of opciones" [value]="opcion">
+          {{ opcion | titlecase }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Gráfico -->
+  <canvas baseChart
+    [data]="chartData"
+    [options]="chartOptions"
+    chartType="line">
+  </canvas>
+</div>

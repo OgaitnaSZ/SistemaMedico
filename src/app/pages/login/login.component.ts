@@ -24,6 +24,7 @@ export class LoginComponent {
           if (res.token) {
             this.login.setToken(res.token);  // Guarda el token
             this.login.setUserId(res.idUsuario);  // Guardar ID de usuario
+            this.login.setUserName(res.nombre);  // Guardar nombre de usuario
             this.router.navigate(['/dashboard']);  // Redirige al usuario
           } else {
             this.error = 'Token no recibido';
