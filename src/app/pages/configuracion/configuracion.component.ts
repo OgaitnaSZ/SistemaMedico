@@ -100,6 +100,10 @@ export class ConfiguracionComponent {
       html.classList.remove('dark');
     }
   }
+
+  cerrarSession(){
+    this.login.logout();
+  }
   
   private resetMensajes() {
     setTimeout(() => {

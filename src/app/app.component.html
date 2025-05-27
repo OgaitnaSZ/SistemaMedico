@@ -1,6 +1,6 @@
 <section class="flex h-screen">
   <app-navbar *ngIf="router.url !== '/login'"></app-navbar>
-  <main class="py-2 md:px-10 w-full mb-[6.79vh] md:mb-0 overflow-y-auto" [ngClass]="{'py-2 md:px-10': router.url !== '/login'}">
+  <main class="py-2 md:px-10 w-full md:mb-0 overflow-y-auto" [ngClass]="{'py-2 md:px-10 mb-[5.2vh]': router.url !== '/login'}">
     <router-outlet></router-outlet>
   </main>
 </section>

@@ -3,7 +3,6 @@
 </section>
 
 <section class="max-w-4xl w-full mx-auto p-6 bg-white rounded-lg shadow space-y-6">
-  
   <div class="grid md:grid-cols-2 gap-6">
     <!-- Formulario de Actualización de Datos -->
     <form (ngSubmit)="onChange()" class="space-y-4 bg-gray-50 p-6 rounded-lg shadow">
@@ -103,6 +102,13 @@
           <span *ngIf="isDark" class="material-symbols-outlined text-blue-300">dark_mode</span>
           </div>
       </button>
+    </div>
   </div>
-  </div>
+</section>
+<!-- Cerrar Session -->
+<section class="max-w-4xl w-full mx-auto px-6 flex justify-end">
+  <button (click)="cerrarSession()" class="flex items-center pt-2 cursor-pointer text-red-500">
+    Cerrar Session
+    <span class="material-symbols-outlined ms-2">logout </span>
+  </button>
 </section>

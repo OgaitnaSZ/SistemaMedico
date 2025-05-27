@@ -65,7 +65,6 @@ export class PacientesComponent {
         this.cargando = false;
       }
     );
-    console.log(this.pacientes);
   }
 
   calcularEdad(fechaNacimiento?: string | Date): number | null {
@@ -84,5 +83,4 @@ export class PacientesComponent {
   
     return edad;
   }
-
 }
