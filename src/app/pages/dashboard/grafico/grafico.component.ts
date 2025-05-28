@@ -21,6 +21,15 @@ export class GraficoComponent {
   chartOptions: ChartOptions = {
     responsive: true,
     plugins: { legend: { display: false } },
+    scales: {
+      y: {
+        beginAtZero: true, // Siempre empieza en 0
+        ticks: {
+          stepSize: 1 // Va de uno en uno
+        },
+        suggestedMax: 10 // Opcional: fuerza un máximo sugerido
+      },
+    },
   };
   
   chartData: ChartData<'line'> = {
