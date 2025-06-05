@@ -1,29 +1,29 @@
 <section class="space-y-6">
   <div class="mt-6 overflow-auto max-h-96 border rounded-lg shadow">
-    <table class="min-w-full border-collapse border border-gray-300">
-      <thead class=" text-gray-700 font-extrabold uppercase text-xs">
+    <table class="min-w-full border-collapse border border-gray-300 dark:border-gray-100">
+      <thead class="text-gray-700 border-gray-300 font-extrabold uppercase text-xs">
         <tr>
-          <th class="border border-gray-300 px-3 py-2">Nombre</th>
-          <th class="border border-gray-300 px-3 py-2">Apellido</th>
-          <th class="border border-gray-300 px-3 py-2">Género</th>
-          <th class="border border-gray-300 px-3 py-2">DNI</th>
-          <th class="border border-gray-300 px-3 py-2">Fecha Nac.</th>
-          <th class="border border-gray-300 px-3 py-2">Teléfono</th>
-          <th class="border border-gray-300 px-3 py-2">Email</th>
-          <th class="border border-gray-300 px-3 py-2">Dirección</th>
+          <th class="border border-gray-300 dark:text-gray-300 px-3 py-2">Nombre</th>
+          <th class="border border-gray-300 dark:text-gray-300 px-3 py-2">Apellido</th>
+          <th class="border border-gray-300 dark:text-gray-300 px-3 py-2">Género</th>
+          <th class="border border-gray-300 dark:text-gray-300 px-3 py-2">DNI</th>
+          <th class="border border-gray-300 dark:text-gray-300 px-3 py-2">Fecha Nac.</th>
+          <th class="border border-gray-300 dark:text-gray-300 px-3 py-2">Teléfono</th>
+          <th class="border border-gray-300 dark:text-gray-300 px-3 py-2">Email</th>
+          <th class="border border-gray-300 dark:text-gray-300 px-3 py-2">Dirección</th>
         </tr>
       </thead>
       <tbody>
           @for (paciente of pacientesImportados ; track paciente) {
           <tr class="hover:bg-blue-100">
-              <td class="border border-gray-300 px-3 py-1">{{ paciente.nombre }}</td>
-              <td class="border border-gray-300 px-3 py-1">{{ paciente.apellido }}</td>
-              <td class="border border-gray-300 px-3 py-1">{{ paciente.genero }}</td>
-              <td class="border border-gray-300 px-3 py-1">{{ paciente.dni }}</td>
-              <td class="border border-gray-300 px-3 py-1">{{ paciente.fechaNacimiento | date: "dd/MM/y" }}</td>
-              <td class="border border-gray-300 px-3 py-1">{{ paciente.telefono }}</td>
-              <td class="border border-gray-300 px-3 py-1">{{ paciente.email }}</td>
-              <td class="border border-gray-300 px-3 py-1">{{ paciente.direccion }}</td>
+              <td class="border border-gray-300 dark:text-gray-100 px-3 py-1">{{ paciente.nombre }}</td>
+              <td class="border border-gray-300 dark:text-gray-100 px-3 py-1">{{ paciente.apellido }}</td>
+              <td class="border border-gray-300 dark:text-gray-100 px-3 py-1">{{ paciente.genero }}</td>
+              <td class="border border-gray-300 dark:text-gray-100 px-3 py-1">{{ paciente.dni }}</td>
+              <td class="border border-gray-300 dark:text-gray-100 px-3 py-1">{{ paciente.fechaNacimiento | date: "dd/MM/y" }}</td>
+              <td class="border border-gray-300 dark:text-gray-100 px-3 py-1">{{ paciente.telefono }}</td>
+              <td class="border border-gray-300 dark:text-gray-100 px-3 py-1">{{ paciente.email }}</td>
+              <td class="border border-gray-300 dark:text-gray-100 px-3 py-1">{{ paciente.direccion }}</td>
           </tr>
           }
       </tbody>

@@ -1,25 +1,25 @@
 <!-- Sidebar -->
-<nav class="hidden md:flex group flex-col justify-between bg-gray-800 text-white h-full transition-all duration-300 w-16 hover:w-64 overflow-hidden">
+<nav class="hidden md:flex group flex-col justify-between bg-gray-900 dark:bg-gray-950 text-white h-full transition-all duration-300 w-16 hover:w-64 overflow-hidden">
   <div>
     <div class="h-16 flex items-center justify-start px-4">
       <span class="text-xl font-bold whitespace-nowrap hidden group-hover:inline">Mi Clínica</span>
     </div>
 
     <ul class="flex flex-col mt-4">
-      <li routerLink="/dashboard" routerLinkActive="bg-gray-700 border-l-4 border-blue-600"
-          class="flex items-center px-2 py-4 hover:bg-gray-700 cursor-pointer transition-colors duration-200">
-        <span class="material-symbols-outlined ">dashboard</span>
+      <li routerLink="/dashboard" routerLinkActive="bg-gray-700 dark:bg-gray-700 border-l-4 border-blue-500"
+          class="flex items-center px-2 py-4 hover:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer transition-colors duration-200">
+        <span class="material-symbols-outlined">dashboard</span>
         <span class="ml-2 whitespace-nowrap hidden group-hover:inline">Dashboard</span>
       </li>
 
-      <li routerLink="/pacientes" routerLinkActive="bg-gray-700 border-l-4 border-blue-600"
-          class="flex items-center px-2 py-4 hover:bg-gray-700 cursor-pointer transition-colors duration-200">
+      <li routerLink="/pacientes" routerLinkActive="bg-gray-700 dark:bg-gray-700 border-l-4 border-blue-500"
+          class="flex items-center px-2 py-4 hover:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer transition-colors duration-200">
         <span class="material-symbols-outlined">patient_list</span>
         <span class="ml-2 whitespace-nowrap hidden group-hover:inline">Pacientes</span>
       </li>
 
-      <li routerLink="/configuracion" routerLinkActive="bg-gray-700 border-l-4 border-blue-600"
-          class="flex items-center px-2 py-4 hover:bg-gray-700 cursor-pointer transition-colors duration-200">
+      <li routerLink="/configuracion" routerLinkActive="bg-gray-700 dark:bg-gray-700 border-l-4 border-blue-500"
+          class="flex items-center px-2 py-4 hover:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer transition-colors duration-200">
         <span class="material-symbols-outlined">settings</span>
         <span class="ml-2 whitespace-nowrap hidden group-hover:inline">Configuración</span>
       </li>
@@ -27,17 +27,18 @@
   </div>
 
   <div>
-    <a (click)="cerrarSession()" class="flex items-center px-2 py-4 hover:bg-gray-700 cursor-pointer transition-colors duration-200">
-        <span class="material-symbols-outlined">logout</span>
-        <span class="ml-2 whitespace-nowrap hidden group-hover:inline">Cerrar Session</span>
+    <a (click)="cerrarSession()" class="flex items-center px-2 py-4 hover:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer transition-colors duration-200">
+      <span class="material-symbols-outlined">logout</span>
+      <span class="ml-2 whitespace-nowrap hidden group-hover:inline">Cerrar Sesión</span>
     </a>
-    <p class="text-sm"></p>
-    <span class="ml-2 text-sm text-gray-500 whitespace-nowrap hidden group-hover:inline">Hecho por Santiago Zelaya.</span>
+    <span class="ml-2 text-sm text-gray-400 dark:text-gray-500 whitespace-nowrap hidden group-hover:inline">
+      Hecho por Santiago Zelaya.
+    </span>
   </div>
 </nav>
 
 <!-- Bottom Bar -->
-<nav class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white flex justify-around p-2 md:hidden z-50">
+<nav class="grid grid-cols-[1fr_1fr_1fr] items-center fixed bottom-0 left-0 right-0 bg-gray-900 dark:bg-gray-950 text-white p-2 md:hidden z-50">
   <button routerLink="/pacientes" routerLinkActive="text-blue-400" class="flex flex-col items-center">
     <span class="material-symbols-outlined">badge</span>
     <span class="text-xs">Pacientes</span>

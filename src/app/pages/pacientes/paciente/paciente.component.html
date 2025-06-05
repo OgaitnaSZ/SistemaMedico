@@ -1,15 +1,15 @@
-<section class="py-4 mx-auto space-y-6">
+<section class="p-4 md:px-0 mx-auto space-y-6">
   <!-- Encabezado del perfil -->
-  <div class="flex items-end justify-between mb-6">
+  <div class="flex flex-col md:flex-row md:items-end justify-between mb-6">
     <div class="flex flex-col space-x-4">
       <button routerLink="/pacientes" class="group flex items-center text-blue-600">
         <span class="material-symbols-outlined mr-1 transition-transform duration-200 ease-in-out group-hover:-translate-x-1">arrow_back</span>
         Volver
       </button>
-      <h1 class="text-4xl font-semibold">Perfil del Paciente</h1>
+      <h1 class="text-4xl font-semibold dark:text-gray-100">Perfil del Paciente</h1>
     </div>
     @if (idPaciente>0) {
-      <div class="flex items-center space-x-2">
+      <div class="flex justify-end space-x-2">
         <button class="flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition-colors duration-200"
           [routerLink]="['/pacientes/modificar-paciente', idPaciente]">
           <span class="material-symbols-outlined mr-1">edit</span> Modificar
@@ -25,12 +25,12 @@
   <p class="text-end text-red-500">{{mensaje}}</p>
 
   <!-- Datos del paciente -->
-  <section class="bg-white rounded-xl shadow-md p-6">
+  <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 md:p-6">
     <app-datos-paciente [idPaciente]="idPaciente"></app-datos-paciente>
   </section>
 
   <!-- Historia clínica -->
-  <section class="bg-white rounded-xl shadow-md p-6">
+  <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 md:p-6">
     @if (idPaciente>0) {
       <app-historia-clinica [idPaciente]="idPaciente"></app-historia-clinica>
     }

@@ -1,5 +1,5 @@
 <section class="flex justify-between">
-  <h3 class="text-xl font-semibold text-gray-800">Historia Clínica</h3>
+  <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Historia Clínica</h3>
   @if (!agregarConsulta) {
     <button class="bg-blue-600 text-white px-4 py-2 mb-6 rounded-lg hover:bg-blue-700 transition"
       (click)="agregarConsulta = true">
@@ -9,7 +9,7 @@
 </section>
 
 @if (agregarConsulta) {
-  <section class="bg-gray-50 border border-gray-200 p-4 rounded-lg mb-6 mt-6">
+  <section class="bg-gray-50 dark:bg-gray-800 border border-gray-200 p-4 rounded-lg mb-6 mt-6">
     <button class="w-full text-right text-red-400 material-symbols-outlined" (click)="agregarConsulta = false">close</button>
     <app-form-consulta (onFormularioEnviado)="actualizarDatos()"></app-form-consulta>
   </section>
@@ -18,7 +18,7 @@
 @if (historialClinico.length>0) {
   <section class="space-y-6">
     @for (consulta of historialClinico; track consulta) {
-      <div class="border rounded-lg p-4 space-y-2">
+      <div class="border dark:border-gray-100 rounded-lg p-4 space-y-2">
         @if (idEditando === consulta.idHistoriaClinica) {
           <div>
             <button class="w-full text-right text-red-400 material-symbols-outlined" (click)="idEditando = 0">close</button>
@@ -29,7 +29,7 @@
           </div>
         }
         <div class="flex justify-between items-center">
-          <p class="text-gray-600 font-semibold">Consulta del {{ consulta.fecha | date:'dd/MM/yyyy' }}</p>
+          <p class="text-gray-600 dark:text-gray-100 font-semibold">Consulta del {{ consulta.fecha | date:'dd/MM/yyyy' }}</p>
           <div class="flex space-x-2">
             <button (click)="idEditando = consulta.idHistoriaClinica" class="flex items-center text-yellow-500 hover:text-yellow-600 rounded-lg transition-colors duration-200">
               <span class="material-symbols-outlined mr-1">edit</span>
@@ -43,19 +43,19 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
           <div>
             <p class="text-sm text-gray-500">Motivo</p>
-            <p class="font-medium">{{ consulta.motivo_consulta }}</p>
+            <p class="font-medium dark:text-gray-100">{{ consulta.motivo_consulta }}</p>
           </div>
           <div>
             <p class="text-sm text-gray-500">Diagnóstico</p>
-            <p class="font-medium">{{ consulta.diagnostico }}</p>
+            <p class="font-medium dark:text-gray-100">{{ consulta.diagnostico }}</p>
           </div>
           <div>
             <p class="text-sm text-gray-500">Tratamiento</p>
-            <p class="font-medium">{{ consulta.tratamiento }}</p>
+            <p class="font-medium dark:text-gray-100">{{ consulta.tratamiento }}</p>
           </div>
           <div>
             <p class="text-sm text-gray-500">Observaciones</p>
-            <p class="font-medium">{{ consulta.observaciones }}</p>
+            <p class="font-medium dark:text-gray-100">{{ consulta.observaciones }}</p>
           </div>
         </div>
         <!-- Archivos adjuntos -->

@@ -1,9 +1,9 @@
-<div class="flex flex-col md:flex-row justify-between items-center py-4 gap-4">
-  <h1 class="text-5xl font-medium">Listado de Pacientes</h1>
+<div class="flex flex-col md:flex-row justify-between items-center p-4 md:px-0 gap-4">
+  <h1 class="text-5xl font-medium dark:text-gray-100">Listado de Pacientes</h1>
 
   <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
     <input type="text" placeholder="Buscar por nombre o DNI..."
-    class="w-full sm:w-64 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    class="w-full sm:w-64 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-100"
     [(ngModel)]="terminoBusqueda" (ngModelChange)="buscarPacientes()">
     <a class="bg-blue-600 text-white text-center px-4 py-2 rounded-lg hover:bg-blue-700 transition" routerLink="/pacientes/agregar-paciente">
       + Nuevo Paciente
@@ -12,8 +12,9 @@
 </div>
 
   <!-- Tabla de pacientes -->
+<section class="p-4 md:px-0">
   @if (pacientes.length > 0) {
-    <div class="p-4 mt-4 bg-white rounded-lg shadow-md">
+    <div class="mt-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
       <div
         class="overflow-y-auto max-h-[82vh]"
         infiniteScroll
@@ -23,25 +24,25 @@
         [scrollWindow]="false"
         >
         <table class="min-w-full border-collapse border-gray-300">
-          <thead class=" text-gray-700 font-extrabold uppercase text-xs">
+          <thead class="text-gray-700 dark:text-gray-300 font-extrabold uppercase text-xs">
             <tr>
-              <th class="px-6 py-3">#</th>
-              <th class="px-6 py-3">Nombre</th>
+              <th class="px-6 py-3 text-start">#</th>
+              <th class="px-6 py-3 text-start">Nombre</th>
               <th class="px-6 py-3">DNI</th>
               <th class="px-6 py-3">Género</th>
               <th class="px-6 py-3">Edad</th>
-              <th class="px-6 py-3 text-center">Historia</th>
+              <th class="px-6 py-3">Historia</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100">
             @for (paciente of pacientes ; track paciente; let i = $index) {
-              <tr class="w-full table-fixed">
-                <td class="px-6 py-4">{{ i + 1 }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ paciente?.nombre }}, {{ paciente?.apellido }}</td>
-                <td class="px-6 py-4">{{ paciente?.dni }}</td>
-                <td class="px-6 py-4">{{ paciente?.genero }}</td>
-                <td class="px-6 py-4">{{ paciente?.fechaNacimiento ? calcularEdad(paciente?.fechaNacimiento) : 'N/A' }}</td>
-                <td class="px-6 py-4 flex justify-center gap-3 text-sm">
+              <tr class="w-full table-fixed hover:bg-gray-50 dark:hover:bg-gray-700">
+                <td class="px-6 py-4 text-gray-900 dark:text-gray-100">{{ i + 1 }}</td>
+                <td class="px-6 py-4 text-gray-900 dark:text-gray-100 whitespace-nowrap">{{ paciente?.nombre }}, {{ paciente?.apellido }}</td>
+                <td class="px-6 py-4 text-gray-900 dark:text-gray-100 text-center">{{ paciente?.dni }}</td>
+                <td class="px-6 py-4 text-gray-900 dark:text-gray-100 text-center">{{ paciente?.genero }}</td>
+                <td class="px-6 py-4 text-gray-900 dark:text-gray-100 text-center">{{ paciente?.fechaNacimiento ? calcularEdad(paciente?.fechaNacimiento) : 'N/A' }}</td>
+                <td class="px-6 py-4 text-gray-900 dark:text-gray-100 text-center flex justify-center gap-3 text-sm">
                   <button [routerLink]="['/pacientes', paciente.idPaciente]" class="text-blue-600 hover:underline"><span class="material-symbols-outlined">lab_profile</span></button>
                 </td>
               </tr>
@@ -53,7 +54,7 @@
             }
             @if (finalDeLista && pacientes.length > 0) {
               <tr>
-                <td colspan="6" class="text-center py-3 text-gray-400">No hay más pacientes.</td>
+                <td colspan="6" class="text-center py-3 text-gray-400 dark:text-gray-500">No hay más pacientes.</td>
               </tr>
             }
           </tbody>
@@ -65,4 +66,4 @@
       Error al cargar pacientes.<br>{{ error }}
     </p>
   }
-
+</section>
