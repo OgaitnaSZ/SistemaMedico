@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { DatosPacienteComponent } from './datos-paciente/datos-paciente.component';
 import { HistoriaClinicaComponent } from './historia-clinica/historia-clinica.component';
@@ -7,7 +7,7 @@ import { PacientesApiService } from '../../../core/services/pacientes.service';
 
 @Component({
   selector: 'app-paciente',
-  imports: [CommonModule, RouterLink, DatosPacienteComponent, HistoriaClinicaComponent],
+  imports: [RouterLink, DatosPacienteComponent, HistoriaClinicaComponent],
   templateUrl: './paciente.component.html',
   styleUrl: './paciente.component.css'
 })

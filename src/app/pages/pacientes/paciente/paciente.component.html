@@ -3,12 +3,13 @@
   <div class="flex items-end justify-between mb-6">
     <div class="flex flex-col space-x-4">
       <button routerLink="/pacientes" class="group flex items-center text-blue-600">
-          <span class="material-symbols-outlined mr-1 transition-transform duration-200 ease-in-out group-hover:-translate-x-1">arrow_back</span>
-          Volver
+        <span class="material-symbols-outlined mr-1 transition-transform duration-200 ease-in-out group-hover:-translate-x-1">arrow_back</span>
+        Volver
       </button>
       <h1 class="text-4xl font-semibold">Perfil del Paciente</h1>
     </div>
-    <div class="flex items-center space-x-2" *ngIf="idPaciente>0">
+    @if (idPaciente>0) {
+      <div class="flex items-center space-x-2">
         <button class="flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition-colors duration-200"
           [routerLink]="['/modificar-paciente', idPaciente]">
           <span class="material-symbols-outlined mr-1">edit</span> Modificar
@@ -18,9 +19,10 @@
           <span class="material-symbols-outlined mr-1">delete</span> Eliminar
         </button>
       </div>
-    </div>
-  
-    <p class="text-end text-red-500">{{mensaje}}</p>
+    }
+  </div>
+
+  <p class="text-end text-red-500">{{mensaje}}</p>
 
   <!-- Datos del paciente -->
   <section class="bg-white rounded-xl shadow-md p-6">
@@ -29,6 +31,8 @@
 
   <!-- Historia clínica -->
   <section class="bg-white rounded-xl shadow-md p-6">
-    <app-historia-clinica *ngIf="idPaciente>0" [idPaciente]="idPaciente"></app-historia-clinica>
+    @if (idPaciente>0) {
+      <app-historia-clinica [idPaciente]="idPaciente"></app-historia-clinica>
+    }
   </section>
 </section>

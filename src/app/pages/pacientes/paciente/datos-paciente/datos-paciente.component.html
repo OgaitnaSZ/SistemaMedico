@@ -1,52 +1,52 @@
-<section class="flex flex-col md:flex-row gap-6" *ngIf="paciente.idPaciente>0 else noPaciente">
+@if (paciente.idPaciente>0) {
+  <section class="flex flex-col md:flex-row gap-6">
     <div class="flex justify-center items-center">
-        <img src="https://ui-avatars.com/api/?name={{ paciente.nombre }}+{{ paciente.apellido }}&background=0D8ABC&color=fff&size=128"
+      <img src="https://ui-avatars.com/api/?name={{ paciente.nombre }}+{{ paciente.apellido }}&background=0D8ABC&color=fff&size=128"
         alt="Avatar"
         class="rounded-full w-32 h-32 border-4 border-blue-500 shadow-md">
-    </div>
-
-    <!-- Información -->
-    <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
+      </div>
+      <!-- Información -->
+      <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
         <div>
-            <p class="text-sm text-gray-500">Nombre</p>
-            <p class="font-medium text-lg">{{ paciente.nombre }}</p>
+          <p class="text-sm text-gray-500">Nombre</p>
+          <p class="font-medium text-lg">{{ paciente.nombre }}</p>
         </div>
         <div>
-            <p class="text-sm text-gray-500">Apellido</p>
-            <p class="font-medium text-lg">{{ paciente.apellido }}</p>
+          <p class="text-sm text-gray-500">Apellido</p>
+          <p class="font-medium text-lg">{{ paciente.apellido }}</p>
         </div>
         <div>
-            <p class="text-sm text-gray-500">Género</p>
-            <p class="font-medium text-lg">{{ paciente.genero }}</p>
+          <p class="text-sm text-gray-500">Género</p>
+          <p class="font-medium text-lg">{{ paciente.genero }}</p>
         </div>
         <div>
-            <p class="text-sm text-gray-500">DNI</p>
-            <p class="font-medium text-lg">{{ paciente.dni }}</p>
+          <p class="text-sm text-gray-500">DNI</p>
+          <p class="font-medium text-lg">{{ paciente.dni }}</p>
         </div>
         <div>
-            <p class="text-sm text-gray-500">Fecha de Nacimiento</p>
-            <p class="font-medium text-lg">{{ paciente.fechaNacimiento | date:'dd/MM/yyyy' }}</p>
+          <p class="text-sm text-gray-500">Fecha de Nacimiento</p>
+          <p class="font-medium text-lg">{{ paciente.fechaNacimiento | date:'dd/MM/yyyy' }}</p>
         </div>
         <div>
-            <p class="text-sm text-gray-500">Teléfono</p>
-            <p class="font-medium text-lg">{{ paciente.telefono }}</p>
+          <p class="text-sm text-gray-500">Teléfono</p>
+          <p class="font-medium text-lg">{{ paciente.telefono }}</p>
         </div>
         <div>
-            <p class="text-sm text-gray-500">Email</p>
-            <p class="font-medium text-lg">{{ paciente.email }}</p>
+          <p class="text-sm text-gray-500">Email</p>
+          <p class="font-medium text-lg">{{ paciente.email }}</p>
         </div>
         <div>
-            <p class="text-sm text-gray-500">Dirección</p>
-            <p class="font-medium text-lg">{{ paciente.direccion }}</p>
+          <p class="text-sm text-gray-500">Dirección</p>
+          <p class="font-medium text-lg">{{ paciente.direccion }}</p>
         </div>
         <div>
-            <p class="text-sm text-gray-500">Fecha de Creación</p>
-            <p class="font-medium text-lg">{{ paciente.created_at | date:'dd/MM/yyyy' }}</p>
+          <p class="text-sm text-gray-500">Fecha de Creación</p>
+          <p class="font-medium text-lg">{{ paciente.created_at | date:'dd/MM/yyyy' }}</p>
         </div>
-    </div>
-</section>
-<ng-template #noPaciente>
+      </div>
+    </section>
+  } @else {
     <p class="text-gray-400 text-center">
-        Error al cargar paciente<br>{{ mensaje }}
+      Error al cargar paciente<br>{{ mensaje }}
     </p>
-</ng-template>
+  }

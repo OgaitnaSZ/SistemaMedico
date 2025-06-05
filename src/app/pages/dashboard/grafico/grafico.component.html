@@ -9,10 +9,12 @@
         [(ngModel)]="tipoSeleccionado"
         (change)="onTipoChange()"
         class="border border-gray-300 rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-      >
-        <option *ngFor="let opcion of opciones" [value]="opcion">
-          {{ opcion | titlecase }}
-        </option>
+        >
+        @for (opcion of opciones; track opcion) {
+          <option [value]="opcion">
+            {{ opcion | titlecase }}
+          </option>
+        }
       </select>
     </div>
   </div>

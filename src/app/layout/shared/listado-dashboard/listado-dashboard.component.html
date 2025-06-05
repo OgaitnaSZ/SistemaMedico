@@ -1,18 +1,24 @@
 <div class="bg-white p-4 rounded-xl shadow w-full h-full">
-  <div class="flex flex-row justify-between items-center mb-2" *ngIf="verTodasLink">
-    <p class="text-lg font-semibold">{{ titulo }}</p>
-    <a [routerLink]="verTodasLink" class="text-blue-600 font-bold hover:underline">Ver Todas</a>
-  </div>
-  <p class="text-lg font-semibold mb-2" *ngIf="!verTodasLink">{{ titulo }}</p>
+  @if (verTodasLink) {
+    <div class="flex flex-row justify-between items-center mb-2">
+      <p class="text-lg font-semibold">{{ titulo }}</p>
+      <a [routerLink]="verTodasLink" class="text-blue-600 font-bold hover:underline">Ver Todas</a>
+    </div>
+  }
+  @if (!verTodasLink) {
+    <p class="text-lg font-semibold mb-2">{{ titulo }}</p>
+  }
 
   <ul>
-  <li *ngFor="let item of items" class="grid grid-cols-[2fr_1fr_1fr] items-center py-2 gap-4">
-    <p>{{ item[labelField] }}</p>
-    <p class="text-center">{{ item[dateField] | date:'dd-MM-yyyy' }}</p>
-    <a [routerLink]="[linkBase, item.idPaciente || item.path]" class="text-right">
-      <span class="material-symbols-outlined hover:text-blue-600">{{ icon }}</span>
-    </a>
-  </li>
-</ul>
+    @for (item of items; track item) {
+      <li class="grid grid-cols-[2fr_1fr_1fr] items-center py-2 gap-4">
+        <p>{{ item[labelField] }}</p>
+        <p class="text-center">{{ item[dateField] | date:'dd-MM-yyyy' }}</p>
+        <a [routerLink]="[linkBase, item.idPaciente || item.path]" class="text-right">
+          <span class="material-symbols-outlined hover:text-blue-600">{{ icon }}</span>
+        </a>
+      </li>
+    }
+  </ul>
 
 </div>

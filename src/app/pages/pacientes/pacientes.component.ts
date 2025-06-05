@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Paciente } from '../../core/interfaces/paciente.model';
@@ -9,7 +9,7 @@ import { debounceTime, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-pacientes',
-  imports: [CommonModule, FormsModule, InfiniteScrollDirective, RouterLink],
+  imports: [FormsModule, InfiniteScrollDirective, RouterLink],
   templateUrl: './pacientes.component.html',
   styleUrl: './pacientes.component.css'
 })

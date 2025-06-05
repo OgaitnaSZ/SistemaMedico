@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ArchivoAdjunto } from '../../../../../core/interfaces/archivo-adjunto.model';
 import { HistoriasClinicasApiService } from '../../../../../core/services/historias-clinicas.service';
 import { empty } from 'rxjs';
 
 @Component({
   selector: 'app-archivos-adjuntos',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './archivos-adjuntos.component.html',
   styleUrl: './archivos-adjuntos.component.css'
 })

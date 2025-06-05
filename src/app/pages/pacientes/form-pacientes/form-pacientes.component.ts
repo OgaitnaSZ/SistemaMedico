@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms'; 
-import { CommonModule } from '@angular/common';
+
 import { Paciente } from '../../../core/interfaces/paciente.model';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { PacientesApiService } from '../../../core/services/pacientes.service';
 
 @Component({
   selector: 'app-form-pacientes',
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink],
   templateUrl: './form-pacientes.component.html',
   styleUrl: './form-pacientes.component.css'
 })
