@@ -1,17 +1,16 @@
-<section class="p-5">
+<section class="py-4">
     <h1 class="text-5xl font-medium">Bienvenido, {{ nombre }}</h1>
 </section>
 
 <!-- Top Cards -->
-<!-- Top Cards -->
-<section class="flex justify-between gap-4 w-full p-4">
+<section class="flex justify-between gap-4 w-full py-4">
   <app-top-card [value]="totalPacientes" label="Pacientes" icon="person" class="w-1/3"></app-top-card>
   <app-top-card [value]="totalConsultas" label="Historias Clínicas" icon="folder_open" class="w-1/3"></app-top-card>
   <app-top-card [value]="totalArchivos" label="Archivos" icon="description" class="w-1/3"></app-top-card>
 </section>
 
 <!-- Gráfico + Paciente -->
-<div class="flex flex-col md:flex-row gap-4 p-4 w-full">
+<div class="flex flex-col md:flex-row gap-4 py-4 w-full">
     <!-- Gráfico  -->
     <div class="flex-1 bg-white p-4 rounded-xl shadow">
         <app-grafico [estadisticas]="dashboard.statsUltimos7Dias"></app-grafico>
@@ -42,7 +41,7 @@
 </div>
 
   <!-- Listados -->
-<div class="flex flex-col md:flex-row gap-4 p-4 w-full">
+<div class="flex flex-col md:flex-row gap-4 py-4 w-full">
   <app-listado-dashboard
     class="md:w-1/2"
     [titulo]="'Últimas Consultas'"

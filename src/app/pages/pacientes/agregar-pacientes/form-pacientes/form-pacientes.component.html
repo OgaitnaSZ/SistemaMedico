@@ -1,8 +1,15 @@
-<div class="flex flex-col space-x-4 mb-6">
-  <a routerLink="/pacientes" class="group flex items-center text-blue-600">
+<div class="flex flex-col space-x-4 py-4">
+  @if(this.idPaciente > 0){
+    <a routerLink="/pacientes/{{idPaciente}}" class="group flex items-center text-blue-600">
+        <span class="material-symbols-outlined mr-1 transition-transform duration-200 ease-in-out group-hover:-translate-x-1">arrow_back</span>
+        Volver
+    </a>
+  } @else {
+    <a routerLink="/pacientes" class="group flex items-center text-blue-600">
       <span class="material-symbols-outlined mr-1 transition-transform duration-200 ease-in-out group-hover:-translate-x-1">arrow_back</span>
       Volver
-  </a>
+    </a>
+  }
   <h1 class="text-4xl font-semibold">{{ title }}</h1>
 </div>
 

@@ -1,4 +1,4 @@
-<section class="p-6 max-w-6xl mx-auto space-y-6">
+<section class="py-4 mx-auto space-y-6">
   <!-- Encabezado del perfil -->
   <div class="flex items-end justify-between mb-6">
     <div class="flex flex-col space-x-4">
@@ -11,7 +11,7 @@
     @if (idPaciente>0) {
       <div class="flex items-center space-x-2">
         <button class="flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition-colors duration-200"
-          [routerLink]="['/modificar-paciente', idPaciente]">
+          [routerLink]="['/pacientes/modificar-paciente', idPaciente]">
           <span class="material-symbols-outlined mr-1">edit</span> Modificar
         </button>
         <button (click)="eliminarPaciente()"
