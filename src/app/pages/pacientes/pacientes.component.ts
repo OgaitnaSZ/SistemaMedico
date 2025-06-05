@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-
+import { debounceTime, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Paciente } from '../../core/interfaces/paciente.model';
 import { PacientesApiService } from '../../core/services/pacientes.service';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { debounceTime, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-pacientes',

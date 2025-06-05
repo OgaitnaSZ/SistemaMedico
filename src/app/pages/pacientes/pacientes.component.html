@@ -3,13 +3,13 @@
 
   <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
     <input type="text" placeholder="Buscar por nombre o DNI..."
-      class="w-full sm:w-64 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      [(ngModel)]="terminoBusqueda" (ngModelChange)="buscarPacientes()">
-      <a class="bg-blue-600 text-white text-center px-4 py-2 rounded-lg hover:bg-blue-700 transition" routerLink="/agregar-paciente">
-        + Nuevo Paciente
-      </a>
-    </div>
+    class="w-full sm:w-64 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    [(ngModel)]="terminoBusqueda" (ngModelChange)="buscarPacientes()">
+    <a class="bg-blue-600 text-white text-center px-4 py-2 rounded-lg hover:bg-blue-700 transition" routerLink="/agregar-paciente">
+      + Nuevo Paciente
+    </a>
   </div>
+</div>
 
   <!-- Tabla de pacientes -->
   @if (pacientes.length > 0) {
@@ -22,7 +22,7 @@
         (scrolled)="cargarPacientes()"
         [scrollWindow]="false"
         >
-        <table class="min-w-full divide-y divide-gray-200 text-sm text-left">
+        <table class="min-w-full border-collapse border border-gray-300">
           <thead class=" text-gray-700 font-extrabold uppercase text-xs">
             <tr>
               <th class="px-6 py-3">#</th>
@@ -42,7 +42,7 @@
                 <td class="px-6 py-4">{{ paciente?.genero }}</td>
                 <td class="px-6 py-4">{{ paciente?.fechaNacimiento ? calcularEdad(paciente?.fechaNacimiento) : 'N/A' }}</td>
                 <td class="px-6 py-4 flex justify-center gap-3 text-sm">
-                  <button [routerLink]="['/paciente', paciente.idPaciente]" class="text-blue-600 hover:underline"><span class="material-symbols-outlined">lab_profile</span></button>
+                  <button [routerLink]="['/pacientes', paciente.idPaciente]" class="text-blue-600 hover:underline"><span class="material-symbols-outlined">lab_profile</span></button>
                 </td>
               </tr>
             }

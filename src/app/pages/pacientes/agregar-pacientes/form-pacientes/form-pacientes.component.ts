@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms'; 
 
-import { Paciente } from '../../../core/interfaces/paciente.model';
+import { Paciente } from '../../../../core/interfaces/paciente.model';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
-import { PacientesApiService } from '../../../core/services/pacientes.service';
+import { PacientesApiService } from '../../../../core/services/pacientes.service';
 
 @Component({
   selector: 'app-form-pacientes',

@@ -24,9 +24,14 @@ export class PacientesApiService {
 
   // Crear Paciente
   crearPaciente(paciente: Paciente): Observable<any> {
-    console.log(paciente);
     return this.http.post(`${this.apiUrl}crear-paciente.php`, paciente);
   }
+
+  // Crear Pacientes
+  crearPacientes(pacientes: Paciente[]): Observable<any> {
+    return this.http.post(`${this.apiUrl}crear-pacientes.php`, pacientes);
+  }
+
 
   // Eliminar Paciente
   eliminarPaciente(idPaciente: number): Observable<any> {
