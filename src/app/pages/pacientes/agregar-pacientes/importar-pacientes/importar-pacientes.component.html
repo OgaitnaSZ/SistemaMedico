@@ -1,6 +1,14 @@
 <!-- Zona para importar archivos Excel con arrastrar y soltar -->
 <div class="mt-8 p-4 md:px-0">
-  <label class="block mb-2 text-gray-700 dark:text-gray-100 font-semibold" for="file">Importar archivo Excel</label>
+  <label class="flex items-center mb-2 text-gray-700 dark:text-gray-100 font-semibold" for="file">
+    Importar archivo Excel
+    <span class="relative group cursor-pointer ml-1 align-middle">
+      <span class="text-blue-500 font-bold text-2xl">?</span>
+      <span class="absolute left-full top-1/5 transform -translate-y-1/2 ml-2 w-max bg-gray-800 text-white text-sm rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-lg">
+        Formato: Nombre, Apellido, Género, DNI, fechaNacimiento, Teléfono, Email, Dirección
+      </span>
+    </span>
+  </label>
   <div 
     class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-blue-400 rounded-lg bg-blue-50 dark:bg-gray-900 cursor-pointer hover:bg-blue-100 transition-colors"
     (click)="abrirSelectorArchivo()"

@@ -8,50 +8,54 @@ import { HistoriaClinica } from '../interfaces/historia-clinica.model';
 })
 
 export class HistoriasClinicasApiService {
-    private apiUrl = 'http://localhost/SistemaMedicoUI/api/historias_clinicas/';
-    private apiUrlArchivos = 'http://localhost/SistemaMedicoUI/api/archivos_adjuntos/';
+    private apiUrl = 'http://localhost/SistemaMedicoUI/api/historias_clinicas.php';
+    private apiUrlArchivos = 'http://localhost/SistemaMedicoUI/api/archivos_adjuntos.php';
 
   constructor(private http: HttpClient) {}
 
   // Listar Historias Clinicas de un paciente
   getHistoriasClinicas(idPaciente: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}listar-historias-clinicas.php`, { idPaciente: idPaciente });
+    return this.http.get(`${this.apiUrl}?idPaciente=${idPaciente}`);
   }
 
   // Obtener Historia clinica por Id
   getHistoriaClinica(idHistoriaClinica: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}listar-historia-clinica.php?idHistoriaClinica=${idHistoriaClinica}`);
+    return this.http.get(`${this.apiUrl}?idHistoriaClinica=${idHistoriaClinica}`);
   }
 
   // Crear Historia Clinica
   crearHistoriaClinica(historiaClinica: HistoriaClinica): Observable<any> {
     console.log(historiaClinica);
-    return this.http.post(`${this.apiUrl}crear-historia-clinica.php`, historiaClinica);
+    return this.http.post(`${this.apiUrl}`, historiaClinica);
   }
 
   // Editar Historia Clinica
   editarHistoriaClinica(historiaClinica: HistoriaClinica): Observable<any> {
-    return this.http.post(`${this.apiUrl}editar-historia-clinica.php`, historiaClinica);
+    return this.http.put(`${this.apiUrl}`, historiaClinica);
   }
 
   // Eliminar Historia Clinica
   eliminarHistoriaClinica(idHistoriaClinica: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}eliminar-historia-clinica.php`, { idHistoriaClinica: idHistoriaClinica });
-  }
+    return this.http.request('delete', this.apiUrl, {
+      body: {idHistoriaClinica}
+    })
+  };
 
   /* Archivos Adjuntos */
   /* Obtener Archivos Adjuntos */
   getArchivosAdjuntos(idHistoriaClinica: number): Observable<any> {
-    return this.http.get(`${this.apiUrlArchivos}cargar-archivos.php?idHistoriaClinica=${idHistoriaClinica}`);
+    return this.http.get(`${this.apiUrlArchivos}?idHistoriaClinica=${idHistoriaClinica}`);
   }
   /* Eliminar Archivo */
   eliminarArchivo(idArchivo: number): Observable<any> {
-    return this.http.post(`${this.apiUrlArchivos}eliminar-archivo.php`, { idArchivo: idArchivo });
+    return this.http.request('delete' ,this.apiUrlArchivos, {
+      body: { idArchivo }
+    });
   }
   /* Agregar Archivo */
   agregarArchivo(formData: FormData): Observable<any>{
     console.log(formData.keys);
-    return this.http.post(`${this.apiUrlArchivos}subir-archivos.php`, formData);
+    return this.http.post(`${this.apiUrlArchivos}`, formData);
   }
 
 }

@@ -6,12 +6,12 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class LoginService {
-  private apiUrl = 'http://localhost/SistemaMedicoUI/api/usuarios/';
+  private apiUrl = 'http://localhost/SistemaMedicoUI/api/usuarios.php';
 
   constructor(private http: HttpClient, private router: Router) {}
 
   login(user: string, pass: string) {
-    return this.http.post<{ token: string ; idUsuario: number ; nombre:string}>(`${this.apiUrl}login.php`, { user, pass });
+    return this.http.post<{ token: string ; idUsuario: number ; nombre:string}>(`${this.apiUrl}`, { user, pass });
   }
 
   setToken(token: string) {
@@ -50,7 +50,7 @@ export class LoginService {
   }
 
   cargarDatos(idUsuario: number){
-    return this.http.post<{ nombre: string ; user: string }>(`${this.apiUrl}cargar-datos.php`, { idUsuario });
+    return this.http.get<{ nombre: string ; user: string }>(`${this.apiUrl}?idUsuario=${idUsuario}`);
   }
 
   actualizarDatos(
@@ -62,7 +62,7 @@ export class LoginService {
       body.newPassword = newPassword;
     }
   
-    return this.http.post<{ message: string }>(`${this.apiUrl}actualizar-datos.php`, body);
+    return this.http.put<{ message: string }>(`${this.apiUrl}`, body);
   }
 
 }

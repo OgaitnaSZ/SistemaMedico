@@ -1,11 +1,11 @@
 <div class="flex flex-col space-x-4 p-4 md:px-0">
   @if(this.idPaciente > 0){
-    <a routerLink="/pacientes/{{idPaciente}}" class="group flex items-center text-blue-600">
+    <a routerLink="/pacientes/{{idPaciente}}" class="group flex items-center text-blue-500">
         <span class="material-symbols-outlined mr-1 transition-transform duration-200 ease-in-out group-hover:-translate-x-1">arrow_back</span>
         Volver
     </a>
   } @else {
-    <a routerLink="/pacientes" class="group flex items-center text-blue-600">
+    <a routerLink="/pacientes" class="group flex items-center text-blue-500">
       <span class="material-symbols-outlined mr-1 transition-transform duration-200 ease-in-out group-hover:-translate-x-1">arrow_back</span>
       Volver
     </a>
@@ -62,7 +62,7 @@
     </div>
   
     <div class="col-span-full mt-4">
-      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg dark:text-gray-100">
+      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-lg dark:text-gray-100">
         Guardar Paciente
       </button>
     </div>

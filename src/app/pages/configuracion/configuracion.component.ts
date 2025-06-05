@@ -51,6 +51,7 @@ export class ConfiguracionComponent {
           this.login.setUserName(this.nombre);
           this.resetMensajes();
           this.resetPasswords();
+          this.error = "Contraseña actualizada con éxito."
         },
         (err) => {
           console.log("Error al actualizar datos:", err);
