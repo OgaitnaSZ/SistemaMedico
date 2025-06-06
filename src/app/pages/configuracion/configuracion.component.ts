@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LoginService } from '../../core/services/login.service';
+import { SnackbarService } from '../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-configuracion',
@@ -10,8 +11,6 @@ import { LoginService } from '../../core/services/login.service';
   styleUrl: './configuracion.component.css'
 })
 export class ConfiguracionComponent {
-  error: string = '';
-  success: string = '';
   isDark: boolean = false;
   
   nombre: string = '';
@@ -21,26 +20,23 @@ export class ConfiguracionComponent {
   confirmPass: string = '';
   idUsuario: number = 0; // esto deberías cargarlo al iniciar
 
-  constructor (private login: LoginService){}
+  constructor (private login: LoginService, private snackbarService: SnackbarService){}
 
   onChange() {
     if (this.validarCambioDeDatos()) {
       this.login.actualizarDatos(this.idUsuario, this.nombre, this.user, this.oldPass).subscribe({
         next: (response) => {
           console.log("Datos actualizados con éxito:", response);
-          this.success = 'Datos actualizados correctamente.';
-          this.resetMensajes();
+          this.snackbarService.show('Datos actualizados correctamente.', 'success');
           this.resetPasswords();
         },
         error: (err) => {
           console.log("Error al actualizar datos:", err);
-          this.error = err.error.error || 'Error inesperado al actualizar los datos.';
-          this.resetMensajes();
+          this.snackbarService.show('Error inesperado al actualizar los datos.', 'error');
         }
       });
     } else {
-      this.error = 'Por favor, completá todos los campos correctamente.';
-      this.resetMensajes();
+      this.snackbarService.show('Por favor, completá todos los campos correctamente.', 'error');
     }
   }
   
@@ -49,19 +45,15 @@ export class ConfiguracionComponent {
       this.login.actualizarDatos(this.idUsuario, this.nombre, this.user, this.oldPass, this.newPass).subscribe(
         (response) => {
           this.login.setUserName(this.nombre);
-          this.resetMensajes();
           this.resetPasswords();
-          this.error = "Contraseña actualizada con éxito."
+          this.snackbarService.show('Contraseña actualizada con éxito.', 'success');
         },
         (err) => {
-          console.log("Error al actualizar datos:", err);
-          this.error = err.error?.message || 'Error inesperado al actualizar los datos.';
-          this.resetMensajes();
+          this.snackbarService.show('Error inesperado al actualizar los datos.', 'error');
         }
       );
     } else {
-      this.error = 'Las contraseñas no coincidan o los datos están incompletos.';
-      this.resetMensajes();
+      this.snackbarService.show('Las contraseñas no coincidan o los datos están incompletos.', 'error');
     }
   }
   
@@ -111,13 +103,6 @@ export class ConfiguracionComponent {
     this.login.logout();
   }
   
-  private resetMensajes() {
-    setTimeout(() => {
-      this.error = '';
-      this.success = '';
-    }, 3000);
-  }
-
   private resetPasswords(){
     this.newPass = '';
     this.oldPass = '';

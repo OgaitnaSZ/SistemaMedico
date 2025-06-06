@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Paciente } from '../../../../../core/interfaces/paciente.model';
 import { PacientesApiService } from '../../../../../core/services/pacientes.service';
+import { SnackbarService } from '../../../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-previsualizar-pacientes',
@@ -13,20 +14,17 @@ import { PacientesApiService } from '../../../../../core/services/pacientes.serv
 export class PrevisualizarPacientesComponent {
   @Input() pacientesImportados: Paciente[] | undefined; // Listado de pacientes recibido del componente padre
 
-  constructor(private pacienteService : PacientesApiService, private router : Router){}
-
-  mensaje:string = '';
+  constructor(private pacienteService : PacientesApiService, private router : Router, private snackbarService: SnackbarService){}
 
   guardarPacientes(){
     if(this.pacientesImportados != undefined && this.pacientesImportados != null){
       this.pacienteService.crearPacientes(this.pacientesImportados).subscribe(
         (response) => {
-          console.log('Pacientes agregados:', response);
+          this.snackbarService.show('Pacientes agregados con éxito.', 'success');
           this.router.navigate(['/pacientes']);
         },
         (error) => {
-          console.error('Error al agregar pacientes:', error);
-          this.mensaje = 'Error al agregar pacientes.';
+          this.snackbarService.show('Error al agregar pacientes.', 'error');
         }
       );
     }

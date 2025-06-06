@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { Paciente } from '../../../../core/interfaces/paciente.model';
 import { PrevisualizarPacientesComponent } from "./previsualizar-pacientes/previsualizar-pacientes.component";
+import { SnackbarService } from '../../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-importar-pacientes',
@@ -11,8 +12,9 @@ import { PrevisualizarPacientesComponent } from "./previsualizar-pacientes/previ
 })
 export class ImportarPacientesComponent {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
-  mensaje: string = '';
   archivoCargado?: File;
+
+  constructor(private snackbarService: SnackbarService){}
 
   paciente: Paciente = {
     idPaciente: 0,
@@ -51,11 +53,10 @@ export class ImportarPacientesComponent {
   }
 
   procesarArchivo(archivo: File) {
-    this.mensaje = ''; // Limpiar mensaje
     this.pacientesImportados = []; // Limpiar listado
 
     if (!archivo.name.match(/\.(xls|xlsx)$/)) {
-      this.mensaje = 'Por favor, selecciona un archivo Excel válido (.xls o .xlsx)';
+      this.snackbarService.show('Selecciona un archivo Excel válido (.xls o .xlsx)', 'error');
       return;
     }
   
@@ -95,7 +96,7 @@ export class ImportarPacientesComponent {
         this.pacientesImportados.push(paciente);
       });
   
-      this.mensaje = `${this.pacientesImportados.length} pacientes cargados del archivo.`;
+      this.snackbarService.show(`${this.pacientesImportados.length} pacientes cargados`, 'success');
     };
   
     lector.readAsArrayBuffer(archivo);

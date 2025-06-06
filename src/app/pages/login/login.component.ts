@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-
 import { LoginService } from '../../core/services/login.service';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { SnackbarService } from '../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-login',
@@ -13,9 +13,8 @@ import { FormsModule } from '@angular/forms';
 export class LoginComponent {
   user = '';
   pass = '';
-  error = '';
 
-  constructor(private login: LoginService, private router: Router) {}
+  constructor(private login: LoginService, private router: Router, private snackbarService: SnackbarService) {}
 
   onLogin() {
     if(this.validarDatos()){
@@ -27,19 +26,16 @@ export class LoginComponent {
             this.login.setUserName(res.nombre);  // Guardar nombre de usuario
             this.router.navigate(['/dashboard']);  // Redirige al usuario
           } else {
-            this.error = 'Token no recibido';
+            this.snackbarService.show('Token no recibido', 'error');
           }
         },
         (err) => {
           // Muestra el error si las credenciales son incorrectas
-          this.error = err.error?.message || 'Error inesperado';
+          this.snackbarService.show('Datos incorrectos.', 'error');
         }
       );
     }else{
-      this.error = 'Faltan datos.';
-        setTimeout(() => {
-          this.error = '';
-        }, 3000);
+      this.snackbarService.show('Faltan datos.', 'error');
     }
   }
 

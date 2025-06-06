@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms'; 
-
 import { Paciente } from '../../../../core/interfaces/paciente.model';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { PacientesApiService } from '../../../../core/services/pacientes.service';
+import { SnackbarService } from '../../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-form-pacientes',
@@ -14,10 +14,9 @@ import { PacientesApiService } from '../../../../core/services/pacientes.service
 export class FormPacientesComponent {
   constructor(
               private pacienteService: PacientesApiService, 
-              private router: Router,
+              private router: Router, private snackbarService: SnackbarService,
               private route: ActivatedRoute){}
   idPaciente: number = 0;
-  mensaje: string = '';
   title: string = '';
   modoEdicion: boolean = false;
 
@@ -43,6 +42,7 @@ export class FormPacientesComponent {
         this.idPaciente = +id; // Convierte a número
       } else {
         console.log('ID de Paciente no encontrado');
+        this.snackbarService.show('Paciente no encontradox.', 'error');
       }
     });
 
@@ -59,7 +59,7 @@ export class FormPacientesComponent {
 
   guardarPaciente(): void {
     if (!this.paciente.nombre || !this.paciente.apellido || !this.paciente.genero || !this.paciente.dni || !this.paciente.fechaNacimiento) {
-      this.mensaje = 'Por favor, completá todos los campos obligatorios.';
+      this.snackbarService.show('Completá todos los campos obligatorios.', 'error');
       return;
     }
 
@@ -73,24 +73,25 @@ export class FormPacientesComponent {
   crearPaciente(){
     this.pacienteService.crearPaciente(this.paciente).subscribe(
       (response) => {
-        console.log('Paciente agregado:', response);
+        this.snackbarService.show('Paciente creado con éxito.', 'success');
         this.router.navigate(['/pacientes']);
       },
       (error) => {
         console.error('Error al agregar paciente:', error);
-        this.mensaje = 'Error al agregar paciente.';
+        this.snackbarService.show('Error al guardar paciente.', 'error');
+        
       }
     );
   }
   actualizarPaciente(){
     this.pacienteService.editarPaciente(this.paciente).subscribe(
       (response) => {
-        console.log('Paciente actualizado:', response);
+        this.snackbarService.show('Datos actualizados con éxito.', 'success');
         this.router.navigate(['/paciente', this.paciente.idPaciente]);
       },
       (error) => {
         console.error('Error al actualizar paciente:', error);
-        this.mensaje = 'Error al actualizar paciente.';
+        this.snackbarService.show('Error al actualizar datos.', 'error');
       }
     );
   }
@@ -101,8 +102,7 @@ export class FormPacientesComponent {
         this.paciente = response;
       },
       (error) => {
-        console.error('Error al encontrar paciente:', error);
-        this.mensaje = 'Error al encontrar paciente.';
+        this.snackbarService.show('Error al cargar paciente.', 'error');
       }
     );
   }

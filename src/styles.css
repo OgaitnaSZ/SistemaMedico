@@ -8,3 +8,7 @@ a, button, input{
 .switch{
     font-size: 16px;
 }
+.mat-mdc-button-persistent-ripple {
+  background-color: transparent !important;
+  opacity: 0.2;
+}

@@ -7,6 +7,7 @@ import { GraficoComponent } from './grafico/grafico.component';
 import { DashboardService } from '../../core/services/dashboard.service';
 import { LoginService } from '../../core/services/login.service';
 import { Dashboard } from '../../core/interfaces/dashboard.model';
+import { SnackbarService } from '../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +16,7 @@ import { Dashboard } from '../../core/interfaces/dashboard.model';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-  constructor(private dashboardService: DashboardService, private login: LoginService){}
+  constructor(private dashboardService: DashboardService, private login: LoginService, private snackbarService: SnackbarService){}
 
   nombre: string = 'Doctor';
   
@@ -42,7 +43,7 @@ export class DashboardComponent {
         this.calcularTotales();
       },
       (error)=>{
-        console.log("Error al obtener estadisticas: ", error)
+        this.snackbarService.show('Error al obtener estadisticas.', 'error');
       }
     )
   }

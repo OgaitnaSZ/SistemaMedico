@@ -20,7 +20,7 @@ export const routes: Routes = [
             { path: 'pacientes', component: PacientesComponent },
             { path: 'pacientes/agregar-paciente', component: AgregarPacientesComponent },
             { path: 'pacientes/modificar-paciente/:id', component: FormPacientesComponent },
-            { path: 'pacientes/:id', component: PacienteComponent },
+            { path: 'pacientes/:id', component: PacienteComponent }
         ]
     },
     { path: '**', redirectTo: '' }

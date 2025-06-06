@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { Paciente } from '../../core/interfaces/paciente.model';
 import { PacientesApiService } from '../../core/services/pacientes.service';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { SnackbarService } from '../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-pacientes',
@@ -14,7 +15,6 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 })
 export class PacientesComponent {
   pacientes: Paciente[] = [];
-  error: string = '';
   hayPacientes = false;
   cargando = false;
   finalDeLista = false;
@@ -24,7 +24,7 @@ export class PacientesComponent {
 
   private busquedaSubject = new Subject<string>();
 
-  constructor(private pacientesService: PacientesApiService) {}
+  constructor(private pacientesService: PacientesApiService, private snackbarService: SnackbarService) {}
 
   ngOnInit(): void {
     // Escuchamos los cambios en la búsqueda con debounce
@@ -60,7 +60,7 @@ export class PacientesComponent {
         this.cargando = false;
       },
       (error) => {
-        this.error = error.error.message;
+        this.snackbarService.show(error.error.message, 'error');
         this.cargando = false;
       }
     );
