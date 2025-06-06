@@ -76,23 +76,26 @@ export class ImportarPacientesComponent {
   
       // Mapear datos del Excel a modelo Paciente
       jsonDatos.forEach((fila, index) => {
+        // Convertimos los valores del objeto a un array en orden de aparición
+        const valores = Object.values(fila).map(v => v !== undefined && v !== null ? String(v) : '');
+        console.log(valores);
         const paciente: Paciente = {
-          idPaciente: 0, // puedes asignar id temporal o dejar 0 para base de datos
-          nombre: fila['Nombre'] || '',
-          apellido: fila['Apellido'] || '',
-          genero: fila['Género'] || '',
-          dni: fila['DNI'] || '',
-          fechaNacimiento: this.parsearFecha(fila['Fecha de Nacimiento']),
-          telefono: fila['Teléfono'] || '',
-          email: fila['Email'] || '',
-          direccion: fila['Dirección'] || '',
-          created_at: new Date()
+            idPaciente: 0,
+            nombre: valores[0] || '',
+            apellido: valores[1] || '',
+            genero: valores[2] || '',
+            dni: valores[3] || '',
+            fechaNacimiento: this.parsearFecha(valores[4]),
+            telefono: valores[5] || '',
+            email: valores[6] || '',
+            direccion: valores[7] || '',
+            created_at: new Date()
         };
+        
         this.pacientesImportados.push(paciente);
       });
   
       this.mensaje = `${this.pacientesImportados.length} pacientes cargados del archivo.`;
-      console.log(jsonDatos);
     };
   
     lector.readAsArrayBuffer(archivo);
@@ -102,41 +105,45 @@ export class ImportarPacientesComponent {
   parsearFecha(fechaStr: any): Date {
     if (!fechaStr) return new Date();
   
+    // Si es número (serial de Excel)
+    if (typeof fechaStr === 'number') {
+      const fechaExcel = XLSX.SSF.parse_date_code(fechaStr);
+      if (fechaExcel) {
+        return new Date(fechaExcel.y, fechaExcel.m - 1, fechaExcel.d);
+      }
+    }
+  
+    // Si es string, puede ser fecha o número serial como string
     if (typeof fechaStr === 'string') {
-      // Intentar formato dd/mm/yyyy
+      // ¿Es número como string? --> intentar parsearlo como serial de Excel
+      if (!isNaN(+fechaStr) && +fechaStr > 10000) {
+        const fechaExcel = XLSX.SSF.parse_date_code(+fechaStr);
+        if (fechaExcel) {
+          return new Date(fechaExcel.y, fechaExcel.m - 1, fechaExcel.d);
+        }
+      }
+  
+      // Intentar dd/mm/yyyy
       const partes = fechaStr.split('/');
       if (partes.length === 3) {
         const dia = Number(partes[0]);
-        const mes = Number(partes[1]) - 1; // meses base 0
+        const mes = Number(partes[1]) - 1;
         const anio = Number(partes[2]);
         return new Date(anio, mes, dia);
       }
   
-      // Intentar formato ISO yyyy-mm-dd o similar
+      // Intentar ISO
       const fecha = new Date(fechaStr);
       if (!isNaN(fecha.getTime())) {
         return fecha;
       }
-  
-      // Si no se pudo parsear, devolver fecha actual
-      return new Date();
-    } else if (fechaStr instanceof Date) {
-      // Ya es fecha, devolver tal cual
-      return fechaStr;
-    } else if (typeof fechaStr === 'number') {
-      // Puede ser fecha serial Excel: convertir
-      // En Excel, fecha serial es el número de días desde 1-1-1900
-      // XLSX.utils.sheet_to_json puede devolver la fecha como número
-  
-      // Convertir serial Excel a fecha JS
-      const fecha = XLSX.SSF.parse_date_code(fechaStr);
-      if (fecha) {
-        return new Date(fecha.y, fecha.m - 1, fecha.d);
-      }
     }
   
-    // Por defecto fallback a fecha actual
+    // Si ya es Date
+    if (fechaStr instanceof Date) {
+      return fechaStr;
+    }
+  
     return new Date();
   }
-  
 }

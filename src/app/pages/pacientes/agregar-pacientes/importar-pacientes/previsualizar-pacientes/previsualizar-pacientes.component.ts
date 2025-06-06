@@ -31,4 +31,11 @@ export class PrevisualizarPacientesComponent {
       );
     }
   }
+
+  eliminarPacienteImportado(paciente: Paciente): void {
+    if(this.pacientesImportados != undefined && this.pacientesImportados != null){
+      this.pacientesImportados = this.pacientesImportados.filter(p => p !== paciente);
+    }
+  }
+
 }
