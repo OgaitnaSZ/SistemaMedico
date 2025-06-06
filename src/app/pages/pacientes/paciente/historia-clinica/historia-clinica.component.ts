@@ -4,20 +4,19 @@ import { HistoriaClinica } from '../../../../core/interfaces/historia-clinica.mo
 import { HistoriasClinicasApiService } from '../../../../core/services/historias-clinicas.service';
 import { ArchivosAdjuntosComponent } from './archivos-adjuntos/archivos-adjuntos.component';
 import { FormConsultaComponent } from "./form-consulta/form-consulta.component";
+import { SnackbarService } from '../../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-historia-clinica',
   imports: [CommonModule, ArchivosAdjuntosComponent, FormConsultaComponent],
   templateUrl: './historia-clinica.component.html',
-  styleUrl: './historia-clinica.component.css'
 })
 export class HistoriaClinicaComponent {
   @Input() idPaciente: number | undefined; // ID recibido del componente padre
-  mensaje: string = '';
   agregarConsulta: boolean = false;
   idEditando: number | null = null;
     
-  constructor(private historiaClinicaService: HistoriasClinicasApiService){}
+  constructor(private historiaClinicaService: HistoriasClinicasApiService, private snackbarService: SnackbarService){}
   
   historialClinico: HistoriaClinica[] = [];
 
@@ -38,8 +37,7 @@ export class HistoriaClinicaComponent {
           this.historialClinico = data;
         },
         (error) => {
-          console.error('Error al cargar historia clinica:', error.error);
-          this.mensaje = "Este paciente no tiene historia clinica";
+          this.snackbarService.show('No hay historia clinica.', 'error');
         }
       );
     }
@@ -49,11 +47,11 @@ export class HistoriaClinicaComponent {
     if (confirm(`¿Estás seguro de que deseas eliminar la consulta}?`)) {
       this.historiaClinicaService.eliminarHistoriaClinica(idHistoriaClinica).subscribe(
         (response) => {
-          console.log('Elimnacion exitosa:', response);
+          this.snackbarService.show('Eliminación exitosa.', 'success');
           this.cargarHistoriasClinicas();
         },
         (error) => {
-          this.mensaje = "Error al eliminar el paciente.";
+          this.snackbarService.show('Error al eliminar consulta.', 'error');
         }
       );
     }

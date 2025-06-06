@@ -9,7 +9,6 @@ import { DiaEstadisticaConDia } from '../../../core/interfaces/dashboard.model';
   selector: 'app-grafico',
   imports: [BaseChartDirective, BaseChartDirective, CommonModule, FormsModule],
   templateUrl: './grafico.component.html',
-  styleUrl: './grafico.component.css'
 })
 export class GraficoComponent {
   @Input() estadisticas: DiaEstadisticaConDia[] = []; 

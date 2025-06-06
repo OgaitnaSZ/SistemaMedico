@@ -7,7 +7,6 @@ import { NgClass } from '@angular/common';
   selector: 'app-root',
   imports: [RouterOutlet, NavbarComponent, NgClass],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'app-sistema-medico';

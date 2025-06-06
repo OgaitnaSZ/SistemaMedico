@@ -13,7 +13,6 @@ import { SnackbarService } from '../../core/services/snackbar.service';
   selector: 'app-dashboard',
   imports: [CommonModule, RouterLink, TopCardComponent, ListadoDashboardComponent, GraficoComponent],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
   constructor(private dashboardService: DashboardService, private login: LoginService, private snackbarService: SnackbarService){}

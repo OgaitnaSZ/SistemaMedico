@@ -2,18 +2,17 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Paciente } from '../../../../core/interfaces/paciente.model';
 import { PacientesApiService } from '../../../../core/services/pacientes.service';
+import { SnackbarService } from '../../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-datos-paciente',
   imports: [CommonModule],
   templateUrl: './datos-paciente.component.html',
-  styleUrl: './datos-paciente.component.css'
 })
 export class DatosPacienteComponent {
   @Input() idPaciente: number | undefined; // ID recibido del componente padre
-  mensaje: string = '';
 
-  constructor(private pacienteService: PacientesApiService){}
+  constructor(private pacienteService: PacientesApiService, private snackbarService: SnackbarService){}
 
   // Variable de paciente
   paciente: Paciente = {
@@ -38,7 +37,7 @@ export class DatosPacienteComponent {
         },
         (error) => {
           console.error('Error al cargar paciente:', error.error);
-          this.mensaje = "Paciente no encontrado";
+          this.snackbarService.show('Paciente no encontrado', 'error');
         }
       );
     }

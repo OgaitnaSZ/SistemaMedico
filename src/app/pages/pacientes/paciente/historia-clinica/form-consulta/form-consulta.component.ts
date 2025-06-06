@@ -3,12 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { HistoriaClinica } from '../../../../../core/interfaces/historia-clinica.model';
 import { HistoriasClinicasApiService } from '../../../../../core/services/historias-clinicas.service';
 import { ActivatedRoute } from '@angular/router';
+import { SnackbarService } from '../../../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-form-consulta',
   imports: [FormsModule],
   templateUrl: './form-consulta.component.html',
-  styleUrl: './form-consulta.component.css'
 })
 export class FormConsultaComponent {
   @Input() idHistoriaClinica: number | undefined; // ID recibido del componente padre
@@ -16,9 +16,8 @@ export class FormConsultaComponent {
 
     constructor(
               private historiaClinicaService: HistoriasClinicasApiService, 
-              private route: ActivatedRoute){}
+              private route: ActivatedRoute, private snackbarService: SnackbarService){}
 
-  mensaje: string = '';
   title: string = '';
   modoEdicion: boolean = false;
   idPaciente: number = 0;
@@ -43,7 +42,7 @@ export class FormConsultaComponent {
       if (id) {
         this.idPaciente = +id; // Convierte a número
       } else {
-        console.log('ID de Paciente no encontrado');
+        this.snackbarService.show('ID de paciente no encontrado.', 'error');
       }
     });
 
@@ -72,13 +71,12 @@ export class FormConsultaComponent {
 
     this.historiaClinicaService.crearHistoriaClinica(this.historiaClinica).subscribe(
       (response) => {
-        console.log('Consulta agregada:', response);
+        this.snackbarService.show('Consulta creada con éxito.', 'success');
         // Emitir el evento al padre
         this.onFormularioEnviado.emit();
       },
       (error) => {
-        console.error('Error al agregar consulta:', error);
-        this.mensaje = 'Error al agregar consulta.';
+        this.snackbarService.show('Error al agregar consulta.', 'error');
       }
     );
   }
@@ -86,13 +84,12 @@ export class FormConsultaComponent {
   actualizarConsulta(){
     this.historiaClinicaService.editarHistoriaClinica(this.historiaClinica).subscribe(
       (response) => {
-        console.log('Consulta actualizada:', response);
+        this.snackbarService.show('Consulta actualizada con éxito.', 'success');
         // Emitir el evento al padre
         this.onFormularioEnviado.emit();
       },
       (error) => {
-        console.error('Error al actualizar consulta:', error);
-        this.mensaje = 'Error al actualizar consulta.';
+        this.snackbarService.show('Error al actualizar consulta.', 'error');
       }
     );
   }
@@ -101,12 +98,10 @@ export class FormConsultaComponent {
     if(this.idHistoriaClinica !== undefined){
       this.historiaClinicaService.getHistoriaClinica(this.idHistoriaClinica).subscribe(
         (response) => {
-          console.log('Historia clinica encontrada:', response);
           this.historiaClinica = response;
         },
         (error) => {
-          console.error('Error al encontrar historia clinica:', error);
-          this.mensaje = 'Error al encontrar historia clinica.';
+          this.snackbarService.show('Error al cargar consulta.', 'error');
         }
       );
     }

@@ -9,7 +9,6 @@ import { SnackbarService } from '../../../../core/services/snackbar.service';
   selector: 'app-form-pacientes',
   imports: [FormsModule, RouterLink],
   templateUrl: './form-pacientes.component.html',
-  styleUrl: './form-pacientes.component.css'
 })
 export class FormPacientesComponent {
   constructor(

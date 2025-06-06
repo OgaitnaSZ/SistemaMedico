@@ -6,7 +6,6 @@ import { RouterLink } from '@angular/router';
   selector: 'app-listado-dashboard',
   imports: [RouterLink, CommonModule],
   templateUrl: './listado-dashboard.component.html',
-  styleUrl: './listado-dashboard.component.css'
 })
 export class ListadoDashboardComponent {
   @Input() titulo: string = '';

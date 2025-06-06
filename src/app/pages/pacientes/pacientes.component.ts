@@ -11,7 +11,6 @@ import { SnackbarService } from '../../core/services/snackbar.service';
   selector: 'app-pacientes',
   imports: [FormsModule, InfiniteScrollDirective, RouterLink],
   templateUrl: './pacientes.component.html',
-  styleUrl: './pacientes.component.css'
 })
 export class PacientesComponent {
   pacientes: Paciente[] = [];

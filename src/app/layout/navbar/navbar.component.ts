@@ -7,7 +7,6 @@ import { LoginService } from '../../core/services/login.service';
   selector: 'app-navbar',
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
   collapsed: boolean = true;

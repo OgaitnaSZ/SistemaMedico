@@ -1,21 +1,18 @@
 import { Component, Input } from '@angular/core';
-
 import { ArchivoAdjunto } from '../../../../../core/interfaces/archivo-adjunto.model';
 import { HistoriasClinicasApiService } from '../../../../../core/services/historias-clinicas.service';
-import { empty } from 'rxjs';
+import { SnackbarService } from '../../../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-archivos-adjuntos',
   imports: [],
   templateUrl: './archivos-adjuntos.component.html',
-  styleUrl: './archivos-adjuntos.component.css'
 })
 export class ArchivosAdjuntosComponent {
   @Input() idHistoriaClinica: number | undefined; // ID recibido del componente padre
-  mensaje: string = '';
   verSubir: boolean = false;
 
-  constructor(private historiaClinicaService: HistoriasClinicasApiService){}
+  constructor(private historiaClinicaService: HistoriasClinicasApiService, private snackbarService: SnackbarService){}
 
   archivoAdjuntos: ArchivoAdjunto[] = [];
 
@@ -30,7 +27,7 @@ export class ArchivosAdjuntosComponent {
           this.archivoAdjuntos = data;
         },
         (error) => {
-          console.error('Error al cargar archivos adjuntos:', error.error);
+          this.snackbarService.show('Error al cargar archivos.', 'error');
         }
       );
     }
@@ -45,7 +42,6 @@ export class ArchivosAdjuntosComponent {
   
   subirArchivos(event: Event) {
     event.preventDefault();
-    console.log(this.idHistoriaClinica);
     if (this.idHistoriaClinica !== null && this.idHistoriaClinica !== undefined && this.idHistoriaClinica > 0) {
       const formData = new FormData();
       this.archivosSeleccionados.forEach(file => formData.append('archivos[]', file));
@@ -53,14 +49,13 @@ export class ArchivosAdjuntosComponent {
 
       this.historiaClinicaService.agregarArchivo(formData).subscribe(
         (data) => {
-          console.log("Archivo subido con exito");
+          this.snackbarService.show('Archivos guardados.', 'success');
           this.cargarArchivos();
           this.verSubir = false;
           formData.delete;
         },
         (error) => {
-          console.error('Error al agregar archivos adjuntos:', error.error);
-          this.mensaje = 'Error al agregar archivos.';
+          this.snackbarService.show('Error al guardar archivos.', 'error');
         }
       );
     }
@@ -71,11 +66,10 @@ export class ArchivosAdjuntosComponent {
       this.historiaClinicaService.eliminarArchivo(idArchivo).subscribe(
         (response) => {
           this.cargarArchivos();
-          console.log('Elimnacion exitosa:', response);
-          this.mensaje = 'Elimnacion exitosa.';
+          this.snackbarService.show('Elimnacion exitosa.', 'success');
         },
         (error) => {
-          this.mensaje = 'Error al eliminar archivo.';
+          this.snackbarService.show('Error al eliminar archivo.', 'error');
         }
       );
     }

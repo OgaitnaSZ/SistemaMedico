@@ -8,7 +8,6 @@ import { SnackbarService } from '../../core/services/snackbar.service';
   selector: 'app-login',
   imports: [FormsModule, RouterModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
 })
 export class LoginComponent {
   user = '';

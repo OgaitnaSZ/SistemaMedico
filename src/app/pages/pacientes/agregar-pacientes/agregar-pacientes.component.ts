@@ -6,7 +6,6 @@ import { ImportarPacientesComponent } from "./importar-pacientes/importar-pacien
   selector: 'app-agregar-pacientes',
   imports: [FormPacientesComponent, ImportarPacientesComponent],
   templateUrl: './agregar-pacientes.component.html',
-  styleUrl: './agregar-pacientes.component.css'
 })
 export class AgregarPacientesComponent {
 

@@ -8,7 +8,6 @@ import { SnackbarService } from '../../../../core/services/snackbar.service';
   selector: 'app-importar-pacientes',
   imports: [PrevisualizarPacientesComponent],
   templateUrl: './importar-pacientes.component.html',
-  styleUrl: './importar-pacientes.component.css'
 })
 export class ImportarPacientesComponent {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;

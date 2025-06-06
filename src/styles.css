@@ -1,10 +1,18 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+.bg-login {
+    background-image: url('https://i.ibb.co/ccjTqb1W/bg-login.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 a, button, input{
     cursor: pointer !important;
 }
-
+.icons{
+    font-size: 2em !important;
+}
 .switch{
     font-size: 16px;
 }

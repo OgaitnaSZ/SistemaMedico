@@ -9,7 +9,6 @@ import { SnackbarService } from '../../../../../core/services/snackbar.service';
   selector: 'app-previsualizar-pacientes',
   imports: [CommonModule],
   templateUrl: './previsualizar-pacientes.component.html',
-  styleUrl: './previsualizar-pacientes.component.css'
 })
 export class PrevisualizarPacientesComponent {
   @Input() pacientesImportados: Paciente[] | undefined; // Listado de pacientes recibido del componente padre

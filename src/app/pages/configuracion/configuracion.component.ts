@@ -8,7 +8,6 @@ import { SnackbarService } from '../../core/services/snackbar.service';
   selector: 'app-configuracion',
   imports: [FormsModule, CommonModule],
   templateUrl: './configuracion.component.html',
-  styleUrl: './configuracion.component.css'
 })
 export class ConfiguracionComponent {
   isDark: boolean = false;
