@@ -17,14 +17,37 @@
             <input type="text" [(ngModel)]="historiaClinica.observaciones" name="observaciones" class="mt-1 w-full border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2">
         </div>
         <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fecha</label>
-        <input
-            type="date"
-            [max]="hoy"
-            [(ngModel)]="historiaClinica.fecha"
-            name="fecha"
-            class="mt-1 w-full border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2"
-        >
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fecha</label>
+            <input
+                type="date"
+                [max]="hoy"
+                [(ngModel)]="historiaClinica.fecha"
+                name="fecha"
+                class="mt-1 w-full border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2"
+            >
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Parámetros Clínicos</label>
+            @for (parametro of parametros; track parametro){
+                <div class="flex space-x-2 items-center">
+                    <input
+                        [(ngModel)]="parametro.nombre"
+                        name="nombreParametro{{ $index }}"
+                        class="mt-1 border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2 w-1/2"
+                        placeholder="Parámetro (ej: Glucosa)"
+                    />
+                    <input
+                        [(ngModel)]="parametro.valor"
+                        name="valorParametro{{ $index }}"
+                        class="mt-1 border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2 w-1/2"
+                        placeholder="Valor (ej: 110 mg/dL)"
+                    />
+                    <button type="button" (click)="eliminarParametro($index)" class="text-red-500 material-symbols-outlined">delete</button>
+                </div>
+            }
+            <button type="button" (click)="agregarParametro()" class="mt-2 text-sm text-blue-500 hover:underline">
+                + Agregar parámetro
+            </button>
         </div>
     </div>
     <div class="flex justify-end mt-4">

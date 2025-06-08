@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HistoriaClinica } from '../../../../../core/interfaces/historia-clinica.model';
+import { HistoriaClinica, Parametro } from '../../../../../core/interfaces/historia-clinica.model';
 import { HistoriasClinicasApiService } from '../../../../../core/services/historias-clinicas.service';
 import { ActivatedRoute } from '@angular/router';
 import { SnackbarService } from '../../../../../core/services/snackbar.service';
@@ -14,14 +14,15 @@ export class FormConsultaComponent {
   @Input() idHistoriaClinica: number | undefined; // ID recibido del componente padre
   @Output() onFormularioEnviado = new EventEmitter<void>();
 
-    constructor(
-              private historiaClinicaService: HistoriasClinicasApiService, 
-              private route: ActivatedRoute, private snackbarService: SnackbarService){}
-
+  constructor(
+            private historiaClinicaService: HistoriasClinicasApiService, 
+            private route: ActivatedRoute, private snackbarService: SnackbarService){}
+  
   title: string = '';
   modoEdicion: boolean = false;
   idPaciente: number = 0;
   hoy: string = new Date().toISOString().split('T')[0];
+  parametros: Parametro[] = [];
 
   // Variable de historiaClinica
   historiaClinica: HistoriaClinica = {
@@ -32,8 +33,16 @@ export class FormConsultaComponent {
     diagnostico: '',
     tratamiento: '',
     observaciones: '',
+    parametros: this.parametros,
     created_at: new Date
   };
+
+  agregarParametro() {
+    this.parametros.push({ nombre: '', valor: '' });
+  }
+  eliminarParametro(index: number) {
+    this.parametros.splice(index, 1);
+  }
 
   ngOnInit(){
     // Obtener id de paciente

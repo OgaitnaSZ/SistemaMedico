@@ -6,5 +6,11 @@ export interface HistoriaClinica {
   diagnostico: string;
   tratamiento: string;
   observaciones: string;
+  parametros?: Parametro[];
   created_at: Date;
+}
+
+export interface Parametro {
+  nombre: string;
+  valor: string;
 }
