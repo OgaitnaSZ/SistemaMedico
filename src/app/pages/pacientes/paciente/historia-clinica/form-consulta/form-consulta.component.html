@@ -28,7 +28,7 @@
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Parámetros Clínicos</label>
-            @for (parametro of parametros; track parametro){
+            @for (parametro of historiaClinica.parametros; track $index){
                 <div class="flex space-x-2 items-center">
                     <input
                         [(ngModel)]="parametro.nombre"

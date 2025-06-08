@@ -23,7 +23,7 @@
           <button class="w-full text-right text-red-400 material-symbols-outlined" (click)="idEditando = 0">close</button>
           <app-form-consulta
             (onFormularioEnviado)="actualizarDatos()"
-            [idHistoriaClinica]="consulta.idHistoriaClinica">
+            [historiaClinica]="consulta">
           </app-form-consulta>
         } @else {
           <div class="flex justify-between items-center">
@@ -56,10 +56,13 @@
               <p class="font-medium dark:text-gray-100">{{ consulta.observaciones }}</p>
             </div>
           </div>
-          <div class="flex space-x-4">
-            @for (parametro of consulta.parametros; track parametro){
-              <p>{{ parametro.nombre }}: <strong>{{ parametro.valor }}</strong></p>
-            }
+          <div>
+            <p class="text-sm text-gray-500">Parámetros médicos</p>
+            <div class="flex space-x-5">
+              @for (parametro of consulta.parametros; track parametro){
+                <p>{{ parametro.nombre }}: <strong>{{ parametro.valor }}</strong></p>
+              }
+            </div>
           </div>
           <!-- Archivos adjuntos -->
           <app-archivos-adjuntos [idHistoriaClinica]="consulta.idHistoriaClinica" class="pt-2"></app-archivos-adjuntos>

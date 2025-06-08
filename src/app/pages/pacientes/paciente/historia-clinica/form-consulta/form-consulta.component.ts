@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HistoriaClinica, Parametro } from '../../../../../core/interfaces/historia-clinica.model';
+import { HistoriaClinica } from '../../../../../core/interfaces/historia-clinica.model';
 import { HistoriasClinicasApiService } from '../../../../../core/services/historias-clinicas.service';
 import { ActivatedRoute } from '@angular/router';
 import { SnackbarService } from '../../../../../core/services/snackbar.service';
@@ -11,7 +11,18 @@ import { SnackbarService } from '../../../../../core/services/snackbar.service';
   templateUrl: './form-consulta.component.html',
 })
 export class FormConsultaComponent {
-  @Input() idHistoriaClinica: number | undefined; // ID recibido del componente padre
+  @Input() historiaClinica: HistoriaClinica = {
+    idHistoriaClinica: 0,
+    idPaciente: 0,
+    fecha: new Date(),
+    motivo_consulta: '',
+    diagnostico: '',
+    tratamiento: '',
+    observaciones: '',
+    parametros: [],
+    created_at: new Date()
+  };
+
   @Output() onFormularioEnviado = new EventEmitter<void>();
 
   constructor(
@@ -22,27 +33,6 @@ export class FormConsultaComponent {
   modoEdicion: boolean = false;
   idPaciente: number = 0;
   hoy: string = new Date().toISOString().split('T')[0];
-  parametros: Parametro[] = [];
-
-  // Variable de historiaClinica
-  historiaClinica: HistoriaClinica = {
-    idHistoriaClinica: 0,
-    idPaciente: 0,
-    fecha: new Date,
-    motivo_consulta: '',
-    diagnostico: '',
-    tratamiento: '',
-    observaciones: '',
-    parametros: this.parametros,
-    created_at: new Date
-  };
-
-  agregarParametro() {
-    this.parametros.push({ nombre: '', valor: '' });
-  }
-  eliminarParametro(index: number) {
-    this.parametros.splice(index, 1);
-  }
 
   ngOnInit(){
     // Obtener id de paciente
@@ -55,14 +45,12 @@ export class FormConsultaComponent {
       }
     });
 
-    this.historiaClinica.idPaciente = this.idPaciente;
-
-    if (this.idHistoriaClinica !== undefined && this.idHistoriaClinica > 0) {
-      this.cargarConsulta();
+    if (this.historiaClinica.idHistoriaClinica > 0) {
       this.modoEdicion = true;
       this.title = 'Actualizar Consulta';
     } else {
       this.modoEdicion = false;
+      this.historiaClinica.idPaciente = this.idPaciente;
       this.title = 'Agregar Consulta';
     }
   }
@@ -76,43 +64,44 @@ export class FormConsultaComponent {
   }
 
   crearConsulta(){
-    this.historiaClinica.idHistoriaClinica = this.idPaciente;
-
-    this.historiaClinicaService.crearHistoriaClinica(this.historiaClinica).subscribe(
-      (response) => {
-        this.snackbarService.show('Consulta creada con éxito.', 'success');
-        // Emitir el evento al padre
-        this.onFormularioEnviado.emit();
-      },
-      (error) => {
-        this.snackbarService.show('Error al agregar consulta.', 'error');
-      }
-    );
+    if (this.historiaClinica !== undefined) {
+      this.historiaClinicaService.crearHistoriaClinica(this.historiaClinica).subscribe(
+        (response) => {
+          this.snackbarService.show('Consulta creada con éxito.', 'success');
+          // Emitir el evento al padre
+          this.onFormularioEnviado.emit();
+        },
+        (error) => {
+          this.snackbarService.show('Error al agregar consulta.', 'error');
+          console.log(error);
+        }
+      )
+    }
   }
 
   actualizarConsulta(){
-    this.historiaClinicaService.editarHistoriaClinica(this.historiaClinica).subscribe(
-      (response) => {
-        this.snackbarService.show('Consulta actualizada con éxito.', 'success');
-        // Emitir el evento al padre
-        this.onFormularioEnviado.emit();
-      },
-      (error) => {
-        this.snackbarService.show('Error al actualizar consulta.', 'error');
-      }
-    );
-  }
-
-  cargarConsulta(){
-    if(this.idHistoriaClinica !== undefined){
-      this.historiaClinicaService.getHistoriaClinica(this.idHistoriaClinica).subscribe(
+    if (this.historiaClinica !== undefined) {
+      this.historiaClinicaService.editarHistoriaClinica(this.historiaClinica).subscribe(
         (response) => {
-          this.historiaClinica = response;
+          this.snackbarService.show('Consulta actualizada con éxito.', 'success');
+          // Emitir el evento al padre
+          this.onFormularioEnviado.emit();
         },
         (error) => {
-          this.snackbarService.show('Error al cargar consulta.', 'error');
+          this.snackbarService.show('Error al actualizar consulta.', 'error');
         }
       );
+    }
+  }
+
+  agregarParametro() {
+    if(this.historiaClinica.parametros !== undefined){
+      this.historiaClinica.parametros.push({ nombre: '', valor: '' });
+    }
+  }
+  eliminarParametro(index: number) {
+    if(this.historiaClinica.parametros !== undefined){
+      this.historiaClinica.parametros.splice(index, 1);
     }
   }
 }
