@@ -40,3 +40,13 @@
 # System files
 .DS_Store
 Thumbs.db
+
+
+# BACKEND
+# Node modules
+/backend/node_modules/
+
+# Logs
+/backend/logs/
+*.log
+npm-debug.log*
