@@ -43,6 +43,6 @@ export class PacientesApiService {
 
   // Editar Paciente
   editarPaciente(paciente: Paciente): Observable<any> {
-    return this.http.put(`${this.apiUrl}editar-paciente.php`, paciente);
+    return this.http.put(this.apiUrl, paciente);
   }
 }
