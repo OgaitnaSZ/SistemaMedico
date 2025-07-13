@@ -39,8 +39,7 @@ export class FormPacientesComponent {
       const id = params.get('id');
       if (id) {
         this.idPaciente = +id; // Convierte a número
-      } else {
-        console.log('ID de Paciente no encontrado');
+      } else if(this.modoEdicion) {
         this.snackbarService.show('Paciente no encontradox.', 'error');
       }
     });
