@@ -11,6 +11,6 @@ router.post('/', usuarioController.loginUsuario);
 router.get('/:id', usuarioController.obtenerUsuario);
 
 // Actualizar usuario
-router.put('/:id', usuarioController.actualizarUsuario);
+router.put('/', usuarioController.actualizarUsuario);
 
 module.exports = router

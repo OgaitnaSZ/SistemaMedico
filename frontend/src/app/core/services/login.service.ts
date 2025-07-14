@@ -6,12 +6,13 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class LoginService {
-  private apiUrl = 'http://localhost/SistemaMedicoUI/api/usuarios.php';
+  //private apiUrl = 'http://localhost/SistemaMedicoUI/api/usuarios.php'; (PHP)
+  private apiUrl = 'http://localhost:4000/api/usuarios/';
 
   constructor(private http: HttpClient, private router: Router) {}
 
   login(user: string, pass: string) {
-    return this.http.post<{ token: string ; idUsuario: number ; nombre:string}>(`${this.apiUrl}`, { user, pass });
+    return this.http.post<{ token: string ; idUsuario: string ; nombre:string}>(`${this.apiUrl}`, { user, pass });
   }
 
   setToken(token: string) {
@@ -22,17 +23,17 @@ export class LoginService {
     return localStorage.getItem('token');
   }
 
-  setUserId(idUsuario: number) {
-    localStorage.setItem('idUsuario', idUsuario.toString());
+  setUserId(idUsuario: string) {
+    localStorage.setItem('idUsuario', idUsuario);
   }
   setUserName(nombre: string) {
     console.log(nombre);
     localStorage.setItem('nombre', nombre);
   }
 
-  getUserId(): number {
+  getUserId(): string {
     const id = localStorage.getItem('idUsuario');
-    return id ? parseInt(id, 10):0;
+    return id ? id:'';
   }
 
   getUserName(): string {
@@ -49,12 +50,12 @@ export class LoginService {
     this.router.navigate(['/login']);
   }
 
-  cargarDatos(idUsuario: number){
-    return this.http.get<{ nombre: string ; user: string }>(`${this.apiUrl}?idUsuario=${idUsuario}`);
+  cargarDatos(idUsuario: string){
+    return this.http.get<{ nombre: string ; user: string }>(`${this.apiUrl}${idUsuario}`);
   }
 
   actualizarDatos(
-    idUsuario: number, nombre: string, user: string, password: string,newPassword?: string // opcional
+    idUsuario: string, nombre: string, user: string, password: string,newPassword?: string // opcional
   ){
     const body: any = { idUsuario, nombre, user, password };
     

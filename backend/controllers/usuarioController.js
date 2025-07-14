@@ -25,7 +25,7 @@ exports.loginUsuario = async (req, res) =>{
 
         return res.json({
             token,
-            idUsuario: usuario.idUsuario,
+            idUsuario: usuario._id,
             nombre: usuario.nombre
         });
 
@@ -43,7 +43,10 @@ exports.obtenerUsuario = async (req, res) => {
             return res.status(404).json({msg: 'No existe el usuario'})
         }
         
-        res.json(usuario);
+        res.json({
+            nombre: usuario.nombre,
+            user: usuario.user
+        });
 
     }catch(error){
         console.log(error);
@@ -57,11 +60,11 @@ exports.actualizarUsuario = async (req, res) => {
 
         // Validar campos obligatorios
         if (!idUsuario || !nombre || !user || !password) {
-        return res.status(400).json({ msg: 'idUsuario, nombre, user y password son requeridos' });
+            return res.status(400).json({ msg: 'idUsuario, nombre, user y password son requeridos' });
         }
-
-        // Buscar usuario por idUsuario (ajusta según cómo almacenes el id)
-        const usuario = await Usuario.findOne({ idUsuario });
+        
+        // Buscar usuario por idUsuario 
+        const usuario = await Usuario.findById(idUsuario);
         if (!usuario) {
             return res.status(404).json({ msg: 'Usuario no encontrado' });
         }

@@ -17,7 +17,7 @@ export class ConfiguracionComponent {
   oldPass: string = '';
   newPass: string = '';
   confirmPass: string = '';
-  idUsuario: number = 0; // esto deberías cargarlo al iniciar
+  idUsuario: string = '';
 
   constructor (private login: LoginService, private snackbarService: SnackbarService){}
 
@@ -57,7 +57,7 @@ export class ConfiguracionComponent {
   }
   
   validarCambioDeDatos(): boolean {
-    return this.idUsuario > 0 && this.nombre.trim() !== '' && this.user.trim() !== '' && this.oldPass.trim() !== '';
+    return this.idUsuario != '' && this.nombre.trim() !== '' && this.user.trim() !== '' && this.oldPass.trim() !== '';
   }
   
   validarCambioDePassword(): boolean {
