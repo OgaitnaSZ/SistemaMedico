@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 
 const pacienteSchema = mongoose.Schema({
-    idPaciente: {
-        type: Number,
-        required: true
-    },
     nombre: {
         type: String,
         required: true
