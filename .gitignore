@@ -46,6 +46,9 @@ Thumbs.db
 # Node modules
 /backend/node_modules/
 
+# ENV
+/backend/variables.env
+
 # Logs
 /backend/logs/
 *.log
