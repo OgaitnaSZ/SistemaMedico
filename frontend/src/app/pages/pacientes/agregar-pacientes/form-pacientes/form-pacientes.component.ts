@@ -15,13 +15,13 @@ export class FormPacientesComponent {
               private pacienteService: PacientesApiService, 
               private router: Router, private snackbarService: SnackbarService,
               private route: ActivatedRoute){}
-  idPaciente: number = 0;
+  idPaciente: string = '';
   title: string = '';
   modoEdicion: boolean = false;
 
   // Variable de paciente
   paciente: Paciente = {
-    idPaciente: 0,
+    idPaciente: '',
     nombre: '',
     apellido: '',
     genero: '',
@@ -38,13 +38,13 @@ export class FormPacientesComponent {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
-        this.idPaciente = +id; // Convierte a número
+        this.idPaciente = id; // Convierte a número
       } else if(this.modoEdicion) {
         this.snackbarService.show('Paciente no encontradox.', 'error');
       }
     });
 
-    if (this.idPaciente > 0) {
+    if (this.idPaciente != '') {
       this.cargarPaciente();
 
       this.modoEdicion = true;

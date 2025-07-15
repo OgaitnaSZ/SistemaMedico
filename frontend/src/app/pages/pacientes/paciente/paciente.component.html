@@ -8,7 +8,7 @@
       </button>
       <h1 class="text-4xl font-semibold dark:text-gray-100">Perfil del Paciente</h1>
     </div>
-    @if (idPaciente>0) {
+    @if (idPaciente != '') {
       <div class="flex justify-end space-x-2">
         <button class="flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition-colors duration-200"
           [routerLink]="['/pacientes/modificar-paciente', idPaciente]">
@@ -29,7 +29,7 @@
 
   <!-- Historia clínica -->
   <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 md:p-6">
-    @if (idPaciente>0) {
+    @if (idPaciente != '') {
       <app-historia-clinica [idPaciente]="idPaciente"></app-historia-clinica>
     }
   </section>

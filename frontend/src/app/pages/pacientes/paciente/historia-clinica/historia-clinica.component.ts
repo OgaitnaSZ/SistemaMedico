@@ -14,7 +14,7 @@ import { SnackbarService } from '../../../../core/services/snackbar.service';
 export class HistoriaClinicaComponent {
   @Input() idPaciente: string | undefined; // ID recibido del componente padre
   agregarConsulta: boolean = false;
-  idEditando: number | null = null;
+  idEditando: string | null = null;
     
   constructor(private historiaClinicaService: HistoriasClinicasApiService, private snackbarService: SnackbarService){}
   
@@ -26,7 +26,7 @@ export class HistoriaClinicaComponent {
 
   actualizarDatos(){
     this.agregarConsulta = false;
-    this.idEditando = 0;
+    this.idEditando = '';
     this.cargarHistoriasClinicas();
   }
 

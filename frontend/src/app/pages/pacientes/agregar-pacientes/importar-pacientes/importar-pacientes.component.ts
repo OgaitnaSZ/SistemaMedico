@@ -16,7 +16,7 @@ export class ImportarPacientesComponent {
   constructor(private snackbarService: SnackbarService){}
 
   paciente: Paciente = {
-    idPaciente: 0,
+    idPaciente: '',
     nombre: '',
     apellido: '',
     genero: '',
@@ -80,7 +80,7 @@ export class ImportarPacientesComponent {
         const valores = Object.values(fila).map(v => v !== undefined && v !== null ? String(v) : '');
         console.log(valores);
         const paciente: Paciente = {
-            idPaciente: 0,
+            idPaciente: '',
             nombre: valores[0] || '',
             apellido: valores[1] || '',
             genero: valores[2] || '',

@@ -1,4 +1,4 @@
-@if (paciente.idPaciente>0) {
+@if (paciente.idPaciente != '') {
   <section class="flex flex-col md:flex-row gap-6">
     <div class="flex justify-center items-center">
       <img src="https://ui-avatars.com/api/?name={{ paciente.nombre }}+{{ paciente.apellido }}&background=0D8ABC&color=fff&size=128"

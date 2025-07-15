@@ -1,5 +1,5 @@
 <div class="flex flex-col space-x-4 p-4 md:px-0">
-  @if(this.idPaciente > 0){
+  @if(this.idPaciente != ''){
     <a routerLink="/pacientes/{{idPaciente}}" class="group flex items-center text-blue-500">
         <span class="material-symbols-outlined mr-1 transition-transform duration-200 ease-in-out group-hover:-translate-x-1">arrow_back</span>
         Volver
