@@ -45,15 +45,15 @@ export class PacientesComponent {
     if (this.cargando || this.finalDeLista) return;
 
     this.cargando = true;
-
+    
     this.pacientesService.getPacientes(this.pagina, this.limite, this.terminoBusqueda || '').subscribe(
       (response) => {
-        // response.data es el array de pacientes
-        if (!response.data || response.data.length === 0) {
+        // response es el array de pacientes
+        if (!response || response.length === 0) {
           this.finalDeLista = true;
         } else {
           // Agregar los pacientes al array existente
-          this.pacientes.push(...response.data);  // spread para agregar múltiples elementos
+          this.pacientes.push(...response);  // spread para agregar múltiples elementos
           this.pagina++;
         }
         this.cargando = false;

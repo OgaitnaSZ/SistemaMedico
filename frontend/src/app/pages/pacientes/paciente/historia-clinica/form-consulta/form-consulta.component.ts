@@ -12,15 +12,15 @@ import { SnackbarService } from '../../../../../core/services/snackbar.service';
 })
 export class FormConsultaComponent {
   @Input() historiaClinica: HistoriaClinica = {
-    idHistoriaClinica: '',
+    _id: '',
     idPaciente: '',
     fecha: new Date(),
-    motivo_consulta: '',
+    motivoConsulta: '',
     diagnostico: '',
     tratamiento: '',
     observaciones: '',
     parametros: [],
-    created_at: new Date()
+    createdAt: new Date()
   };
 
   @Output() onFormularioEnviado = new EventEmitter<void>();
@@ -45,7 +45,7 @@ export class FormConsultaComponent {
       }
     });
 
-    if (this.historiaClinica.idHistoriaClinica != '') {
+    if (this.historiaClinica._id != '') {
       this.modoEdicion = true;
       this.title = 'Actualizar Consulta';
     } else {

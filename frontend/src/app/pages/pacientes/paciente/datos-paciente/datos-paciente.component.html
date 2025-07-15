@@ -1,4 +1,4 @@
-@if (paciente.idPaciente != '') {
+@if (paciente._id != '') {
   <section class="flex flex-col md:flex-row gap-6">
     <div class="flex justify-center items-center">
       <img src="https://ui-avatars.com/api/?name={{ paciente.nombre }}+{{ paciente.apellido }}&background=0D8ABC&color=fff&size=128"
@@ -41,7 +41,7 @@
         </div>
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-500">Fecha de Creación</p>
-          <p class="font-medium text-lg dark:text-gray-100">{{ paciente.created_at | date:'dd/MM/yyyy' }}</p>
+          <p class="font-medium text-lg dark:text-gray-100">{{ paciente.createdAt | date:'dd/MM/yyyy' }}</p>
         </div>
       </div>
     </section>

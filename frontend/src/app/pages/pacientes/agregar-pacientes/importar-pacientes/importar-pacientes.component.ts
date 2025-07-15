@@ -16,7 +16,7 @@ export class ImportarPacientesComponent {
   constructor(private snackbarService: SnackbarService){}
 
   paciente: Paciente = {
-    idPaciente: '',
+    _id: '',
     nombre: '',
     apellido: '',
     genero: '',
@@ -25,7 +25,7 @@ export class ImportarPacientesComponent {
     telefono: '',
     email: '',
     direccion: '',
-    created_at: new Date
+    createdAt: new Date
   };
   pacientesImportados: Paciente[] = [];
 
@@ -80,7 +80,7 @@ export class ImportarPacientesComponent {
         const valores = Object.values(fila).map(v => v !== undefined && v !== null ? String(v) : '');
         console.log(valores);
         const paciente: Paciente = {
-            idPaciente: '',
+            _id: '',
             nombre: valores[0] || '',
             apellido: valores[1] || '',
             genero: valores[2] || '',
@@ -89,7 +89,7 @@ export class ImportarPacientesComponent {
             telefono: valores[5] || '',
             email: valores[6] || '',
             direccion: valores[7] || '',
-            created_at: new Date()
+            createdAt: new Date()
         };
         
         this.pacientesImportados.push(paciente);

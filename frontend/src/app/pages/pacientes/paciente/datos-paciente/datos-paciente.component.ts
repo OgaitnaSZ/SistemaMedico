@@ -16,7 +16,7 @@ export class DatosPacienteComponent {
 
   // Variable de paciente
   paciente: Paciente = {
-    idPaciente: '',
+    _id: '',
     nombre: '',
     apellido: '',
     genero: '',
@@ -25,7 +25,7 @@ export class DatosPacienteComponent {
     telefono: '',
     email: '',
     direccion: '',
-    created_at: new Date
+    createdAt: new Date
   };
 
   ngOnInit(): void {
@@ -34,6 +34,7 @@ export class DatosPacienteComponent {
       this.pacienteService.getPaciente(this.idPaciente).subscribe(
         (data) => {
           this.paciente = data;
+          console.log(this.paciente);
         },
         (error) => {
           console.error('Error al cargar paciente:', error.error);

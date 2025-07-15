@@ -28,7 +28,7 @@ exports.obtenerPacientes = async (req, res) => {
 exports.actualizarPaciente = async (req, res) => {
     try{
         const {
-            idPaciente,
+            _id,
             nombre,
             apellido,
             genero,
@@ -40,14 +40,16 @@ exports.actualizarPaciente = async (req, res) => {
             ultima_visita
         } = req.body;
 
-        let paciente = await Paciente.findById(req.params.id);
+        console.log(req.body);
+        let paciente = await Paciente.findById(req.body._id);
+
 
         if(!paciente){
             return res.status(404).json({msg: 'No existe el paciente'})
         }
         
         // Actualización de campos
-        paciente.idPaciente = idPaciente;
+        paciente.idPaciente = _id;
         paciente.nombre = nombre;
         paciente.apellido = apellido;
         paciente.genero = genero;

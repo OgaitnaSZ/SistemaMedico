@@ -19,7 +19,7 @@
   <section class="space-y-6">
     @for (consulta of historialClinico; track $index) {
       <div class="border dark:border-gray-100 rounded-lg p-4 space-y-2">
-        @if (idEditando === consulta.idHistoriaClinica) {
+        @if (idEditando === consulta._id) {
           <button class="w-full text-right text-red-400 material-symbols-outlined" (click)="idEditando = ''">close</button>
           <app-form-consulta
             (onFormularioEnviado)="actualizarDatos()"
@@ -29,10 +29,10 @@
           <div class="flex justify-between items-center">
             <p class="text-gray-600 dark:text-gray-100 font-semibold">Consulta del {{ consulta.fecha | date:'dd/MM/yyyy' }}</p>
             <div class="flex space-x-2">
-              <button (click)="idEditando = consulta.idHistoriaClinica" class="flex items-center text-yellow-500 hover:text-yellow-600 rounded-lg transition-colors duration-200">
+              <button (click)="idEditando = consulta._id" class="flex items-center text-yellow-500 hover:text-yellow-600 rounded-lg transition-colors duration-200">
                 <span class="material-symbols-outlined mr-1">edit</span>
               </button>
-              <button (click)="eliminarConsulta(consulta.idHistoriaClinica)"
+              <button (click)="eliminarConsulta(consulta._id)"
                 class="flex items-center text-red-600 hover:text-red-700 rounded-lg transition-colors duration-200">
                 <span class="material-symbols-outlined mr-1">delete</span>
               </button>
@@ -41,7 +41,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
             <div>
               <p class="text-sm text-gray-500">Motivo</p>
-              <p class="font-medium dark:text-gray-100">{{ consulta.motivo_consulta }}</p>
+              <p class="font-medium dark:text-gray-100">{{ consulta.motivoConsulta }}</p>
             </div>
             <div>
               <p class="text-sm text-gray-500">Diagnóstico</p>
@@ -65,7 +65,7 @@
             </div>
           </div>
           <!-- Archivos adjuntos -->
-          <app-archivos-adjuntos [idHistoriaClinica]="consulta.idHistoriaClinica" class="pt-2"></app-archivos-adjuntos>
+          <app-archivos-adjuntos [idHistoriaClinica]="consulta._id" class="pt-2"></app-archivos-adjuntos>
         }
       </div>
     }

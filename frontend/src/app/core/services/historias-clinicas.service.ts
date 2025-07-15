@@ -8,14 +8,15 @@ import { HistoriaClinica } from '../interfaces/historia-clinica.model';
 })
 
 export class HistoriasClinicasApiService {
-    private apiUrl = 'http://localhost/SistemaMedicoUI/api/historias_clinicas.php';
+    //private apiUrl = 'http://localhost/SistemaMedicoUI/api/historias_clinicas.php'; (PHP)
     private apiUrlArchivos = 'http://localhost/SistemaMedicoUI/api/archivos_adjuntos.php';
+    private apiUrl = 'http://localhost:4000/api/historiaClinica/';
 
   constructor(private http: HttpClient) {}
 
   // Listar Historias Clinicas de un paciente
   getHistoriasClinicas(idPaciente: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}?idPaciente=${idPaciente}`);
+    return this.http.get(`${this.apiUrl}${idPaciente}`);
   }
 
   // Crear Historia Clinica
@@ -31,9 +32,7 @@ export class HistoriasClinicasApiService {
 
   // Eliminar Historia Clinica
   eliminarHistoriaClinica(idHistoriaClinica: string): Observable<any> {
-    return this.http.request('delete', this.apiUrl, {
-      body: {idHistoriaClinica}
-    })
+    return this.http.delete(`${this.apiUrl}${idHistoriaClinica}`);
   };
 
   /* Archivos Adjuntos */

@@ -1,13 +1,13 @@
 export interface HistoriaClinica {
-  idHistoriaClinica: string;
+  _id: string;
   idPaciente: string;
   fecha: Date;
-  motivo_consulta: string;
+  motivoConsulta: string;
   diagnostico: string;
   tratamiento: string;
   observaciones: string;
   parametros?: Parametro[];
-  created_at: Date;
+  createdAt: Date;
 }
 
 export interface Parametro {

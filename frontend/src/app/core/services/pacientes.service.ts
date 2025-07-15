@@ -20,7 +20,7 @@ export class PacientesApiService {
 
   // Obtener Paciente por Id
   getPaciente(idPaciente: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}?idPaciente=${idPaciente}`);
+    return this.http.get(`${this.apiUrl}${idPaciente}`);
   }
 
   // Crear Paciente
@@ -36,9 +36,7 @@ export class PacientesApiService {
 
   // Eliminar Paciente
   eliminarPaciente(idPaciente: string): Observable<any> {
-    return this.http.request('delete', this.apiUrl, {
-      body: { idPaciente }
-    });
+    return this.http.delete(`${this.apiUrl}${idPaciente}`);  
   }
 
 

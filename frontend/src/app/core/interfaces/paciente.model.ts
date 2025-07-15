@@ -1,5 +1,5 @@
 export interface Paciente {
-  idPaciente: string;
+  _id: string;
   nombre: string;
   apellido: string;
   genero: string;
@@ -8,5 +8,5 @@ export interface Paciente {
   telefono: string;
   email: string;
   direccion: string;
-  created_at: Date;
+  createdAt: Date;
 }
