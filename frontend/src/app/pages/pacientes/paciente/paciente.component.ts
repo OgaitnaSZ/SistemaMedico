@@ -12,7 +12,7 @@ import { SnackbarService } from '../../../core/services/snackbar.service';
   templateUrl: './paciente.component.html',
 })
 export class PacienteComponent {
-  idPaciente: number = 0;
+  idPaciente: string = '';
 
   constructor(private route: ActivatedRoute, 
               private pacienteService: PacientesApiService,
@@ -24,7 +24,7 @@ export class PacienteComponent {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
-        this.idPaciente = +id; // Convierte a número
+        this.idPaciente = id; // Convierte a número
       } else {
         this.snackbarService.show('ID de paciente no encontrado.', 'error');
       }

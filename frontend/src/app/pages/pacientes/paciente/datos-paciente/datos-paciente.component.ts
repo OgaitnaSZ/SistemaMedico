@@ -10,13 +10,13 @@ import { SnackbarService } from '../../../../core/services/snackbar.service';
   templateUrl: './datos-paciente.component.html',
 })
 export class DatosPacienteComponent {
-  @Input() idPaciente: number | undefined; // ID recibido del componente padre
+  @Input() idPaciente: string | undefined; // ID recibido del componente padre
 
   constructor(private pacienteService: PacientesApiService, private snackbarService: SnackbarService){}
 
   // Variable de paciente
   paciente: Paciente = {
-    idPaciente: 0,
+    idPaciente: '',
     nombre: '',
     apellido: '',
     genero: '',
@@ -30,7 +30,7 @@ export class DatosPacienteComponent {
 
   ngOnInit(): void {
     // Cargar Datos de Paciente
-    if (this.idPaciente !== null && this.idPaciente !== undefined && this.idPaciente > 0) {
+    if (this.idPaciente !== undefined && this.idPaciente != '') {
       this.pacienteService.getPaciente(this.idPaciente).subscribe(
         (data) => {
           this.paciente = data;

@@ -9,7 +9,7 @@ import { SnackbarService } from '../../../../../core/services/snackbar.service';
   templateUrl: './archivos-adjuntos.component.html',
 })
 export class ArchivosAdjuntosComponent {
-  @Input() idHistoriaClinica: number | undefined; // ID recibido del componente padre
+  @Input() idHistoriaClinica: string | undefined; // ID recibido del componente padre
   verSubir: boolean = false;
 
   constructor(private historiaClinicaService: HistoriasClinicasApiService, private snackbarService: SnackbarService){}
@@ -21,7 +21,7 @@ export class ArchivosAdjuntosComponent {
   }
 
   cargarArchivos(){
-    if (this.idHistoriaClinica !== null && this.idHistoriaClinica !== undefined && this.idHistoriaClinica > 0) {
+    if (this.idHistoriaClinica !== undefined && this.idHistoriaClinica != '') {
       this.historiaClinicaService.getArchivosAdjuntos(this.idHistoriaClinica).subscribe(
         (data) => {
           this.archivoAdjuntos = data;
@@ -42,7 +42,7 @@ export class ArchivosAdjuntosComponent {
   
   subirArchivos(event: Event) {
     event.preventDefault();
-    if (this.idHistoriaClinica !== null && this.idHistoriaClinica !== undefined && this.idHistoriaClinica > 0) {
+    if (this.idHistoriaClinica !== undefined && this.idHistoriaClinica != '') {
       const formData = new FormData();
       this.archivosSeleccionados.forEach(file => formData.append('archivos[]', file));
       formData.append('IdHistoriaClinica', this.idHistoriaClinica.toString());
@@ -61,7 +61,7 @@ export class ArchivosAdjuntosComponent {
     }
   }
 
-  eliminarArchivo(idArchivo: number, path: string){
+  eliminarArchivo(idArchivo: string, path: string){
     if (confirm(`¿Estás seguro de que deseas eliminar el archivo ${path}?`)) {
       this.historiaClinicaService.eliminarArchivo(idArchivo).subscribe(
         (response) => {

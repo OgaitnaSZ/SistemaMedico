@@ -12,8 +12,8 @@ import { SnackbarService } from '../../../../../core/services/snackbar.service';
 })
 export class FormConsultaComponent {
   @Input() historiaClinica: HistoriaClinica = {
-    idHistoriaClinica: 0,
-    idPaciente: 0,
+    idHistoriaClinica: '',
+    idPaciente: '',
     fecha: new Date(),
     motivo_consulta: '',
     diagnostico: '',
@@ -31,7 +31,7 @@ export class FormConsultaComponent {
   
   title: string = '';
   modoEdicion: boolean = false;
-  idPaciente: number = 0;
+  idPaciente: string = '';
   hoy: string = new Date().toISOString().split('T')[0];
 
   ngOnInit(){
@@ -39,13 +39,13 @@ export class FormConsultaComponent {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
-        this.idPaciente = +id; // Convierte a número
+        this.idPaciente = id; // Convierte a número
       } else {
         this.snackbarService.show('ID de paciente no encontrado.', 'error');
       }
     });
 
-    if (this.historiaClinica.idHistoriaClinica > 0) {
+    if (this.historiaClinica.idHistoriaClinica != '') {
       this.modoEdicion = true;
       this.title = 'Actualizar Consulta';
     } else {

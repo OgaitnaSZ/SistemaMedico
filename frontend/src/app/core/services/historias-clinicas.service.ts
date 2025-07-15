@@ -14,7 +14,7 @@ export class HistoriasClinicasApiService {
   constructor(private http: HttpClient) {}
 
   // Listar Historias Clinicas de un paciente
-  getHistoriasClinicas(idPaciente: number): Observable<any> {
+  getHistoriasClinicas(idPaciente: string): Observable<any> {
     return this.http.get(`${this.apiUrl}?idPaciente=${idPaciente}`);
   }
 
@@ -30,7 +30,7 @@ export class HistoriasClinicasApiService {
   }
 
   // Eliminar Historia Clinica
-  eliminarHistoriaClinica(idHistoriaClinica: number): Observable<any> {
+  eliminarHistoriaClinica(idHistoriaClinica: string): Observable<any> {
     return this.http.request('delete', this.apiUrl, {
       body: {idHistoriaClinica}
     })
@@ -38,11 +38,11 @@ export class HistoriasClinicasApiService {
 
   /* Archivos Adjuntos */
   /* Obtener Archivos Adjuntos */
-  getArchivosAdjuntos(idHistoriaClinica: number): Observable<any> {
+  getArchivosAdjuntos(idHistoriaClinica: string): Observable<any> {
     return this.http.get(`${this.apiUrlArchivos}?idHistoriaClinica=${idHistoriaClinica}`);
   }
   /* Eliminar Archivo */
-  eliminarArchivo(idArchivo: number): Observable<any> {
+  eliminarArchivo(idArchivo: string): Observable<any> {
     return this.http.request('delete' ,this.apiUrlArchivos, {
       body: { idArchivo }
     });

@@ -1,6 +1,6 @@
 export interface HistoriaClinica {
-  idHistoriaClinica: number;
-  idPaciente: number;
+  idHistoriaClinica: string;
+  idPaciente: string;
   fecha: Date;
   motivo_consulta: string;
   diagnostico: string;

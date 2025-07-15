@@ -12,7 +12,7 @@ import { SnackbarService } from '../../../../core/services/snackbar.service';
   templateUrl: './historia-clinica.component.html',
 })
 export class HistoriaClinicaComponent {
-  @Input() idPaciente: number | undefined; // ID recibido del componente padre
+  @Input() idPaciente: string | undefined; // ID recibido del componente padre
   agregarConsulta: boolean = false;
   idEditando: number | null = null;
     
@@ -31,7 +31,7 @@ export class HistoriaClinicaComponent {
   }
 
   cargarHistoriasClinicas(){
-    if (this.idPaciente !== null && this.idPaciente !== undefined && this.idPaciente > 0) {
+    if (this.idPaciente !== undefined && this.idPaciente != '') {
       this.historiaClinicaService.getHistoriasClinicas(this.idPaciente).subscribe(
         (data) => {
           this.historialClinico = data;
@@ -43,7 +43,7 @@ export class HistoriaClinicaComponent {
     }
   }
 
-  eliminarConsulta(idHistoriaClinica: number){
+  eliminarConsulta(idHistoriaClinica: string){
     if (confirm(`¿Estás seguro de que deseas eliminar la consulta}?`)) {
       this.historiaClinicaService.eliminarHistoriaClinica(idHistoriaClinica).subscribe(
         (response) => {

@@ -14,7 +14,7 @@ export interface DiaEstadisticaConDia {
 }
 
 export interface UltimoPaciente {
-  idPaciente: number;
+  idPaciente: string;
   nombre: string;
   apellido: string;
   fechaNacimiento: string;
