@@ -26,49 +26,22 @@ exports.obtenerPacientes = async (req, res) => {
 }
 
 exports.actualizarPaciente = async (req, res) => {
-    try{
-        const {
-            _id,
-            nombre,
-            apellido,
-            genero,
-            dni,
-            fechaNacimiento,
-            telefono,
-            email,
-            direccion,
-            ultima_visita
-        } = req.body;
+    try {
+        const pacienteActualizado = await Paciente.findByIdAndUpdate(
+            req.body._id,
+            req.body,
+            { new: true }
+        );
 
-        console.log(req.body);
-        let paciente = await Paciente.findById(req.body._id);
-
-
-        if(!paciente){
-            return res.status(404).json({msg: 'No existe el paciente'})
+        if (!pacienteActualizado) {
+            return res.status(404).json({ msg: 'No existe el paciente' });
         }
-        
-        // Actualización de campos
-        paciente.idPaciente = _id;
-        paciente.nombre = nombre;
-        paciente.apellido = apellido;
-        paciente.genero = genero;
-        paciente.dni = dni;
-        paciente.fechaNacimiento = fechaNacimiento;
-        paciente.telefono = telefono;
-        paciente.email = email;
-        paciente.direccion = direccion;
-        paciente.ultima_visita = ultima_visita;
 
-        paciente = await Paciente.findByIdAndUpdate(req.params.id, paciente, { new: true });
-
-        res.json(paciente);
-
-    }catch(error){
-        console.log(error);
-        res.status(500).send("Error al actualizar paciente")
+        res.json(pacienteActualizado);
+    } catch (error) {
+        res.status(500).send("Error al actualizar paciente");
     }
-}
+};
 
 exports.obtenerPaciente = async (req, res) => {
     try{

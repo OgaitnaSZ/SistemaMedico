@@ -21,7 +21,6 @@ export class FormPacientesComponent {
 
   // Variable de paciente
   paciente: Paciente = {
-    _id: '',
     nombre: '',
     apellido: '',
     genero: '',
@@ -85,7 +84,7 @@ export class FormPacientesComponent {
     this.pacienteService.editarPaciente(this.paciente).subscribe(
       (response) => {
         this.snackbarService.show('Datos actualizados con éxito.', 'success');
-        this.router.navigate(['/paciente', this.paciente._id]);
+        this.router.navigate(['/pacientes', this.paciente._id]);
       },
       (error) => {
         console.error('Error al actualizar paciente:', error);
