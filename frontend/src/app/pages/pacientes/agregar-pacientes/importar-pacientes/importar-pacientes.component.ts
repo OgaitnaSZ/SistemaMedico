@@ -80,7 +80,6 @@ export class ImportarPacientesComponent {
         const valores = Object.values(fila).map(v => v !== undefined && v !== null ? String(v) : '');
         console.log(valores);
         const paciente: Paciente = {
-            _id: '',
             nombre: valores[0] || '',
             apellido: valores[1] || '',
             genero: valores[2] || '',

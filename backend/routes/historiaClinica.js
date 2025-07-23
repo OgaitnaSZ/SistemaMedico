@@ -4,9 +4,16 @@ const router = express.Router();
 const historiaClinicaController = require('../controllers/historiaClinicaController');
 
 // api/historiaClinica
+// Crear consulta
 router.post('/', historiaClinicaController.crearHistoriaClinica);
+
+// Listar por paciente
 router.get('/:idPaciente', historiaClinicaController.listarPorPaciente);
+
+// Actualizar consulta
 router.put('/', historiaClinicaController.actualizarHistoriaClinica);
-router.delete('/:idHistoriaClinica', historiaClinicaController.eliminarHistoriaClinica);
+
+// Eliminar consulta
+router.delete('/:id', historiaClinicaController.eliminarHistoriaClinica);
 
 module.exports = router;

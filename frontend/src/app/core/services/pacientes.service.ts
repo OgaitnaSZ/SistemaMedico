@@ -33,12 +33,10 @@ export class PacientesApiService {
     return this.http.post(`${this.apiUrl}`, pacientes);
   }
 
-
   // Eliminar Paciente
   eliminarPaciente(idPaciente: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}${idPaciente}`);  
   }
-
 
   // Editar Paciente
   editarPaciente(paciente: Paciente): Observable<any> {

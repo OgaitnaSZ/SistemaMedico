@@ -4,7 +4,6 @@ const router = express.Router();
 const pacienteController = require('../controllers/pacienteController');
 
 // api/pacientes
-
 // Crear paciente
 router.post('/', pacienteController.crearPaciente);
 

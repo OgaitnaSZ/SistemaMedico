@@ -9,4 +9,5 @@ export interface Paciente {
   email: string;
   direccion: string;
   createdAt: Date;
+  ultima_visita?: Date;
 }
