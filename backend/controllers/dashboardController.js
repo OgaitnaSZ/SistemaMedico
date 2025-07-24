@@ -43,19 +43,21 @@ exports.obtenerDashboard = async (req, res) => {
       };
     }));
 
-    const ultimoPaciente = await Paciente.findOne().sort({ createdAt: -1 });
+    const ultimoPaciente = await Paciente.findOne({ ultima_visita: { $ne: null } })
+      .sort({ ultima_visita: -1 });
 
     const pacienteDTO = ultimoPaciente
       ? {
           idPaciente: ultimoPaciente._id,
           nombre: ultimoPaciente.nombre,
           apellido: ultimoPaciente.apellido,
-          fechaNacimiento: ultimoPaciente.fechaNacimiento.toISOString().split('T')[0],
+          fechaNacimiento: ultimoPaciente.fechaNacimiento?.toISOString().split('T')[0] || null,
           dni: ultimoPaciente.dni,
           genero: ultimoPaciente.genero,
-          ultima_visita: ultimoPaciente.ultima_visita || null
+          ultima_visita: ultimoPaciente.ultima_visita
         }
       : null;
+
 
     const ultimasConsultas = await Consulta.find().sort({ fecha: -1 }).limit(10);
 
