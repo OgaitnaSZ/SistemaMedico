@@ -9,7 +9,7 @@ const archivoSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    created_at: {
+    createAt: {
         type: Date,
         default: Date.now
     }

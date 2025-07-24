@@ -2,13 +2,13 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Consulta } from '../../../../core/interfaces/consulta.model';
 import { ConsultasApiService } from '../../../../core/services/consultas.service';
-import { ArchivosAdjuntosComponent } from './archivos-adjuntos/archivos-adjuntos.component';
+import { ArchivosComponent } from './archivos-adjuntos/archivos-adjuntos.component';
 import { FormConsultaComponent } from './form-consulta/form-consulta.component';
 import { SnackbarService } from '../../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-historia-clinica',
-  imports: [CommonModule, ArchivosAdjuntosComponent, FormConsultaComponent],
+  imports: [CommonModule, ArchivosComponent, FormConsultaComponent],
   templateUrl: './historia-clinica.component.html',
 })
 export class HistoriaClinicaComponent {

@@ -1,20 +1,20 @@
 import { Component, Input } from '@angular/core';
-import { ArchivoAdjunto } from '../../../../../core/interfaces/archivo-adjunto.model';
+import { Archivo } from '../../../../../core/interfaces/archivo.model';
 import { ConsultasApiService } from '../../../../../core/services/consultas.service';
 import { SnackbarService } from '../../../../../core/services/snackbar.service';
 
 @Component({
-  selector: 'app-archivos-adjuntos',
+  selector: 'app-archivos',
   imports: [],
-  templateUrl: './archivos-adjuntos.component.html',
+  templateUrl: './archivos.component.html',
 })
-export class ArchivosAdjuntosComponent {
+export class ArchivosComponent {
   @Input() idConsulta: string | undefined; // ID recibido del componente padre
   verSubir: boolean = false;
 
   constructor(private consultaService: ConsultasApiService, private snackbarService: SnackbarService){}
 
-  archivoAdjuntos: ArchivoAdjunto[] = [];
+  archivos: Archivo[] = [];
 
   ngOnInit(): void {
     this.cargarArchivos();
@@ -22,9 +22,9 @@ export class ArchivosAdjuntosComponent {
 
   cargarArchivos(){
     if (this.idConsulta !== undefined && this.idConsulta != '') {
-      this.consultaService.getArchivosAdjuntos(this.idConsulta).subscribe(
+      this.consultaService.getArchivos(this.idConsulta).subscribe(
         (data) => {
-          this.archivoAdjuntos = data;
+          this.archivos = data;
         },
         (error) => {
           this.snackbarService.show('Error al cargar archivos.', 'error');
@@ -45,7 +45,7 @@ export class ArchivosAdjuntosComponent {
     if (this.idConsulta !== undefined && this.idConsulta != '') {
       const formData = new FormData();
       this.archivosSeleccionados.forEach(file => formData.append('archivos[]', file));
-      formData.append('idConsulta', this.idConsulta.toString());
+      formData.append('IdConsulta', this.idConsulta.toString());
 
       this.consultaService.agregarArchivo(formData).subscribe(
         (data) => {

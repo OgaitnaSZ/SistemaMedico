@@ -34,9 +34,9 @@ export class ConsultasApiService {
     return this.http.delete(`${this.apiUrl}${idConsulta}`);
   };
 
-  /* Archivos Adjuntos */
-  /* Obtener Archivos Adjuntos */
-  getArchivosAdjuntos(idConsulta: string): Observable<any> {
+  /* Archivos */
+  /* Obtener Archivos */
+  getArchivos(idConsulta: string): Observable<any> {
     return this.http.get(`${this.apiUrlArchivos}${idConsulta}`);
   }
 

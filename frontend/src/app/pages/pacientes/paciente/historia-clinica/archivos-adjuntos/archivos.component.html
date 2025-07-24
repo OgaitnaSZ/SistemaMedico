@@ -34,9 +34,9 @@
     }
 
 
-    @if (archivoAdjuntos.length>0) {
+    @if (archivos.length>0) {
       <ul class="list-disc list-inside space-y-1 text-blue-500 text-sm">
-        @for (archivo of archivoAdjuntos; track archivo) {
+        @for (archivo of archivos; track archivo) {
           <li class="group flex items-center justify-between relative">
             <div class="flex items-center space-x-2">
               <a target="_blank" [href]="'assets/' + archivo._id + '-' + archivo.name"

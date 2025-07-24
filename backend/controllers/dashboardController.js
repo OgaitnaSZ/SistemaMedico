@@ -28,7 +28,7 @@ exports.obtenerDashboard = async (req, res) => {
       });
 
       const archivosDia = await Archivo.countDocuments({
-        created_at: {
+        createdAt: {
           $gte: new Date(diaStr + 'T00:00:00.000Z'),
           $lte: new Date(diaStr + 'T23:59:59.999Z')
         }
@@ -69,13 +69,13 @@ exports.obtenerDashboard = async (req, res) => {
     }));
 
     const ultimosArchivos = await Archivo.find()
-      .sort({ created_at: -1 })
+      .sort({ createdAt: -1 })
       .limit(10)
-      .select('name created_at'); // ahora sí incluís el name
+      .select('name createdAt'); // ahora sí incluís el name
 
     const archivosDTO = ultimosArchivos.map(archivo => ({
       name: archivo.name,
-      created_at: archivo.created_at
+      createdAt: archivo.createdAt
     }));
 
     const dashboard = {
