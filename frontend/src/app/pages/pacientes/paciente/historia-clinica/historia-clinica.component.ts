@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HistoriaClinica } from '../../../../core/interfaces/historia-clinica.model';
-import { HistoriasClinicasApiService } from '../../../../core/services/historias-clinicas.service';
+import { Consulta } from '../../../../core/interfaces/consulta.model';
+import { ConsultasApiService } from '../../../../core/services/consultas.service';
 import { ArchivosAdjuntosComponent } from './archivos-adjuntos/archivos-adjuntos.component';
-import { FormConsultaComponent } from "./form-consulta/form-consulta.component";
+import { FormConsultaComponent } from './form-consulta/form-consulta.component';
 import { SnackbarService } from '../../../../core/services/snackbar.service';
 
 @Component({
@@ -16,9 +16,9 @@ export class HistoriaClinicaComponent {
   agregarConsulta: boolean = false;
   idEditando: string | null = null;
     
-  constructor(private historiaClinicaService: HistoriasClinicasApiService, private snackbarService: SnackbarService){}
+  constructor(private consultaService: ConsultasApiService, private snackbarService: SnackbarService){}
   
-  historialClinico: HistoriaClinica[] = [];
+  historialClinico: Consulta[] = [];
 
   ngOnInit(): void {
     this.cargarHistoriasClinicas();
@@ -32,7 +32,7 @@ export class HistoriaClinicaComponent {
 
   cargarHistoriasClinicas(){
     if (this.idPaciente !== undefined && this.idPaciente != '') {
-      this.historiaClinicaService.getHistoriasClinicas(this.idPaciente).subscribe(
+      this.consultaService.getHistoriasClinicas(this.idPaciente).subscribe(
         (data) => {
           this.historialClinico = data;
           console.log(data);
@@ -44,9 +44,9 @@ export class HistoriaClinicaComponent {
     }
   }
 
-  eliminarConsulta(idHistoriaClinica: string){
+  eliminarConsulta(idConsulta: string){
     if (confirm(`¿Estás seguro de que deseas eliminar la consulta}?`)) {
-      this.historiaClinicaService.eliminarHistoriaClinica(idHistoriaClinica).subscribe(
+      this.consultaService.eliminarConsulta(idConsulta).subscribe(
         (response) => {
           this.snackbarService.show('Eliminación exitosa.', 'success');
           this.cargarHistoriasClinicas();

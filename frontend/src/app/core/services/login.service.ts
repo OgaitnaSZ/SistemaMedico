@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class LoginService {
-  //private apiUrl = 'http://localhost/SistemaMedicoUI/api/usuarios.php'; (PHP)
   private apiUrl = 'http://localhost:4000/api/usuarios/';
 
   constructor(private http: HttpClient, private router: Router) {}

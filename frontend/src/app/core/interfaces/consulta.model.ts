@@ -1,4 +1,4 @@
-export interface HistoriaClinica {
+export interface Consulta {
   _id: string;
   idPaciente: string;
   fecha: Date;

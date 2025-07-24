@@ -2,33 +2,33 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Motivo</label>
-            <input type="text" [(ngModel)]="historiaClinica.motivoConsulta"  name="motivo" class="mt-1 w-full border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2" required>
+            <input type="text" [(ngModel)]="consulta.motivoConsulta"  name="motivo" class="mt-1 w-full border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2" required>
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Diagnóstico</label>
-            <input type="text" [(ngModel)]="historiaClinica.diagnostico" name="diagnostico" class="mt-1 w-full border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2" required>
+            <input type="text" [(ngModel)]="consulta.diagnostico" name="diagnostico" class="mt-1 w-full border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2" required>
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tratamiento</label>
-            <input type="text" [(ngModel)]="historiaClinica.tratamiento" name="tratamiento" class="mt-1 w-full border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2" required>
+            <input type="text" [(ngModel)]="consulta.tratamiento" name="tratamiento" class="mt-1 w-full border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2" required>
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Observaciones</label>
-            <input type="text" [(ngModel)]="historiaClinica.observaciones" name="observaciones" class="mt-1 w-full border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2">
+            <input type="text" [(ngModel)]="consulta.observaciones" name="observaciones" class="mt-1 w-full border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2">
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fecha</label>
             <input
                 type="date"
                 [max]="hoy"
-                [(ngModel)]="historiaClinica.fecha"
+                [(ngModel)]="consulta.fecha"
                 name="fecha"
                 class="mt-1 w-full border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2"
             >
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Parámetros Clínicos</label>
-            @for (parametro of historiaClinica.parametros; track $index){
+            @for (parametro of consulta.parametros; track $index){
                 <div class="flex space-x-2 items-center">
                     <input
                         [(ngModel)]="parametro.nombre"

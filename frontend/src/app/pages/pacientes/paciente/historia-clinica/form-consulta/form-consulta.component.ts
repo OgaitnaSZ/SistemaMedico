@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HistoriaClinica } from '../../../../../core/interfaces/historia-clinica.model';
-import { HistoriasClinicasApiService } from '../../../../../core/services/historias-clinicas.service';
+import { Consulta } from '../../../../../core/interfaces/consulta.model';
+import { ConsultasApiService } from '../../../../../core/services/consultas.service';
 import { ActivatedRoute } from '@angular/router';
 import { SnackbarService } from '../../../../../core/services/snackbar.service';
 
@@ -11,7 +11,7 @@ import { SnackbarService } from '../../../../../core/services/snackbar.service';
   templateUrl: './form-consulta.component.html',
 })
 export class FormConsultaComponent {
-  @Input() historiaClinica: HistoriaClinica = {
+  @Input() consulta: Consulta = {
     _id: '',
     idPaciente: '',
     fecha: new Date(),
@@ -26,7 +26,7 @@ export class FormConsultaComponent {
   @Output() onFormularioEnviado = new EventEmitter<void>();
 
   constructor(
-            private historiaClinicaService: HistoriasClinicasApiService, 
+            private consultaService: ConsultasApiService, 
             private route: ActivatedRoute, private snackbarService: SnackbarService){}
   
   title: string = '';
@@ -45,13 +45,13 @@ export class FormConsultaComponent {
       }
     });
 
-    if (this.historiaClinica._id != '') {
+    if (this.consulta._id != '') {
       this.modoEdicion = true;
-      this.title = 'Actualizar Consulta';
+      this.title = 'Actualizar consulta';
     } else {
       this.modoEdicion = false;
-      this.historiaClinica.idPaciente = this.idPaciente;
-      this.title = 'Agregar Consulta';
+      this.consulta.idPaciente = this.idPaciente;
+      this.title = 'Agregar consulta';
     }
   }
 
@@ -64,8 +64,8 @@ export class FormConsultaComponent {
   }
 
   crearConsulta(){
-    if (this.historiaClinica !== undefined) {
-      this.historiaClinicaService.crearHistoriaClinica(this.historiaClinica).subscribe(
+    if (this.consulta !== undefined) {
+      this.consultaService.crearConsulta(this.consulta).subscribe(
         (response) => {
           this.snackbarService.show('Consulta creada con éxito.', 'success');
           // Emitir el evento al padre
@@ -80,8 +80,8 @@ export class FormConsultaComponent {
   }
 
   actualizarConsulta(){
-    if (this.historiaClinica !== undefined) {
-      this.historiaClinicaService.editarHistoriaClinica(this.historiaClinica).subscribe(
+    if (this.consulta !== undefined) {
+      this.consultaService.editarConsulta(this.consulta).subscribe(
         (response) => {
           this.snackbarService.show('Consulta actualizada con éxito.', 'success');
           // Emitir el evento al padre
@@ -95,13 +95,13 @@ export class FormConsultaComponent {
   }
 
   agregarParametro() {
-    if(this.historiaClinica.parametros !== undefined){
-      this.historiaClinica.parametros.push({ nombre: '', valor: '' });
+    if(this.consulta.parametros !== undefined){
+      this.consulta.parametros.push({ nombre: '', valor: '' });
     }
   }
   eliminarParametro(index: number) {
-    if(this.historiaClinica.parametros !== undefined){
-      this.historiaClinica.parametros.splice(index, 1);
+    if(this.consulta.parametros !== undefined){
+      this.consulta.parametros.splice(index, 1);
     }
   }
 }
