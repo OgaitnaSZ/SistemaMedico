@@ -8,7 +8,7 @@ import { Consulta } from '../interfaces/consulta.model';
 })
 
 export class ConsultasApiService {
-    private apiUrl = 'http://localhost:4000/api/Consulta/';
+    private apiUrl = 'http://localhost:4000/api/consultas/';
     private apiUrlArchivos = 'http://localhost:4000/api/archivo/';
 
   constructor(private http: HttpClient) {}

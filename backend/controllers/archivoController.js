@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 exports.subirArchivos = async (req, res) => {
-  const IdHistoriaClinica = req.body.IdHistoriaClinica;
+  const IdConsulta = req.body.IdConsulta;
 
   if (!req.files || req.files.length === 0) {
     return res.status(400).json({ success: false, message: 'No se subieron archivos' });
@@ -14,7 +14,7 @@ exports.subirArchivos = async (req, res) => {
       req.files.map(async (file) => {
         // Crear registro en la bd
         const nuevoArchivo = new Archivo({
-          idHistoriaClinica: IdHistoriaClinica,
+          idConsulta: IdConsulta,
           name: file.originalname,
           filename: file.filename,
           path: file.path,
@@ -61,7 +61,7 @@ exports.listarArchivos = async (req, res) => {
 
     if (!id) return res.status(400).json({ msg: 'ID de archivo requerido' });
 
-    const archivos = await Archivo.find({ idHistoriaClinica: id });
+    const archivos = await Archivo.find({ idConsulta: id });
 
     // Solo devolver nombre del archivo y path
     const archivosSimplificados = archivos.map(a => ({

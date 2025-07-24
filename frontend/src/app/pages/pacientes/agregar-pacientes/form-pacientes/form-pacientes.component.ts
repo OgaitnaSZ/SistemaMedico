@@ -19,6 +19,9 @@ export class FormPacientesComponent {
   title: string = '';
   modoEdicion: boolean = false;
 
+  // Ajustar segun edad minima del paciente, actualmente 10
+  hoy = new Date(new Date().setFullYear(new Date().getFullYear() - 10)).toISOString().split('T')[0];
+
   // Variable de paciente
   paciente: Paciente = {
     nombre: '',

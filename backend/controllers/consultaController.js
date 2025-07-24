@@ -1,4 +1,4 @@
-const HistoriaClinica = require('../models/HistoriaClinica');
+const Consulta = require('../models/Consulta');
 const Paciente = require('../models/Paciente'); 
 
 /* tabu :( */
@@ -13,18 +13,18 @@ exports.listarPorPaciente = async (req, res) => {
         return res.status(400).json({ msg: 'ID de paciente requerido' });
         }
 
-        const historias = await HistoriaClinica.find({ idPaciente }).sort({ fecha: -1 }).lean();
+        const consultas = await Consulta.find({ idPaciente }).sort({ fecha: -1 }).lean();
 
-        res.status(200).json(historias);
+        res.status(200).json(consultas);
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ msg: 'Error al obtener historias clínicas' });
+        res.status(500).json({ msg: 'Error al obtener consultas clínicas' });
     }
 };
 
 
-exports.crearHistoriaClinica = async (req, res) => {
+exports.crearConsulta = async (req, res) => {
     try {
         const { idPaciente, fecha, motivoConsulta, diagnostico, tratamiento, observaciones, parametros } = req.body;
 
@@ -32,7 +32,7 @@ exports.crearHistoriaClinica = async (req, res) => {
             return res.status(400).json({ msg: 'Campos requeridos faltantes' });
         }
 
-        const nuevaHistoria = new HistoriaClinica({
+        const nuevaConsulta = new Consulta({
             idPaciente,
             fecha,
             motivoConsulta,
@@ -43,20 +43,20 @@ exports.crearHistoriaClinica = async (req, res) => {
             createdAt: new Date()
         });
 
-        await nuevaHistoria.save();
+        await nuevaConsulta.save();
 
         // Actualizar ultima consulta del paciente
         await actualizarUltimaVisita(idPaciente, fecha);
 
-        res.json({ message: 'Historia clínica creada correctamente.', id: nuevaHistoria._id });
+        res.json({ message: 'Consulta creada correctamente.', id: nuevaConsulta._id });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ msg: 'Error al crear historia clínica' });
+        res.status(500).json({ msg: 'Error al crear Consulta' });
     }
 };
 
 
-exports.actualizarHistoriaClinica = async (req, res) => {
+exports.actualizarConsulta = async (req, res) => {
     try {
         const { _id, idPaciente, fecha, motivoConsulta, diagnostico, tratamiento, observaciones, parametros } = req.body;
 
@@ -64,7 +64,7 @@ exports.actualizarHistoriaClinica = async (req, res) => {
             return res.status(400).json({ msg: 'Campos requeridos faltantes' });
         }
 
-        const historiaActualizada = await HistoriaClinica.findByIdAndUpdate(
+        const consultaActualizada = await Consulta.findByIdAndUpdate(
             _id,
             {
                 idPaciente,
@@ -78,22 +78,22 @@ exports.actualizarHistoriaClinica = async (req, res) => {
             { new: true }
         );
 
-        if (!historiaActualizada) {
-            return res.status(404).json({ msg: 'Historia clínica no encontrada' });
+        if (!consultaActualizada) {
+            return res.status(404).json({ msg: 'Consulta no encontrada' });
         }
 
         // Actualizar última visita del paciente
         await actualizarUltimaVisita(idPaciente, fecha);
 
-        res.json({ success: true, _id: historiaActualizada._id });
+        res.json({ success: true, _id: consultaActualizada._id });
 
     } catch (error) {
-        console.error("Error al actualizar historia clínica:", error);
-        res.status(500).json({ msg: 'Error al actualizar historia clínica' });
+        console.error("Error al actualizar Consulta:", error);
+        res.status(500).json({ msg: 'Error al actualizar Consulta' });
     }
 };
 
-exports.eliminarHistoriaClinica = async (req, res) => {
+exports.eliminarConsulta = async (req, res) => {
     try {
         const { id } = req.params;
         
@@ -101,27 +101,27 @@ exports.eliminarHistoriaClinica = async (req, res) => {
             return res.status(400).json({ msg: 'id requerido' });
         }
         
-        const historia = await HistoriaClinica.findById(id);
+        const consulta = await Consulta.findById(id);
 
-        if (!historia) {
-            return res.status(404).json({ msg: 'Historia clínica no encontrada' });
+        if (!consulta) {
+            return res.status(404).json({ msg: 'Consulta no encontrada' });
         }
         
-        const idPaciente = historia.idPaciente;
+        const idPaciente = consulta.idPaciente;
         
-        // Eliminar historia clínica
-        await HistoriaClinica.findByIdAndDelete({_id: id});
+        // Eliminar Consulta
+        await Consulta.findByIdAndDelete({_id: id});
 
         // Eliminar archivos asociados
-        eliminarArchivosPorHistoria(id);
+        eliminarArchivosPorConsulta(id);
 
         // Recalcular la última visita del paciente
         await recalcularUltimaVisita(idPaciente);
 
-        res.json({ success: true, message: 'Historia clínica eliminada exitosamente' });
+        res.json({ success: true, message: 'Consulta eliminada exitosamente' });
     } catch (error) {
-        console.error("Error al eliminar historia clínica:", error);
-        res.status(500).json({ msg: 'Error al eliminar historia clínica' });
+        console.error("Error al eliminar Consulta:", error);
+        res.status(500).json({ msg: 'Error al eliminar Consulta' });
     }
 };
 
@@ -146,8 +146,8 @@ const actualizarUltimaVisita = async (idPaciente, fechaConsulta) => {
 
 const recalcularUltimaVisita = async (idPaciente) => {
     try {
-        // Obtener la historia clínica más reciente del paciente
-        const historiaReciente = await HistoriaClinica
+        // Obtener la Consulta más reciente del paciente
+        const consultaReciente = await Consulta
             .find({ idPaciente })
             .sort({ fecha: -1 })
             .limit(1);
@@ -155,10 +155,10 @@ const recalcularUltimaVisita = async (idPaciente) => {
         const paciente = await Paciente.findById(idPaciente);
         if (!paciente) return;
 
-        if (historiaReciente.length > 0) {
-            paciente.ultima_visita = historiaReciente[0].fecha;
+        if (consultaReciente.length > 0) {
+            paciente.ultima_visita = consultaReciente[0].fecha;
         } else {
-            // Si no quedan historias clínicas, se elimina la fecha
+            // Si no quedan consultas, se elimina la fecha
             paciente.ultima_visita = null;
         }
 
@@ -168,10 +168,10 @@ const recalcularUltimaVisita = async (idPaciente) => {
     }
 };
 
-const eliminarArchivosPorHistoria = async (idHistoriaClinica) => {
+const eliminarArchivosPorConsulta = async (idConsulta) => {
   try {
-    // Buscar archivos asociados a la historia clínica
-    const archivos = await Archivo.find({ idHistoriaClinica });
+    // Buscar archivos asociados a la Consulta
+    const archivos = await Archivo.find({ idConsulta });
 
     for (const archivo of archivos) {
       const nombreArchivoFisico = `${archivo._id}-${archivo.name}`;
@@ -191,9 +191,9 @@ const eliminarArchivosPorHistoria = async (idHistoriaClinica) => {
     }
 
     // 3. Eliminar registros de la base de datos
-    const resultado = await Archivo.deleteMany({ idHistoriaClinica });
+    const resultado = await Archivo.deleteMany({ idConsulta });
   } catch (error) {
-    console.error('Error al eliminar archivos de historia clínica:', error);
+    console.error('Error al eliminar archivos de Consulta:', error);
     throw error;
   }
 };

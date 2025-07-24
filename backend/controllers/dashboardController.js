@@ -1,5 +1,5 @@
 const Paciente = require('../models/Paciente');
-const HistoriaClinica = require('../models/HistoriaClinica');
+const Consulta = require('../models/Consulta');
 const Archivo = require('../models/Archivo');
 
 exports.obtenerDashboard = async (req, res) => {
@@ -20,7 +20,7 @@ exports.obtenerDashboard = async (req, res) => {
         }
       });
 
-      const consultasDia = await HistoriaClinica.countDocuments({
+      const consultasDia = await Consulta.countDocuments({
         fecha: {
           $gte: new Date(diaStr + 'T00:00:00.000Z'),
           $lte: new Date(diaStr + 'T23:59:59.999Z')
@@ -57,7 +57,7 @@ exports.obtenerDashboard = async (req, res) => {
         }
       : null;
 
-    const ultimasConsultas = await HistoriaClinica.find().sort({ fecha: -1 }).limit(10);
+    const ultimasConsultas = await Consulta.find().sort({ fecha: -1 }).limit(10);
 
     const consultasDTO = await Promise.all(ultimasConsultas.map(async (consulta) => {
       const paciente = await Paciente.findOne({ _id: consulta.idPaciente });

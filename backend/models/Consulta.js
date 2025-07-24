@@ -11,7 +11,7 @@ const parametroSchema = new mongoose.Schema({
   }
 }, { _id: false });
 
-const historiaClinicaSchema = new mongoose.Schema({
+const consultaSchema = new mongoose.Schema({
   idPaciente: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Paciente',
@@ -44,4 +44,4 @@ const historiaClinicaSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('HistoriaClinica', historiaClinicaSchema);
+module.exports = mongoose.model('Consulta', consultaSchema);

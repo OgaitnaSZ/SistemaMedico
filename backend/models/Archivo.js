@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const archivoSchema = mongoose.Schema({
-    idHistoriaClinica: {
+    idConsulta: {
         type: String,
         required: true
     },
