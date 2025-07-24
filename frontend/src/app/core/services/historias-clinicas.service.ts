@@ -9,8 +9,9 @@ import { HistoriaClinica } from '../interfaces/historia-clinica.model';
 
 export class HistoriasClinicasApiService {
     //private apiUrl = 'http://localhost/SistemaMedicoUI/api/historias_clinicas.php'; (PHP)
-    private apiUrlArchivos = 'http://localhost/SistemaMedicoUI/api/archivos_adjuntos.php';
+    //private apiUrlArchivos = 'http://localhost/SistemaMedicoUI/api/archivos_adjuntos.php'; (PHP)
     private apiUrl = 'http://localhost:4000/api/historiaClinica/';
+    private apiUrlArchivos = 'http://localhost:4000/api/archivo/';
 
   constructor(private http: HttpClient) {}
 
@@ -38,17 +39,16 @@ export class HistoriasClinicasApiService {
   /* Archivos Adjuntos */
   /* Obtener Archivos Adjuntos */
   getArchivosAdjuntos(idHistoriaClinica: string): Observable<any> {
-    return this.http.get(`${this.apiUrlArchivos}?idHistoriaClinica=${idHistoriaClinica}`);
+    return this.http.get(`${this.apiUrlArchivos}${idHistoriaClinica}`);
   }
+
   /* Eliminar Archivo */
   eliminarArchivo(idArchivo: string): Observable<any> {
-    return this.http.request('delete' ,this.apiUrlArchivos, {
-      body: { idArchivo }
-    });
+    return this.http.delete(`${this.apiUrlArchivos}${idArchivo}`);
   }
+
   /* Agregar Archivo */
   agregarArchivo(formData: FormData): Observable<any>{
-    console.log(formData.keys);
     return this.http.post(`${this.apiUrlArchivos}`, formData);
   }
 

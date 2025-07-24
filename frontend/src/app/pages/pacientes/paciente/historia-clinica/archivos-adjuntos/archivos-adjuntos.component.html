@@ -39,17 +39,19 @@
         @for (archivo of archivoAdjuntos; track archivo) {
           <li class="group flex items-center justify-between relative">
             <div class="flex items-center space-x-2">
-              <a target="_blank" [href]="'assets/' + archivo.path"
+              <a target="_blank" [href]="'assets/' + archivo.name"
                 class="hover:underline transform group-hover:translate-x-5 group-hover:ms-1 transition-transform duration-200">
-                {{ archivo.path }}
+                {{ archivo.name }}
               </a>
-              <p class="text-gray-400 text-sm group-hover:translate-x-5 group-hover:ms-1">{{ archivo.created_at }}</p>
+              <p class="text-gray-400 text-sm group-hover:translate-x-5 group-hover:ms-1">{{ archivo.createdAt }}</p>
             </div>
             <!-- Botón de eliminar -->
-            <button class="absolute left-0 text-red-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200 material-symbols-outlined"
-              (click)="eliminarArchivo(archivo._id, archivo.path)">
+             @if(archivo._id){
+            <button class="absolute left-0 text-red-400 opacity-0 group-hover:opacity-100      transition-opacity duration-200 material-symbols-outlined"
+              (click)="eliminarArchivo(archivo._id, archivo.name)">
               delete
             </button>
+            }
           </li>
         }
       </ul>

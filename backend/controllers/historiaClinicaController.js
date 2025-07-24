@@ -2,8 +2,6 @@
 const HistoriaClinica = require('../models/HistoriaClinica');
 const Parametro = require('../models/HistoriaClinica');
 const Paciente = require('../models/Paciente'); 
-const fs = require('fs');
-const path = require('path');
 
 exports.listarPorPaciente = async (req, res) => {
     try {
@@ -93,8 +91,6 @@ exports.actualizarHistoriaClinica = async (req, res) => {
         res.status(500).json({ msg: 'Error al actualizar historia clínica' });
     }
 };
-
-
 
 exports.eliminarHistoriaClinica = async (req, res) => {
     try {

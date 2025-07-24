@@ -1,6 +1,6 @@
 export interface ArchivoAdjunto {
-  _id: string;
+  _id?: string;
   idHistoriaClinica: number;
-  path: string;
-  created_at: Date;
+  name: string;
+  createdAt?: Date;
 }
