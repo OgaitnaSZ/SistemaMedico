@@ -39,7 +39,7 @@
         @for (archivo of archivoAdjuntos; track archivo) {
           <li class="group flex items-center justify-between relative">
             <div class="flex items-center space-x-2">
-              <a target="_blank" [href]="'assets/' + archivo.name"
+              <a target="_blank" [href]="'assets/' + archivo._id + '-' + archivo.name"
                 class="hover:underline transform group-hover:translate-x-5 group-hover:ms-1 transition-transform duration-200">
                 {{ archivo.name }}
               </a>
