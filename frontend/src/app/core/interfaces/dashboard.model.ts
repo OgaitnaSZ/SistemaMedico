@@ -30,6 +30,6 @@ export interface Consulta {
 }
 
 export interface Archivo {
-  path: string;
+  name: string;
   created_at: Date; 
 }

@@ -1,25 +1,28 @@
-// controlador historiaClinicaController.js adaptado a Express + Mongoose
 const HistoriaClinica = require('../models/HistoriaClinica');
-const Parametro = require('../models/HistoriaClinica');
 const Paciente = require('../models/Paciente'); 
+
+/* tabu :( */
+const Archivo = require('../models/Archivo');
+const path = require('path');
+const fs = require('fs');
 
 exports.listarPorPaciente = async (req, res) => {
     try {
         const { idPaciente } = req.params;
-        if (!idPaciente) return res.status(400).json({ msg: 'ID de paciente requerido' });
+        if (!idPaciente) {
+        return res.status(400).json({ msg: 'ID de paciente requerido' });
+        }
 
         const historias = await HistoriaClinica.find({ idPaciente }).sort({ fecha: -1 }).lean();
 
-        if (!historias.length) {
-            return res.status(404).json({ msg: 'No hay historias clínicas disponibles para este paciente.' });
-        }
+        res.status(200).json(historias);
 
-        res.json(historias);
     } catch (error) {
         console.error(error);
         res.status(500).json({ msg: 'Error al obtener historias clínicas' });
     }
 };
+
 
 exports.crearHistoriaClinica = async (req, res) => {
     try {
@@ -54,8 +57,6 @@ exports.crearHistoriaClinica = async (req, res) => {
 
 
 exports.actualizarHistoriaClinica = async (req, res) => {
-    console.log("Actualizando historia clínica...");
-
     try {
         const { _id, idPaciente, fecha, motivoConsulta, diagnostico, tratamiento, observaciones, parametros } = req.body;
 
@@ -95,23 +96,24 @@ exports.actualizarHistoriaClinica = async (req, res) => {
 exports.eliminarHistoriaClinica = async (req, res) => {
     try {
         const { id } = req.params;
-
+        
         if (!id) {
             return res.status(400).json({ msg: 'id requerido' });
         }
         
         const historia = await HistoriaClinica.findById(id);
+
         if (!historia) {
             return res.status(404).json({ msg: 'Historia clínica no encontrada' });
         }
-
+        
         const idPaciente = historia.idPaciente;
-
-        // Eliminar parámetros relacionados
-        await Parametro.deleteMany({ id });
-
+        
         // Eliminar historia clínica
         await HistoriaClinica.findByIdAndDelete({_id: id});
+
+        // Eliminar archivos asociados
+        eliminarArchivosPorHistoria(id);
 
         // Recalcular la última visita del paciente
         await recalcularUltimaVisita(idPaciente);
@@ -164,4 +166,34 @@ const recalcularUltimaVisita = async (idPaciente) => {
     } catch (error) {
         console.error("Error al recalcular última visita:", error);
     }
+};
+
+const eliminarArchivosPorHistoria = async (idHistoriaClinica) => {
+  try {
+    // Buscar archivos asociados a la historia clínica
+    const archivos = await Archivo.find({ idHistoriaClinica });
+
+    for (const archivo of archivos) {
+      const nombreArchivoFisico = `${archivo._id}-${archivo.name}`;
+      const ruta = path.join(__dirname, '../uploads', nombreArchivoFisico);
+
+      try {
+        // Verificar y eliminar archivo físico
+        await fs.promises.unlink(ruta);
+      } catch (err) {
+        if (err.code === 'ENOENT') {
+          console.warn(`Archivo no encontrado en disco: ${ruta}`);
+        } else {
+          console.error(`Error al eliminar archivo físico: ${ruta}`, err);
+        }
+        // Seguimos eliminando los demás aunque uno falle
+      }
+    }
+
+    // 3. Eliminar registros de la base de datos
+    const resultado = await Archivo.deleteMany({ idHistoriaClinica });
+  } catch (error) {
+    console.error('Error al eliminar archivos de historia clínica:', error);
+    throw error;
+  }
 };

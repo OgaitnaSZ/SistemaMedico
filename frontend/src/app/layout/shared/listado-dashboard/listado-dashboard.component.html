@@ -14,7 +14,7 @@
       <li class="grid grid-cols-[2fr_1fr_1fr] items-center py-2 gap-4">
         <p>{{ item[labelField] }}</p>
         <p class="text-center">{{ item[dateField] | date:'dd-MM-yyyy' }}</p>
-        <a [routerLink]="[linkBase, item.idPaciente || item.path]" class="text-right">
+        <a [routerLink]="[linkBase, item.idPaciente || item.name]" class="text-right">
           <span class="material-symbols-outlined hover:text-blue-600">{{ icon }}</span>
         </a>
       </li>

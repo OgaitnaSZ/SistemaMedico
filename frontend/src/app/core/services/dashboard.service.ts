@@ -7,10 +7,11 @@ import { Dashboard } from '../interfaces/dashboard.model';
   providedIn: 'root'
 })
 export class DashboardService {
-  private apiUrl = 'http://localhost/SistemaMedicoUI/api/dashboard.php';
+  // private apiUrl = 'http://localhost/SistemaMedicoUI/api/dashboard.php'; (PHP)
+  private apiUrl = 'http://localhost:4000/api/dashboard/';
   constructor(private http: HttpClient) {}
 
   getEstadisticas(): Observable<Dashboard> {
-    return this.http.post<Dashboard>(this.apiUrl, {});
+    return this.http.get<Dashboard>(this.apiUrl, {});
   }
 }
