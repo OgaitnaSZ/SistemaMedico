@@ -23,14 +23,38 @@ exports.crearPaciente = async (req, res) => {
 }
 
 exports.obtenerPacientes = async (req, res) => {
-    try{
-        const pacientes = await Paciente.find();
-        res.json(pacientes);
-    }catch(error){
-        console.log(error);
-        res.status(500).send("Error al obtener pacientes")
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const search = req.query.search || '';
+
+        const query = {
+            $or: [
+                { nombre: { $regex: search, $options: 'i' } }, // búsqueda insensible a mayúsculas
+                { dni: { $regex: search, $options: 'i' } }     // suponiendo que DNI es string
+            ]
+        };
+
+        const skip = (page - 1) * limit;
+
+        const [pacientes, total] = await Promise.all([
+            Paciente.find(query).skip(skip).limit(limit),
+            Paciente.countDocuments(query)
+        ]);
+
+        res.json({
+            data: pacientes,
+            currentPage: page,
+            totalPages: Math.ceil(total / limit),
+            totalItems: total
+        });
+
+    } catch (error) {
+        console.error('Error al obtener pacientes:', error);
+        res.status(500).send("Error al obtener pacientes");
     }
-}
+};
+
 
 exports.actualizarPaciente = async (req, res) => {
     try {

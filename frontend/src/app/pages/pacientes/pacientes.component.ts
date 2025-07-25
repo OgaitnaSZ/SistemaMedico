@@ -19,7 +19,7 @@ export class PacientesComponent {
   finalDeLista = false;
   terminoBusqueda = '';
   pagina = 1;
-  limite = 20;
+  limite = 15;
 
   private busquedaSubject = new Subject<string>();
 
@@ -48,12 +48,13 @@ export class PacientesComponent {
     
     this.pacientesService.getPacientes(this.pagina, this.limite, this.terminoBusqueda || '').subscribe(
       (response) => {
+        console.log(response);
         // response es el array de pacientes
-        if (!response || response.length === 0) {
+        if (!response || response.data.length === 0) {
           this.finalDeLista = true;
         } else {
           // Agregar los pacientes al array existente
-          this.pacientes.push(...response);  // spread para agregar múltiples elementos
+          this.pacientes.push(...response.data);  // spread para agregar múltiples elementos
           this.pagina++;
         }
         this.cargando = false;

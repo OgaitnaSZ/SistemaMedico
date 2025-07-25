@@ -53,3 +53,6 @@ Thumbs.db
 /backend/logs/
 *.log
 npm-debug.log*
+
+
+faltantes.txt
