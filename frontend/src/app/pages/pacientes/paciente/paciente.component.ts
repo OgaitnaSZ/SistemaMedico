@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { DatosPacienteComponent } from './datos-paciente/datos-paciente.component';
 import { HistoriaClinicaComponent } from './historia-clinica/historia-clinica.component';

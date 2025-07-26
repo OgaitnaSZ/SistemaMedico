@@ -49,7 +49,7 @@ export class PacientesComponent {
     this.pacientesService.getPacientes(this.pagina, this.limite, this.terminoBusqueda || '').subscribe(
       (response) => {
         console.log(response);
-        // response es el array de pacientes
+        // response.data es el array de pacientes
         if (!response || response.data.length === 0) {
           this.finalDeLista = true;
         } else {

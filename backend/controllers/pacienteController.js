@@ -30,8 +30,8 @@ exports.obtenerPacientes = async (req, res) => {
 
         const query = {
             $or: [
-                { nombre: { $regex: search, $options: 'i' } }, // búsqueda insensible a mayúsculas
-                { dni: { $regex: search, $options: 'i' } }     // suponiendo que DNI es string
+                { nombre: { $regex: search, $options: 'i' } },
+                { dni: { $regex: search, $options: 'i' } }
             ]
         };
 

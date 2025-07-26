@@ -7,7 +7,6 @@ export interface Consulta {
   tratamiento: string;
   observaciones: string;
   parametros?: Parametro[];
-  createdAt: Date;
 }
 
 export interface Parametro {

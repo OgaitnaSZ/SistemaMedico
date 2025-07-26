@@ -40,7 +40,6 @@ exports.crearConsulta = async (req, res) => {
             tratamiento,
             observaciones,
             parametros,  // directo aquí
-            createdAt: new Date()
         });
 
         await nuevaConsulta.save();

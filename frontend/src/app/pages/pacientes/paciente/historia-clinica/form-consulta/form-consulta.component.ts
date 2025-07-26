@@ -19,8 +19,7 @@ export class FormConsultaComponent {
     diagnostico: '',
     tratamiento: '',
     observaciones: '',
-    parametros: [],
-    createdAt: new Date()
+    parametros: []
   };
 
   @Output() onFormularioEnviado = new EventEmitter<void>();

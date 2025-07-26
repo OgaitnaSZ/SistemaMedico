@@ -37,10 +37,6 @@ const consultaSchema = new mongoose.Schema({
   parametros: {
     type: [parametroSchema],
     default: []
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
   }
 });
 
