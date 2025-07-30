@@ -11,6 +11,6 @@ router.post('/Subir', upload.array('archivos[]'), archivoController.subirArchivo
 router.get('/Consulta/:id', archivoController.listarArchivos);
 
 // Eliminar archivo
-router.delete('/Eliminar:id', archivoController.eliminarArchivo);
+router.delete('/Eliminar/:id', archivoController.eliminarArchivo);
 
 module.exports = router;

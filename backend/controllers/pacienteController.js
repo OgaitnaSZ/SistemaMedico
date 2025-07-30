@@ -1,5 +1,12 @@
 const Paciente = require('../models/Paciente');
 
+/* tabu :( */
+const Consulta = require('../models/Consulta');
+const Archivo = require('../models/Archivo');
+
+const path = require('path');
+const fs = require('fs');
+
 exports.crearPaciente = async (req, res) => {
     try {
         const data = req.body;
@@ -88,18 +95,59 @@ exports.obtenerPaciente = async (req, res) => {
 }
 
 exports.eliminarPaciente = async (req, res) => {
-    try{
+    try {
         const { id } = req.params;
         if (!id) return res.status(400).json({ msg: 'id requerido' });
 
         const paciente = await Paciente.findById(id);
-        if(!paciente) return res.status(404).json({msg: 'No existe el paciente'});
-        
-        await Paciente.findByIdAndDelete({_id: id});
-        res.json({msg: "Paciente eliminado correctamente"});
+        if (!paciente) return res.status(404).json({ msg: 'No existe el paciente' });
 
-    }catch(error){
-        console.log(error);
-        res.status(500).send("Error al eliminar paciente")
+        // Buscar todas las consultas del paciente
+        const consultas = await Consulta.find({ idPaciente: id });
+
+        // Eliminar archivos y consultas asociadas
+        for (const consulta of consultas) {
+            await Consulta.findByIdAndDelete(consulta._id);
+            eliminarArchivosPorConsulta(consulta._id); 
+        }
+
+        // Eliminar paciente
+        await Paciente.findByIdAndDelete(id);
+
+        res.json({ msg: "Paciente eliminado correctamente con sus consultas y archivos asociados" });
+    } catch (error) {
+        console.log("Error al eliminar paciente:", error);
+        res.status(500).send("Error al eliminar paciente");
     }
-}
+};
+
+const eliminarArchivosPorConsulta = async (idConsulta) => {
+  try {
+    // Buscar archivos asociados a la Consulta
+    const archivos = await Archivo.find({ idConsulta });
+
+    for (const archivo of archivos) {
+      const nombreArchivoFisico = `${archivo._id}-${archivo.name}`;
+      const ruta = path.join(__dirname, '../uploads', nombreArchivoFisico);
+
+      try {
+        // Verificar y eliminar archivo físico
+        await fs.promises.unlink(ruta);
+      } catch (err) {
+        if (err.code === 'ENOENT') {
+          console.warn(`Archivo no encontrado en disco: ${ruta}`);
+        } else {
+          console.error(`Error al eliminar archivo físico: ${ruta}`, err);
+        }
+        // Seguir eliminando los demás aunque uno falle
+      }
+    }
+
+    // 3. Eliminar registros de la base de datos
+    await Archivo.deleteMany({ idConsulta });
+    
+  } catch (error) {
+    console.error('Error al eliminar archivos de Consulta:', error);
+    throw error;
+  }
+};
