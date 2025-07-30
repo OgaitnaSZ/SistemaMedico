@@ -31,7 +31,7 @@ export class FormConsultaComponent {
   title: string = '';
   modoEdicion: boolean = false;
   idPaciente: string = '';
-  hoy: string = new Date().toISOString().split('T')[0];
+  hoy: string = new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60000)).toISOString().split('T')[0];
 
   ngOnInit(){
     // Obtener id de paciente
