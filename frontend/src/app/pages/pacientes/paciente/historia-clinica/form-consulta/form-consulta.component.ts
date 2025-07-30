@@ -14,7 +14,7 @@ export class FormConsultaComponent {
   @Input() consulta: Consulta = {
     _id: '',
     idPaciente: '',
-    fecha: new Date(),
+    fecha: new Date().toISOString().substring(0, 10),
     motivoConsulta: '',
     diagnostico: '',
     tratamiento: '',
@@ -43,6 +43,9 @@ export class FormConsultaComponent {
         this.snackbarService.show('ID de paciente no encontrado.', 'error');
       }
     });
+
+    // Formatear fecha para el input
+    this.consulta.fecha = new Date(this.consulta.fecha).toISOString().substring(0, 10);
 
     if (this.consulta._id != '') {
       this.modoEdicion = true;

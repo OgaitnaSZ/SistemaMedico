@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
+import { Paciente } from '../../../core/interfaces/paciente.model';
 import { DatosPacienteComponent } from './datos-paciente/datos-paciente.component';
 import { HistoriaClinicaComponent } from './historia-clinica/historia-clinica.component';
 import { PacientesApiService } from '../../../core/services/pacientes.service';
@@ -12,6 +13,20 @@ import { SnackbarService } from '../../../core/services/snackbar.service';
 })
 export class PacienteComponent {
   idPaciente: string = '';
+
+  // Variable de paciente
+  paciente: Paciente = {
+    _id: '',
+    nombre: '',
+    apellido: '',
+    genero: '',
+    dni: '',
+    fechaNacimiento: new Date().toISOString().substring(0, 10),
+    telefono: '',
+    email: '',
+    direccion: '',
+    createdAt: new Date
+  };
 
   constructor(private route: ActivatedRoute, 
               private pacienteService: PacientesApiService,
@@ -28,6 +43,19 @@ export class PacienteComponent {
         this.snackbarService.show('ID de paciente no encontrado.', 'error');
       }
     });
+
+   // Cargar Datos de Paciente
+    if (this.idPaciente !== undefined && this.idPaciente != '') {
+      this.pacienteService.getPaciente(this.idPaciente).subscribe(
+        (data) => {
+          this.paciente = data;
+        },
+        (error) => {
+          console.error('Error al cargar paciente:', error.error);
+          this.snackbarService.show('Paciente no encontrado', 'error');
+        }
+      );
+    }
   }
 
   eliminarPaciente(){

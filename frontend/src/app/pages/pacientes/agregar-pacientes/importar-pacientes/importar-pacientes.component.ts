@@ -21,7 +21,7 @@ export class ImportarPacientesComponent {
     apellido: '',
     genero: '',
     dni: '',
-    fechaNacimiento: new Date,
+    fechaNacimiento: new Date().toISOString().substring(0, 10),
     telefono: '',
     email: '',
     direccion: '',
@@ -64,15 +64,25 @@ export class ImportarPacientesComponent {
       const data = new Uint8Array(lector.result as ArrayBuffer);
       const workbook = XLSX.read(data, { type: 'array' });
   
-      // Tomamos la primera hoja del Excel
+      // Tomar la primera hoja del Excel
       const nombreHoja = workbook.SheetNames[0];
       const hoja = workbook.Sheets[nombreHoja];
   
-      // Convertimos a JSON
+      // Convertir a JSON
       const jsonDatos: any[] = XLSX.utils.sheet_to_json(hoja, { defval: '' });
   
-      // Limpiamos el arreglo de pacientes importados antes de cargar nuevos
+      // Limpiar el arreglo de pacientes importados antes de cargar nuevos
       this.pacientesImportados = [];
+
+      // Función para convertir fechas de Excel (número de serie) a formato ISO
+      const convertirFecha = (fecha: any) => {
+        // Si es un número (probable valor de fecha de Excel)
+        if (!isNaN(fecha) && fecha !== '') {
+          const excelDate = new Date((fecha - 25569) * 86400 * 1000);  // Excel fecha base
+          return excelDate.toISOString().split('T')[0]; // Devuelve en formato YYYY-MM-DD
+        }
+        return fecha;  // Si no es un número, devolver el valor tal cual
+      };
   
       // Mapear datos del Excel a modelo Paciente
       jsonDatos.forEach((fila, index) => {
@@ -84,7 +94,7 @@ export class ImportarPacientesComponent {
             apellido: valores[1] || '',
             genero: valores[2] || '',
             dni: valores[3] || '',
-            fechaNacimiento: this.parsearFecha(valores[4]),
+            fechaNacimiento: convertirFecha(valores[4]),
             telefono: valores[5] || '',
             email: valores[6] || '',
             direccion: valores[7] || '',
@@ -98,51 +108,5 @@ export class ImportarPacientesComponent {
     };
   
     lector.readAsArrayBuffer(archivo);
-  }
-
-  // Función para parsear fecha desde string dd/mm/yyyy o yyyy-mm-dd
-  parsearFecha(fechaStr: any): Date {
-    if (!fechaStr) return new Date();
-  
-    // Si es número (serial de Excel)
-    if (typeof fechaStr === 'number') {
-      const fechaExcel = XLSX.SSF.parse_date_code(fechaStr);
-      if (fechaExcel) {
-        return new Date(fechaExcel.y, fechaExcel.m - 1, fechaExcel.d);
-      }
-    }
-  
-    // Si es string, puede ser fecha o número serial como string
-    if (typeof fechaStr === 'string') {
-      // ¿Es número como string? --> intentar parsearlo como serial de Excel
-      if (!isNaN(+fechaStr) && +fechaStr > 10000) {
-        const fechaExcel = XLSX.SSF.parse_date_code(+fechaStr);
-        if (fechaExcel) {
-          return new Date(fechaExcel.y, fechaExcel.m - 1, fechaExcel.d);
-        }
-      }
-  
-      // Intentar dd/mm/yyyy
-      const partes = fechaStr.split('/');
-      if (partes.length === 3) {
-        const dia = Number(partes[0]);
-        const mes = Number(partes[1]) - 1;
-        const anio = Number(partes[2]);
-        return new Date(anio, mes, dia);
-      }
-  
-      // Intentar ISO
-      const fecha = new Date(fechaStr);
-      if (!isNaN(fecha.getTime())) {
-        return fecha;
-      }
-    }
-  
-    // Si ya es Date
-    if (fechaStr instanceof Date) {
-      return fechaStr;
-    }
-  
-    return new Date();
   }
 }

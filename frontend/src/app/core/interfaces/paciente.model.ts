@@ -4,7 +4,7 @@ export interface Paciente {
   apellido: string;
   genero: string;
   dni: string;
-  fechaNacimiento: Date;
+  fechaNacimiento: string;
   telefono: string;
   email: string;
   direccion: string;

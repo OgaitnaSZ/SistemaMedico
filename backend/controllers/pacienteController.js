@@ -107,8 +107,8 @@ exports.eliminarPaciente = async (req, res) => {
 
         // Eliminar archivos y consultas asociadas
         for (const consulta of consultas) {
-            await Consulta.findByIdAndDelete(consulta._id);
             eliminarArchivosPorConsulta(consulta._id); 
+            await Consulta.findByIdAndDelete(consulta._id);
         }
 
         // Eliminar paciente

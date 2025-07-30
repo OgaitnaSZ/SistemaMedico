@@ -13,7 +13,7 @@
     @for (item of items; track item) {
       <li class="grid grid-cols-[2fr_1fr_1fr] items-center py-2 gap-4">
         <p>{{ item[labelField] }}</p>
-        <p class="text-center">{{ item[dateField] | date:'dd-MM-yyyy' }}</p>
+        <p class="text-center">{{ item[dateField] | date:'dd-MM-yyyy' : 'UTC' }}</p>
 
         @if (item.idPaciente) {
           <a [routerLink]="[linkBase, item.idPaciente]" class="text-right">

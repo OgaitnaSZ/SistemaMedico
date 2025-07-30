@@ -10,37 +10,22 @@ import { SnackbarService } from '../../../../core/services/snackbar.service';
   templateUrl: './datos-paciente.component.html',
 })
 export class DatosPacienteComponent {
-  @Input() idPaciente: string | undefined; // ID recibido del componente padre
-
-  constructor(private pacienteService: PacientesApiService, private snackbarService: SnackbarService){}
-
-  // Variable de paciente
-  paciente: Paciente = {
+  @Input() paciente: Paciente = {
     _id: '',
     nombre: '',
     apellido: '',
     genero: '',
     dni: '',
-    fechaNacimiento: new Date,
+    fechaNacimiento: '',
     telefono: '',
     email: '',
     direccion: '',
     createdAt: new Date
   };
+  
+  constructor(private pacienteService: PacientesApiService, private snackbarService: SnackbarService){}
 
   ngOnInit(): void {
-    // Cargar Datos de Paciente
-    if (this.idPaciente !== undefined && this.idPaciente != '') {
-      this.pacienteService.getPaciente(this.idPaciente).subscribe(
-        (data) => {
-          this.paciente = data;
-          console.log(this.paciente);
-        },
-        (error) => {
-          console.error('Error al cargar paciente:', error.error);
-          this.snackbarService.show('Paciente no encontrado', 'error');
-        }
-      );
-    }
+
   }
 }

@@ -28,7 +28,7 @@ export class FormPacientesComponent {
     apellido: '',
     genero: '',
     dni: '',
-    fechaNacimiento: new Date,
+    fechaNacimiento: new Date().toISOString().substring(0, 10),
     telefono: '',
     email: '',
     direccion: '',
@@ -98,8 +98,9 @@ export class FormPacientesComponent {
   cargarPaciente(){
     this.pacienteService.getPaciente(this.idPaciente).subscribe(
       (response) => {
-        console.log('Paciente encontrado:', response);
         this.paciente = response;
+        // Formatear fecha para el input
+        this.paciente.fechaNacimiento = new Date(this.paciente.fechaNacimiento).toISOString().substring(0, 10);
       },
       (error) => {
         this.snackbarService.show('Error al cargar paciente.', 'error');

@@ -35,7 +35,6 @@ export class HistoriaClinicaComponent {
       this.consultaService.getHistoriasClinicas(this.idPaciente).subscribe(
         (data) => {
           this.historialClinico = data;
-          console.log(data);
         },
         (error) => {
           this.snackbarService.show('No hay historia clinica.', 'error');

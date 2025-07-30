@@ -1,7 +1,7 @@
 export interface Consulta {
   _id: string;
   idPaciente: string;
-  fecha: Date;
+  fecha: string;
   motivoConsulta: string;
   diagnostico: string;
   tratamiento: string;
