@@ -48,7 +48,7 @@
     [items]="dashboard.ultimas10Consultas"
     labelField="nombreCompleto"
     dateField="fecha"
-    linkBase="/pacientes"
+    linkBase="/pacientes/"
     verTodasLink="/pacientes"
     icon="keyboard_arrow_right"
   ></app-listado-dashboard>
@@ -58,8 +58,9 @@
     [titulo]="'Últimos Archivos'"
     [items]="dashboard.ultimos10Archivos"
     labelField="name"
-    dateField="created_at"
-    linkBase="/assets/uploads"
+    idArchivo="_id"
+    dateField="createdAt"
+    linkBase="http://localhost:4000/uploads/"
     icon="visibility"
   ></app-listado-dashboard>
 </div>

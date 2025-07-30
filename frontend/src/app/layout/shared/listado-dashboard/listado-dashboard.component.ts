@@ -15,4 +15,5 @@ export class ListadoDashboardComponent {
   @Input() linkBase: string = '';
   @Input() verTodasLink?: string;
   @Input() icon: string = 'keyboard_arrow_right';
+  @Input() idArchivo: string = '';
 }

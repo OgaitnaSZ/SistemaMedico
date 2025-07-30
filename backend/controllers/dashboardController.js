@@ -79,9 +79,10 @@ exports.obtenerDashboard = async (req, res) => {
     const ultimosArchivos = await Archivo.find()
       .sort({ createdAt: -1 })
       .limit(10)
-      .select('name createdAt');
+      .select('_id name createdAt');
 
     const archivosDTO = ultimosArchivos.map(archivo => ({
+      _id: archivo._id,
       name: archivo.name,
       createdAt: archivo.createdAt
     }));

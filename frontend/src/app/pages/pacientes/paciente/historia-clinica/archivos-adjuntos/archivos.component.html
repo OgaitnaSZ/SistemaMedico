@@ -39,7 +39,7 @@
         @for (archivo of archivos; track archivo) {
           <li class="group flex items-center justify-between relative">
             <div class="flex items-center space-x-2">
-              <a target="_blank" [href]="'assets/' + archivo._id + '-' + archivo.name"
+              <a target="_blank" [href]="'http://localhost:4000/uploads/' + archivo._id + '-' + archivo.name"
                 class="hover:underline transform group-hover:translate-x-5 group-hover:ms-1 transition-transform duration-200">
                 {{ archivo.name }}
               </a>
@@ -47,7 +47,7 @@
             </div>
             <!-- Botón de eliminar -->
              @if(archivo._id){
-            <button class="absolute left-0 text-red-400 opacity-0 group-hover:opacity-100      transition-opacity duration-200 material-symbols-outlined"
+            <button class="absolute left-0 text-red-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200 material-symbols-outlined"
               (click)="eliminarArchivo(archivo._id, archivo.name)">
               delete
             </button>

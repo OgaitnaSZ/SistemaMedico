@@ -38,10 +38,9 @@ export class DashboardComponent {
   cargarEstadisticas(){
     this.dashboardService.getEstadisticas().subscribe(
       (response)=>{
-        console.log("recibidos:", response);
         this.dashboard = response;
-        console.log(this.dashboard);
         this.calcularTotales();
+        console.log(response);
       },
       (error)=>{
         this.snackbarService.show('Error al obtener estadisticas.', 'error');

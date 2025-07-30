@@ -11,7 +11,7 @@ export class DashboardService {
   private apiUrl = 'http://localhost:4000/api/dashboard/';
   constructor(private http: HttpClient) {}
 
-  getEstadisticas(): Observable<Dashboard> {
-    return this.http.get<Dashboard>(this.apiUrl, {});
+  getEstadisticas(): Observable<any> {
+    return this.http.get<any>(this.apiUrl, {});
   }
 }

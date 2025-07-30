@@ -17,6 +17,10 @@ app.use('/api/consultas', require('./routes/consulta'));
 app.use('/api/archivo', require('./routes/archivo'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 
+// Hacer pública la carpeta 'uploads' para acceder a los archivos
+const path = require('path');
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.listen(4000, ()=>{
     console.log('El servidor esta corriendo');
 })
