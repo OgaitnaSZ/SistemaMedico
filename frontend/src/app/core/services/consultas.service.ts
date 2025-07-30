@@ -15,39 +15,39 @@ export class ConsultasApiService {
 
   // Listar Historias Clinicas de un paciente
   getHistoriasClinicas(idPaciente: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}${idPaciente}`);
+    return this.http.get(`${this.apiUrl}Paciente/${idPaciente}`);
   }
 
   // Crear Historia Clinica
   crearConsulta(consulta: Consulta): Observable<any> {
     console.log(consulta);
-    return this.http.post(`${this.apiUrl}`, consulta);
+    return this.http.post(`${this.apiUrl}Crear`, consulta);
   }
 
   // Editar Historia Clinica
   editarConsulta(consulta: Consulta): Observable<any> {
-    return this.http.put(`${this.apiUrl}`, consulta);
+    return this.http.put(`${this.apiUrl}Actualizar`, consulta);
   }
 
   // Eliminar Historia Clinica
   eliminarConsulta(idConsulta: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}${idConsulta}`);
+    return this.http.delete(`${this.apiUrl}Eliminar/${idConsulta}`);
   };
 
   /* Archivos */
   /* Obtener Archivos */
   getArchivos(idConsulta: string): Observable<any> {
-    return this.http.get(`${this.apiUrlArchivos}${idConsulta}`);
+    return this.http.get(`${this.apiUrlArchivos}Consulta/${idConsulta}`);
   }
 
   /* Eliminar Archivo */
   eliminarArchivo(idArchivo: string): Observable<any> {
-    return this.http.delete(`${this.apiUrlArchivos}${idArchivo}`);
+    return this.http.delete(`${this.apiUrlArchivos}Eliminar/${idArchivo}`);
   }
 
   /* Agregar Archivo */
   agregarArchivo(formData: FormData): Observable<any>{
-    return this.http.post(`${this.apiUrlArchivos}`, formData);
+    return this.http.post(`${this.apiUrlArchivos}Subir`, formData);
   }
 
 }

@@ -4,15 +4,15 @@ const consultaController = require('../controllers/consultaController');
 
 // api/consultas
 // Crear consulta
-router.post('/', consultaController.crearConsulta);
+router.post('/Crear', consultaController.crearConsulta);
 
 // Listar por paciente
-router.get('/:idPaciente', consultaController.listarPorPaciente);
+router.get('/Paciente/:idPaciente', consultaController.listarPorPaciente);
 
 // Actualizar consulta
-router.put('/', consultaController.actualizarConsulta);
+router.put('/Actualizar', consultaController.actualizarConsulta);
 
 // Eliminar consulta
-router.delete('/:id', consultaController.eliminarConsulta);
+router.delete('/Eliminar/:id', consultaController.eliminarConsulta);
 
 module.exports = router;

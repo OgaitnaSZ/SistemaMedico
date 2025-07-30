@@ -8,11 +8,13 @@ exports.obtenerDashboard = async (req, res) => {
     const hace7Dias = new Date();
     hace7Dias.setDate(hoy.getDate() - 6);
 
+    // Estadisticas de los ultimos 7 dias
     const stats = await Promise.all([...Array(7)].map(async (_, i) => {
       const fecha = new Date(hace7Dias);
       fecha.setDate(hace7Dias.getDate() + i);
       const diaStr = fecha.toISOString().split('T')[0];
 
+      // Cantidad de pacientes
       const pacientesDia = await Paciente.countDocuments({
         createdAt: {
           $gte: new Date(diaStr + 'T00:00:00.000Z'),
@@ -20,6 +22,7 @@ exports.obtenerDashboard = async (req, res) => {
         }
       });
 
+      // Cantidad de consultas
       const consultasDia = await Consulta.countDocuments({
         fecha: {
           $gte: new Date(diaStr + 'T00:00:00.000Z'),
@@ -27,6 +30,7 @@ exports.obtenerDashboard = async (req, res) => {
         }
       });
 
+      // Cantidad de archivos
       const archivosDia = await Archivo.countDocuments({
         createdAt: {
           $gte: new Date(diaStr + 'T00:00:00.000Z'),
@@ -43,6 +47,7 @@ exports.obtenerDashboard = async (req, res) => {
       };
     }));
 
+    // Buscar al paciente de la ultima consulta
     const ultimoPaciente = await Paciente.findOne({ ultima_visita: { $ne: null } })
       .sort({ ultima_visita: -1 });
 
@@ -58,7 +63,7 @@ exports.obtenerDashboard = async (req, res) => {
         }
       : null;
 
-
+    // Buscar ultimas 10 consultas
     const ultimasConsultas = await Consulta.find().sort({ fecha: -1 }).limit(10);
 
     const consultasDTO = await Promise.all(ultimasConsultas.map(async (consulta) => {
@@ -70,16 +75,18 @@ exports.obtenerDashboard = async (req, res) => {
       };
     }));
 
+    // Buscar ultimos 10 archivos
     const ultimosArchivos = await Archivo.find()
       .sort({ createdAt: -1 })
       .limit(10)
-      .select('name createdAt'); // ahora sí incluís el name
+      .select('name createdAt');
 
     const archivosDTO = ultimosArchivos.map(archivo => ({
       name: archivo.name,
       createdAt: archivo.createdAt
     }));
 
+    // Adjuntar todos los datos
     const dashboard = {
       statsUltimos7Dias: stats,
       ultimoPaciente: pacienteDTO,

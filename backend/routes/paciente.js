@@ -5,18 +5,18 @@ const pacienteController = require('../controllers/pacienteController');
 
 // api/pacientes
 // Crear paciente
-router.post('/', pacienteController.crearPaciente);
+router.post('/Crear', pacienteController.crearPaciente);
 
 // Obtener pacientes
-router.get('/', pacienteController.obtenerPacientes);
+router.get('/Pacientes', pacienteController.obtenerPacientes);
 
 // Actualizar paciente
-router.put('/', pacienteController.actualizarPaciente);
+router.put('/Actualizar', pacienteController.actualizarPaciente);
 
 // Obtener paciente
-router.get('/:id', pacienteController.obtenerPaciente);
+router.get('/Paciente/:id', pacienteController.obtenerPaciente);
 
 // Eliminar paciente
-router.delete('/:id', pacienteController.eliminarPaciente);
+router.delete('/Eliminar/:id', pacienteController.eliminarPaciente);
 
 module.exports = router

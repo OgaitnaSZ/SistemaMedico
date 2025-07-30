@@ -3,13 +3,13 @@ const path = require('path');
 const fs = require('fs');
 
 exports.subirArchivos = async (req, res) => {
-  const IdConsulta = req.body.IdConsulta;
-
-  if (!req.files || req.files.length === 0) {
-    return res.status(400).json({ success: false, message: 'No se subieron archivos' });
-  }
-
   try {
+    const IdConsulta = req.body.IdConsulta;
+
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ success: false, message: 'No se subieron archivos' });
+    }
+
     const archivosGuardados = await Promise.all(
       req.files.map(async (file) => {
         // Crear registro en la bd
@@ -80,27 +80,20 @@ exports.eliminarArchivo = async (req, res) => {
   try {
     const idArchivo = req.params.id;
     
-    if (!idArchivo) {
-      return res.status(400).json({ success: false, message: 'ID de archivo requerido' });
-    }
+    if (!idArchivo) return res.status(400).json({ success: false, message: 'ID de archivo requerido' });
     
     const archivo = await Archivo.findById(idArchivo);
     
-    if (!archivo) {
-      return res.status(404).json({ success: false, message: 'Archivo no encontrado en la base de datos' });
-    }
+    if (!archivo) return res.status(404).json({ success: false, message: 'Archivo no encontrado en la base de datos' });
 
     // Construir el nombre del archivo físico (id+'-'+name)
     const nombreArchivoFisico = `${archivo._id}-${archivo.name}`;
     const ruta = path.join(__dirname, '../uploads', nombreArchivoFisico);
 
-    console.log('Ruta que se está intentando eliminar:', ruta);
-
     // Verificar si el archivo existe
     if (fs.existsSync(ruta)) {
       // Eliminar archivo físico
       fs.unlinkSync(ruta);
-      console.log('Archivo físico eliminado correctamente.');
     } else {
       console.warn('El archivo físico no existía, pero se procederá a eliminar el registro de la BD');
     }

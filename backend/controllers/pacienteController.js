@@ -64,11 +64,10 @@ exports.actualizarPaciente = async (req, res) => {
             { new: true }
         );
 
-        if (!pacienteActualizado) {
-            return res.status(404).json({ msg: 'No existe el paciente' });
-        }
+        if (!pacienteActualizado) return res.status(404).json({ msg: 'No existe el paciente' });
 
         res.json(pacienteActualizado);
+
     } catch (error) {
         res.status(500).send("Error al actualizar paciente");
     }
@@ -78,9 +77,7 @@ exports.obtenerPaciente = async (req, res) => {
     try{
         let paciente = await Paciente.findById(req.params.id);
 
-        if(!paciente){
-            return res.status(404).json({msg: 'No existe el paciente'})
-        }
+        if(!paciente)return res.status(404).json({msg: 'No existe el paciente'})
         
         res.json(paciente);
 
@@ -93,18 +90,12 @@ exports.obtenerPaciente = async (req, res) => {
 exports.eliminarPaciente = async (req, res) => {
     try{
         const { id } = req.params;
-
-        if (!id) {
-            return res.status(400).json({ msg: 'id requerido' });
-        }
+        if (!id) return res.status(400).json({ msg: 'id requerido' });
 
         const paciente = await Paciente.findById(id);
-        if(!paciente){
-            return res.status(404).json({msg: 'No existe el paciente'});
-        }
+        if(!paciente) return res.status(404).json({msg: 'No existe el paciente'});
         
         await Paciente.findByIdAndDelete({_id: id});
-
         res.json({msg: "Paciente eliminado correctamente"});
 
     }catch(error){

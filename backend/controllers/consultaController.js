@@ -1,17 +1,16 @@
 const Consulta = require('../models/Consulta');
-const Paciente = require('../models/Paciente'); 
 
 /* tabu :( */
+const Paciente = require('../models/Paciente'); 
 const Archivo = require('../models/Archivo');
+
 const path = require('path');
 const fs = require('fs');
 
 exports.listarPorPaciente = async (req, res) => {
     try {
         const { idPaciente } = req.params;
-        if (!idPaciente) {
-        return res.status(400).json({ msg: 'ID de paciente requerido' });
-        }
+        if (!idPaciente) return res.status(400).json({ msg: 'ID de paciente requerido' });
 
         const consultas = await Consulta.find({ idPaciente }).sort({ fecha: -1 }).lean();
 
@@ -39,12 +38,12 @@ exports.crearConsulta = async (req, res) => {
             diagnostico,
             tratamiento,
             observaciones,
-            parametros,  // directo aquí
+            parametros, 
         });
 
         await nuevaConsulta.save();
 
-        // Actualizar ultima consulta del paciente
+        // Actualizar fecha de ultima consulta del paciente
         await actualizarUltimaVisita(idPaciente, fecha);
 
         res.json({ message: 'Consulta creada correctamente.', id: nuevaConsulta._id });
@@ -81,7 +80,7 @@ exports.actualizarConsulta = async (req, res) => {
             return res.status(404).json({ msg: 'Consulta no encontrada' });
         }
 
-        // Actualizar última visita del paciente
+        // Actualizar fecha de última visita del paciente
         await actualizarUltimaVisita(idPaciente, fecha);
 
         res.json({ success: true, _id: consultaActualizada._id });
@@ -96,15 +95,11 @@ exports.eliminarConsulta = async (req, res) => {
     try {
         const { id } = req.params;
         
-        if (!id) {
-            return res.status(400).json({ msg: 'id requerido' });
-        }
-        
+        if (!id) return res.status(400).json({ msg: 'id requerido' });
+
         const consulta = await Consulta.findById(id);
 
-        if (!consulta) {
-            return res.status(404).json({ msg: 'Consulta no encontrada' });
-        }
+        if (!consulta) return res.status(404).json({ msg: 'Consulta no encontrada' });
         
         const idPaciente = consulta.idPaciente;
         
@@ -185,12 +180,13 @@ const eliminarArchivosPorConsulta = async (idConsulta) => {
         } else {
           console.error(`Error al eliminar archivo físico: ${ruta}`, err);
         }
-        // Seguimos eliminando los demás aunque uno falle
+        // Seguir eliminando los demás aunque uno falle
       }
     }
 
     // 3. Eliminar registros de la base de datos
-    const resultado = await Archivo.deleteMany({ idConsulta });
+    await Archivo.deleteMany({ idConsulta });
+    
   } catch (error) {
     console.error('Error al eliminar archivos de Consulta:', error);
     throw error;

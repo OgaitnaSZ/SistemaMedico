@@ -14,31 +14,31 @@ export class PacientesApiService {
 
   // Listar Pacientes
   getPacientes(page: number, limit: number, search: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}?page=${page}&limit=${limit}&search=${search}`);
+    return this.http.get(`${this.apiUrl}Pacientes/?page=${page}&limit=${limit}&search=${search}`);
   }
 
   // Obtener Paciente por Id
   getPaciente(idPaciente: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}${idPaciente}`);
+    return this.http.get(`${this.apiUrl}Paciente/${idPaciente}`);
   }
 
   // Crear Paciente
   crearPaciente(paciente: Paciente): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, paciente);
+    return this.http.post(`${this.apiUrl}Crear`, paciente);
   }
 
   // Crear Pacientes
   crearPacientes(pacientes: Paciente[]): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, pacientes);
+    return this.http.post(`${this.apiUrl}Crear`, pacientes);
   }
 
   // Eliminar Paciente
   eliminarPaciente(idPaciente: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}${idPaciente}`);  
+    return this.http.delete(`${this.apiUrl}Eliminar/${idPaciente}`);  
   }
 
   // Editar Paciente
   editarPaciente(paciente: Paciente): Observable<any> {
-    return this.http.put(this.apiUrl, paciente);
+    return this.http.put(`${this.apiUrl}Actualizar`, paciente);
   }
 }

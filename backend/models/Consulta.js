@@ -19,7 +19,7 @@ const consultaSchema = new mongoose.Schema({
   },
   fecha: {
     type: Date,
-    required: true
+    default: Date.now
   },
   motivoConsulta: {
     type: String,
