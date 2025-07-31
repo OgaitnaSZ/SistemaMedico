@@ -121,6 +121,7 @@ exports.eliminarPaciente = async (req, res) => {
     }
 };
 
+/*--- Funciones Extras ---*/
 const eliminarArchivosPorConsulta = async (idConsulta) => {
   try {
     // Buscar archivos asociados a la Consulta

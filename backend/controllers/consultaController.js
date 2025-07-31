@@ -44,7 +44,7 @@ exports.crearConsulta = async (req, res) => {
         await nuevaConsulta.save();
 
         // Actualizar fecha de ultima consulta del paciente
-        await actualizarUltimaVisita(idPaciente, fecha);
+        await recalcularUltimaVisita(idPaciente);
 
         res.json({ message: 'Consulta creada correctamente.', id: nuevaConsulta._id });
     } catch (error) {
@@ -81,7 +81,7 @@ exports.actualizarConsulta = async (req, res) => {
         }
 
         // Actualizar fecha de última visita del paciente
-        await actualizarUltimaVisita(idPaciente, fecha);
+        await recalcularUltimaVisita(idPaciente);
 
         res.json({ success: true, _id: consultaActualizada._id });
 
@@ -119,25 +119,7 @@ exports.eliminarConsulta = async (req, res) => {
     }
 };
 
-
-// Funcion para actualizar ultima consulta de un paciente
-const actualizarUltimaVisita = async (idPaciente, fechaConsulta) => {
-    try {
-        const paciente = await Paciente.findById(idPaciente);
-        if (!paciente) return;
-
-        const fechaNueva = new Date(fechaConsulta);
-        const fechaActual = new Date(paciente.ultima_visita || 0);
-
-        if (fechaNueva > fechaActual) {
-            paciente.ultima_visita = fechaNueva;
-            await paciente.save();
-        }
-    } catch (error) {
-        console.error(`Error al actualizar última visita del paciente ${idPaciente}:`, error);
-    }
-};
-
+/*--- Funciones Extras ---*/
 const recalcularUltimaVisita = async (idPaciente) => {
     try {
         // Obtener la Consulta más reciente del paciente

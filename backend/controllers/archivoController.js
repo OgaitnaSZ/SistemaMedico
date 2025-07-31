@@ -12,10 +12,12 @@ exports.subirArchivos = async (req, res) => {
 
     const archivosGuardados = await Promise.all(
       req.files.map(async (file) => {
+        const nombreNormalizado = normalizarNombreArchivo(file.originalname);
+
         // Crear registro en la bd
         const nuevoArchivo = new Archivo({
           idConsulta: IdConsulta,
-          name: file.originalname,
+          name: nombreNormalizado,
           filename: file.filename,
           path: file.path,
           mimetype: file.mimetype,
@@ -115,3 +117,17 @@ exports.eliminarArchivo = async (req, res) => {
     });
   }
 };
+
+/*--- Funciones Extras ---*/
+const normalizarNombreArchivo = (nombre) => {
+  const texto = Buffer.from(nombre, 'latin1').toString('utf8'); // fuerza la decodificación correcta
+
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")   // elimina tildes
+    .replace(/ñ/gi, "n")               // ñ por n
+    .replace(/[^a-z0-9.\s-]/gi, "")    // remueve cualquier otra rareza
+    .replace(/\s+/g, "-")              // espacios por guiones
+    .toLowerCase();                   // todo a minúsculas
+};
+
