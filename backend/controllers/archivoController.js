@@ -28,7 +28,7 @@ exports.subirArchivos = async (req, res) => {
         const archivoGuardado = await nuevoArchivo.save();
         
         // Construir el nombre del archivo fisico (id-name)
-        const nuevoNombre = `${archivoGuardado._id}-${file.originalname}`;
+        const nuevoNombre = `${archivoGuardado._id}-${nombreNormalizado}`;
         const nuevaRuta = path.join(path.dirname(file.path), nuevoNombre);
         
         // Renombrar el archivo físico

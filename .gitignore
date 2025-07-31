@@ -54,5 +54,5 @@ Thumbs.db
 *.log
 npm-debug.log*
 
-
-faltantes.txt
+# Archivos subidos
+/backend/uploads
