@@ -38,52 +38,36 @@ exports.loginUsuario = async (req, res) =>{
     }
 }
 
-exports.obtenerUsuario = async (req, res) => {
-    try{
-        let usuario = await Usuario.findById(req.params.id);
-        if(!usuario) return res.status(404).json({msg: 'No existe el usuario'})
-        
-        res.json({
-            nombre: usuario.nombre,
-            user: usuario.user
-        });
-
-    }catch(error){
-        console.log(error);
-        res.status(500).send("Error al obtener usuario")
-    }
-}
-
 exports.actualizarUsuario = async (req, res) => {
     try {
-        const { idUsuario, nombre, user, password, newPassword } = req.body;
+        const { _id, nombre, user, password, newPassword } = req.body;
 
         // Validar campos obligatorios
-        if (!idUsuario || !nombre || !user || !password) {
-            return res.status(400).json({ msg: 'idUsuario, nombre, user y password son requeridos' });
-        }
+        if (!_id || !nombre || !user || !password) return handleHttpError(res, "Faltan datos", 400);
         
-        // Buscar usuario por idUsuario 
-        const usuario = await Usuario.findById(idUsuario);
-        if (!usuario) return res.status(404).json({ msg: 'Usuario no encontrado' });
+        // Buscar usuario por _id 
+        const usuario = await Usuario.findById(_id);
+        if (!usuario) return handleHttpError(res, "Usuario no encontrado", 404);
 
+        
         // Verificar contraseña actual
         const esPasswordValido = await bcrypt.compare(password, usuario.password);
-        if (!esPasswordValido)  return res.status(400).json({ msg: 'La contraseña actual no es correcta' });
-
+        if (!esPasswordValido) return handleHttpError(res, "La contraseña actual no es correcta", 400);
+        
         // Actualizar campos
         usuario.nombre = nombre;
         usuario.user = user;
-
+        
         // Si hay nueva contraseña, hashearla y actualizar
         if (newPassword && newPassword.trim() !== '') usuario.password = await bcrypt.hash(newPassword, 10);
         
         await usuario.save();
 
+        res.status(200);
         res.json({ message: 'Datos actualizados correctamente' });
 
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ msg: 'Error al actualizar datos del usuario' });
+        console.error("Error al guardar usuario:", error); // <-- Agrega esto
+        handleHttpError(res, "Error al actualizar datos del usuario", 500);
     }
 }

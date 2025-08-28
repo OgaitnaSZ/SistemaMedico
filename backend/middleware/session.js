@@ -1,12 +1,9 @@
 const { verifyToken } = require("../utils/handlerJwt");
 const { handleHttpError } = require("../utils/handleError")
-const model = require("../models");
-const getPropiedades = require("../utils/handlePropiedadesEngine");
-const propertiesKey = getPropiedades();
+const Usuario = require("../models/Usuario");
 
 const authMiddleware = async (req, res, next) => {
     try{
-        const User = model.User;
         if(!req.headers.authorization){
             handleHttpError(res, "NOT TOKEN", 401);
         }
@@ -20,11 +17,7 @@ const authMiddleware = async (req, res, next) => {
 
         console.log(dataToken);
 
-        const query = {
-            [propertiesKey.id]: dataToken[propertiesKey.id]
-        }
-
-        const user = await User.findOne(query);
+        const user = await Usuario.findOne({_id: dataToken._id});
         
         req.user = user
 
