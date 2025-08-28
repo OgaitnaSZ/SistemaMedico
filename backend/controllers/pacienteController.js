@@ -1,11 +1,11 @@
 const Paciente = require('../models/Paciente');
+const { handleHttpError } = require("../utils/handleError");
+const path = require('path');
+const fs = require('fs');
 
 /* tabu :( */
 const Consulta = require('../models/Consulta');
 const Archivo = require('../models/Archivo');
-
-const path = require('path');
-const fs = require('fs');
 
 exports.crearPaciente = async (req, res) => {
     try {
@@ -24,8 +24,7 @@ exports.crearPaciente = async (req, res) => {
         return res.status(201).json({ mensaje: 'Paciente creado correctamente', paciente });
 
     } catch (error) {
-        console.error(error);
-        return res.status(500).send("Error al crear paciente(s)");
+        return handleHttpError(res, "Error al crear paciente(s)", 500)
     }
 }
 
@@ -57,8 +56,7 @@ exports.obtenerPacientes = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error al obtener pacientes:', error);
-        res.status(500).send("Error al obtener pacientes");
+        return handleHttpError(res, "Error al obtener pacientes", 500)
     }
 };
 
@@ -71,36 +69,36 @@ exports.actualizarPaciente = async (req, res) => {
             { new: true }
         );
 
-        if (!pacienteActualizado) return res.status(404).json({ msg: 'No existe el paciente' });
+        if (!pacienteActualizado) return handleHttpError(res, "No existe el paciente", 404);
 
-        res.json(pacienteActualizado);
+        return res.status(200).json({ mensaje: 'Paciente actualizado correctamente', pacienteActualizado });
 
     } catch (error) {
-        res.status(500).send("Error al actualizar paciente");
+        return handleHttpError(res, "Error al actualizar paciente", 500);
     }
 };
 
 exports.obtenerPaciente = async (req, res) => {
     try{
         let paciente = await Paciente.findById(req.params.id);
+        console.log(paciente);
 
-        if(!paciente)return res.status(404).json({msg: 'No existe el paciente'})
+        if(!paciente) return handleHttpError(res, "No existe el paciente", 404);
         
         res.json(paciente);
 
     }catch(error){
-        console.log(error);
-        res.status(500).send("Error al obtener paciente")
+        return handleHttpError(res, "Error al obtener paciente", 500);
     }
 }
 
 exports.eliminarPaciente = async (req, res) => {
     try {
         const { id } = req.params;
-        if (!id) return res.status(400).json({ msg: 'id requerido' });
+        if (!id) return handleHttpError(res, "ID del paciente es requerido", 400);
 
         const paciente = await Paciente.findById(id);
-        if (!paciente) return res.status(404).json({ msg: 'No existe el paciente' });
+        if (!paciente) return handleHttpError(res, "No existe el paciente", 404);
 
         // Buscar todas las consultas del paciente
         const consultas = await Consulta.find({ idPaciente: id });
@@ -116,8 +114,7 @@ exports.eliminarPaciente = async (req, res) => {
 
         res.json({ msg: "Paciente eliminado correctamente con sus consultas y archivos asociados" });
     } catch (error) {
-        console.log("Error al eliminar paciente:", error);
-        res.status(500).send("Error al eliminar paciente");
+        return handleHttpError(res, "Error al eliminar paciente", 500);
     }
 };
 

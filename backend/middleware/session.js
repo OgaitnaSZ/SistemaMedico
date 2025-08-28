@@ -15,8 +15,6 @@ const authMiddleware = async (req, res, next) => {
             handleHttpError(res, "NOT PAYLOAD DATA", 401);
         }
 
-        console.log(dataToken);
-
         const user = await Usuario.findOne({_id: dataToken._id});
         
         req.user = user

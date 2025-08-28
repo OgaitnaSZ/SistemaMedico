@@ -40,28 +40,25 @@ exports.loginUsuario = async (req, res) =>{
 
 exports.actualizarUsuario = async (req, res) => {
     try {
-        const { _id, nombre, user, password, newPassword } = req.body;
+        const usuario = req.body;
 
-        // Validar campos obligatorios
-        if (!_id || !nombre || !user || !password) return handleHttpError(res, "Faltan datos", 400);
-        
         // Buscar usuario por _id 
-        const usuario = await Usuario.findById(_id);
-        if (!usuario) return handleHttpError(res, "Usuario no encontrado", 404);
+        const userDB = await Usuario.findById(usuario._id);
+        if (!userDB) return handleHttpError(res, "Usuario no encontrado", 404);
 
         
         // Verificar contraseña actual
-        const esPasswordValido = await bcrypt.compare(password, usuario.password);
+        const esPasswordValido = await bcrypt.compare(usuario.password, userDB.password);
         if (!esPasswordValido) return handleHttpError(res, "La contraseña actual no es correcta", 400);
         
         // Actualizar campos
-        usuario.nombre = nombre;
-        usuario.user = user;
+        userDB.nombre = usuario.nombre;
+        userDB.user = usuario.user;
         
         // Si hay nueva contraseña, hashearla y actualizar
-        if (newPassword && newPassword.trim() !== '') usuario.password = await bcrypt.hash(newPassword, 10);
+        if (usuario.newPassword && usuario.newPassword.trim() !== '') userDB.password = await bcrypt.hash(usuario.newPassword, 10);
         
-        await usuario.save();
+        await userDB.save();
 
         res.status(200);
         res.json({ message: 'Datos actualizados correctamente' });

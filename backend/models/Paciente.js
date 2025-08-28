@@ -10,28 +10,23 @@ const pacienteSchema = mongoose.Schema({
         required: true
     },
     genero: {
-        type: String,
-        required: true
+        type: String
     },
     dni: {
         type: String,
         required: true
     },
     fechaNacimiento:{
-        type: Date,
-        required: true
+        type: Date
     },
     telefono:{
-        type: String,
-        required: true
+        type: String
     },
     email:{
-        type: String,
-        required: true
+        type: String
     },
     direccion:{
-        type: String,
-        required: true
+        type: String
     },
     ultima_visita: {
         type: Date
