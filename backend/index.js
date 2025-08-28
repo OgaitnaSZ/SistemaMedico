@@ -7,10 +7,12 @@ const app = express();
 
 // Conectar db
 conectarDB();
-app.use(cors());
 
+app.use(cors());
 app.use(express.json());
 
+
+// Rutas
 app.use('/api/pacientes', require('./routes/paciente'));
 app.use('/api/usuarios', require('./routes/usuario'));
 app.use('/api/consultas', require('./routes/consulta'));
@@ -21,6 +23,4 @@ app.use('/api/dashboard', require('./routes/dashboard'));
 const path = require('path');
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.listen(4000, ()=>{
-    console.log('El servidor esta corriendo');
-})
+app.listen(4000)

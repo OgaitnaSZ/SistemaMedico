@@ -1,30 +1,40 @@
 const Usuario = require('../models/Usuario');
 const bcrypt = require('bcryptjs');
-const crypto = require('crypto');
+const { matchedData } = require('express-validator');
+const { compare } = require("../utils/handlePassword");
+const { tokenSign } = require("../utils/handlerJwt");
+const { handleHttpError } = require("../utils/handleError");
 
 exports.loginUsuario = async (req, res) =>{ 
     try {
-        const { user, pass } = req.body;
-        if (!user || !pass) return res.status(400).json({ msg: 'Usuario y contraseña son requeridos' });
-
-        const usuario = await Usuario.findOne({ user });
-        if (!usuario) return res.status(401).json({ msg: 'Credenciales inválidas' });
-
-        const passwordValida = await bcrypt.compare(pass, usuario.password);
-        if (!passwordValida) return res.status(401).json({ msg: 'Credenciales inválidas' });
-
-        // Generar token random simple (32 chars hex)
-        const token = crypto.randomBytes(16).toString('hex');
-
-        return res.json({
-            token,
-            idUsuario: usuario._id,
-            nombre: usuario.nombre
-        });
+        req = matchedData(req);
+        const user = await Usuario.findOne({user: req.usuario});
+        
+        if(!user){
+            handleHttpError(res, "USUARIO NO EXISTE")
+            return
+        }
+        
+        const hashPassword = user.get("password");
+        const check = await compare(req.password, hashPassword);
+        if(!check){
+            handleHttpError(res, "PASSWORD INVALIDO", 401)
+            return
+        }
+        
+        user.set('password', undefined, {strict: false});
+        
+        const data = {
+            token: await tokenSign(user),
+            user
+        }
+        
+        res.status(200)
+        res.send({data})
 
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ msg: 'Error en el servidor' });
+        res.status(401)
+        handleHttpError(res, "ERROR_LOGIN_USER")
     }
 }
 
