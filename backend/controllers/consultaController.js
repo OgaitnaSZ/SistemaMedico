@@ -1,93 +1,74 @@
 const Consulta = require('../models/Consulta');
+const path = require('path');
+const fs = require('fs');
+const { handleHttpError } = require("../utils/handleError");
 
 /* tabu :( */
 const Paciente = require('../models/Paciente'); 
 const Archivo = require('../models/Archivo');
 
-const path = require('path');
-const fs = require('fs');
-
 exports.listarPorPaciente = async (req, res) => {
     try {
-        const { idPaciente } = req.params;
-        if (!idPaciente) return res.status(400).json({ msg: 'ID de paciente requerido' });
+        const { id } = req.params;
 
-        const consultas = await Consulta.find({ idPaciente }).sort({ fecha: -1 }).lean();
+        const consultas = await Consulta.find({ idPaciente: id }).sort({ fecha: -1 }).lean();
+
+        if (!consultas || consultas.length == 0) return handleHttpError(res, "No hay consultas para este paciente", 404);
 
         res.status(200).json(consultas);
 
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ msg: 'Error al obtener consultas clínicas' });
+        return handleHttpError(res, "Error al obtener consultas clínicas", 500);
     }
 };
 
 
 exports.crearConsulta = async (req, res) => {
     try {
-        const { idPaciente, fecha, motivoConsulta, diagnostico, tratamiento, observaciones, parametros } = req.body;
+        const nuevaConsulta = req.body;
 
-        if (!idPaciente || !fecha || !motivoConsulta) {
-            return res.status(400).json({ msg: 'Campos requeridos faltantes' });
-        }
+        const consulta = new Consulta(nuevaConsulta);
 
-        const nuevaConsulta = new Consulta({
-            idPaciente,
-            fecha,
-            motivoConsulta,
-            diagnostico,
-            tratamiento,
-            observaciones,
-            parametros, 
-        });
-
-        await nuevaConsulta.save();
+        await consulta.save();
 
         // Actualizar fecha de ultima consulta del paciente
-        await recalcularUltimaVisita(idPaciente);
+        await recalcularUltimaVisita(consulta.idPaciente);
 
-        res.json({ message: 'Consulta creada correctamente.', id: nuevaConsulta._id });
+        res.json({ message: 'Consulta creada correctamente:', consulta});
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ msg: 'Error al crear Consulta' });
+        return handleHttpError(res, "Error al crear consulta", 500);
     }
 };
 
 
 exports.actualizarConsulta = async (req, res) => {
     try {
-        const { _id, idPaciente, fecha, motivoConsulta, diagnostico, tratamiento, observaciones, parametros } = req.body;
-
-        if (!_id || !idPaciente || !fecha || !motivoConsulta) {
-            return res.status(400).json({ msg: 'Campos requeridos faltantes' });
-        }
+        const consulta = req.body;
 
         const consultaActualizada = await Consulta.findByIdAndUpdate(
-            _id,
+            consulta._id,
             {
-                idPaciente,
-                fecha,
-                motivoConsulta,
-                diagnostico,
-                tratamiento,
-                observaciones,
-                parametros: Array.isArray(parametros) ? parametros : [],
+                idPaciente: consulta.idPaciente,
+                fecha: consulta.fecha,
+                motivoConsulta: consulta.motivoConsulta,
+                diagnostico: consulta.diagnostico,
+                tratamiento: consulta.tratamiento,
+                observaciones: consulta.observaciones,
+                parametros: Array.isArray(consulta.parametros) ? consulta.parametros : [],
             },
             { new: true }
         );
 
-        if (!consultaActualizada) {
-            return res.status(404).json({ msg: 'Consulta no encontrada' });
-        }
+        if (!consultaActualizada) return handleHttpError(res, "Consulta no encontrada", 404);
 
         // Actualizar fecha de última visita del paciente
-        await recalcularUltimaVisita(idPaciente);
+        await recalcularUltimaVisita(consulta.idPaciente);
 
-        res.json({ success: true, _id: consultaActualizada._id });
+        return res.status(200).json({ mensaje: 'Consulta actualizada correctamente', consultaActualizada });
 
     } catch (error) {
-        console.error("Error al actualizar Consulta:", error);
-        res.status(500).json({ msg: 'Error al actualizar Consulta' });
+        console.log(error);
+        return handleHttpError(res, "Error al actualizar Consulta", 500);
     }
 };
 
@@ -95,13 +76,9 @@ exports.eliminarConsulta = async (req, res) => {
     try {
         const { id } = req.params;
         
-        if (!id) return res.status(400).json({ msg: 'id requerido' });
-
         const consulta = await Consulta.findById(id);
 
-        if (!consulta) return res.status(404).json({ msg: 'Consulta no encontrada' });
-        
-        const idPaciente = consulta.idPaciente;
+        if (!consulta) return handleHttpError(res, "Consulta no encontrada", 404);
         
         // Eliminar Consulta
         await Consulta.findByIdAndDelete({_id: id});
@@ -110,12 +87,11 @@ exports.eliminarConsulta = async (req, res) => {
         eliminarArchivosPorConsulta(id);
 
         // Recalcular la última visita del paciente
-        await recalcularUltimaVisita(idPaciente);
+        await recalcularUltimaVisita(consulta.idPaciente);
 
         res.json({ success: true, message: 'Consulta eliminada exitosamente' });
     } catch (error) {
-        console.error("Error al eliminar Consulta:", error);
-        res.status(500).json({ msg: 'Error al eliminar Consulta' });
+        return handleHttpError(res, "Error al eliminar consulta", 500);
     }
 };
 
@@ -170,7 +146,6 @@ const eliminarArchivosPorConsulta = async (idConsulta) => {
     await Archivo.deleteMany({ idConsulta });
     
   } catch (error) {
-    console.error('Error al eliminar archivos de Consulta:', error);
-    throw error;
+    throw handleHttpError(res, "Error al eliminar archivos de Consulta: error", 500);
   }
 };

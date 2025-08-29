@@ -1,6 +1,7 @@
 const Paciente = require('../models/Paciente');
 const Consulta = require('../models/Consulta');
 const Archivo = require('../models/Archivo');
+const { handleHttpError } = require("../utils/handleError");
 
 exports.obtenerDashboard = async (req, res) => {
   try {
@@ -97,7 +98,6 @@ exports.obtenerDashboard = async (req, res) => {
 
     res.json(dashboard);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error al obtener el dashboard' });
+    return handleHttpError(res, "Error al obtener el dashboard", 500);
   }
 };
