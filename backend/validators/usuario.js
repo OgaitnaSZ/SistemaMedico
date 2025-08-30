@@ -1,16 +1,16 @@
-const { check, validationResult, param } = require("express-validator");
+const { check } = require("express-validator");
 const validateResults = require("../utils/handleValidator");
 
 const validatorUsuario = [
-    check("nombre").exists()
-    .notEmpty()
-    .exists(),
-    check("user").exists()
-    .notEmpty()
-    .exists(),
-    check("password").exists()
-    .notEmpty()
+    check("nombre")
     .exists()
+    .notEmpty(),
+    check("user")
+    .exists()
+    .notEmpty(),
+    check("password")
+    .exists()
+    .notEmpty()
     .isLength({min:3, max:20}),
     (req, res, next) => validateResults(req, res, next)
 ]

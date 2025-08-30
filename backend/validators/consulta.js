@@ -1,18 +1,18 @@
-const { check, validationResult, param } = require("express-validator");
+const { check, param } = require("express-validator");
 const validateResults = require("../utils/handleValidator");
 
 const validatorConsulta = [
-    check("idPaciente").exists()
-    .notEmpty()
+    check("idPaciente")
     .exists()
+    .notEmpty()
     .isMongoId(),
-    check("fecha").exists()
-    .notEmpty()
+    check("fecha")
     .exists()
-    .isDate(),
-    check("motivoConsulta").exists()
     .notEmpty()
-    .exists(),
+    .isDate(),
+    check("motivoConsulta")
+    .exists()
+    .notEmpty(),
     (req, res, next) => validateResults(req, res, next)
 ]
 

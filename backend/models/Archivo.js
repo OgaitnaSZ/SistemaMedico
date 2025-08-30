@@ -6,12 +6,10 @@ const archivoSchema = mongoose.Schema({
         required: true
     },
     name: {
-        type: String,
-        required: true
+        type: String
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
+    url: {
+        type: String
     }
 });
 

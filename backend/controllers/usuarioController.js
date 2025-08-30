@@ -64,7 +64,6 @@ exports.actualizarUsuario = async (req, res) => {
         res.json({ message: 'Datos actualizados correctamente' });
 
     } catch (error) {
-        console.error("Error al guardar usuario:", error); // <-- Agrega esto
         handleHttpError(res, "Error al actualizar datos del usuario", 500);
     }
 }

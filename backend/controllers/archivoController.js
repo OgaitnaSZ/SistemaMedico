@@ -1,59 +1,30 @@
 const Archivo = require('../models/Archivo');
-const path = require('path');
 const fs = require('fs');
+const { matchedData } = require('express-validator');
+const { handleHttpError } = require("../utils/handleError");
+const PUBLIC_URL = process.env.PUBLIC_URL;
+const MEDIA_PATH = `${__dirname}/../uploads`;
 
 exports.subirArchivos = async (req, res) => {
   try {
-    const IdConsulta = req.body.IdConsulta;
+    const { body, files } = req;
 
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ success: false, message: 'No se subieron archivos' });
-    }
+    if (!files || files.length === 0) return handleHttpError(res, "No se recibieron archivos", 400);
 
-    const archivosGuardados = await Promise.all(
-      req.files.map(async (file) => {
-        const nombreNormalizado = normalizarNombreArchivo(file.originalname);
+    // Mapear todos los archivos subidos
+    const archivosData = files.map(file => ({
+      idConsulta: body.idConsulta,
+      name: file.filename,
+      url: `${PUBLIC_URL}/uploads/${file.filename}`
+    }));
 
-        // Crear registro en la bd
-        const nuevoArchivo = new Archivo({
-          idConsulta: IdConsulta,
-          name: nombreNormalizado,
-          filename: file.filename,
-          path: file.path,
-          mimetype: file.mimetype,
-          size: file.size,
-          createdAt: new Date()
-        });
+    // Guardar en la db
+    const data = await Archivo.insertMany(archivosData);
 
-        const archivoGuardado = await nuevoArchivo.save();
-        
-        // Construir el nombre del archivo fisico (id-name)
-        const nuevoNombre = `${archivoGuardado._id}-${nombreNormalizado}`;
-        const nuevaRuta = path.join(path.dirname(file.path), nuevoNombre);
-        
-        // Renombrar el archivo físico
-        fs.renameSync(file.path, nuevaRuta);
-        
-        // Actualizar el registro con la nueva información
-        archivoGuardado.filename = nuevoNombre;
-        archivoGuardado.path = nuevaRuta;
-        
-        return await archivoGuardado.save();
-      })
-    );
+    return res.status(201).send({ mensaje: 'Archivo subido con exito', data });
 
-    res.json({
-      success: true,
-      message: 'Archivos subidos y guardados exitosamente.',
-      archivos: archivosGuardados,
-    });
   } catch (error) {
-    console.error('Error al subir archivos:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Error al guardar archivos',
-      error: error.message 
-    });
+    return handleHttpError(res, "Error al subir archivo", 500);
   }
 };
 
@@ -61,73 +32,54 @@ exports.listarArchivos = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!id) return res.status(400).json({ msg: 'ID de archivo requerido' });
-
     const archivos = await Archivo.find({ idConsulta: id });
 
-    // Solo devolver nombre del archivo y path
     const archivosSimplificados = archivos.map(a => ({
       _id: a._id,
-      name: a.name
+      idConsulta: a.idConsulta,
+      name: a.name,
+      url: a.url
     }));
 
     res.status(200).json(archivosSimplificados);
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error al obtener archivos');
+    return handleHttpError(res, "Error al obtener archivos", 500);
   }
 };
 
 exports.eliminarArchivo = async (req, res) => {
   try {
-    const idArchivo = req.params.id;
-    
-    if (!idArchivo) return res.status(400).json({ success: false, message: 'ID de archivo requerido' });
-    
-    const archivo = await Archivo.findById(idArchivo);
-    
-    if (!archivo) return res.status(404).json({ success: false, message: 'Archivo no encontrado en la base de datos' });
+    const { id } = req.params;
 
-    // Construir el nombre del archivo físico (id+'-'+name)
-    const nombreArchivoFisico = `${archivo._id}-${archivo.name}`;
-    const ruta = path.join(__dirname, '../uploads', nombreArchivoFisico);
+    const archivo = await Archivo.findById(id);
+  
+    if (!archivo) handleHttpError(res, "Archivo no encontrado en la base de datos", 404);
+
+    const deleteResponse = await Archivo.findByIdAndDelete({ _id: id });
+
+    const filename  = archivo.name;
+    console.log(filename);
+    const filePath = `${MEDIA_PATH}/${filename}`; 
+    
+    console.log(filePath);
 
     // Verificar si el archivo existe
-    if (fs.existsSync(ruta)) {
+    if (fs.existsSync(filePath)) {
       // Eliminar archivo físico
-      fs.unlinkSync(ruta);
+      fs.unlinkSync(filePath);
     } else {
       console.warn('El archivo físico no existía, pero se procederá a eliminar el registro de la BD');
     }
 
-    // Eliminar de la base de datos
-    await Archivo.findByIdAndDelete(idArchivo);
-    
-    return res.json({ 
-      success: true, 
-      message: 'Archivo eliminado completamente' 
-    });
+    const data = {
+      filePath,
+      deleted: deleteResponse.matchedCount,
+    };
+
+    return res.status(200).json({ mensaje: 'Archivo eliminado con exito', data });
 
   } catch (error) {
-    console.error('Error en eliminarArchivo:', error);
-    return res.status(500).json({ 
-      success: false, 
-      message: 'Error al eliminar el archivo',
-      error: error.message 
-    });
+    console.log(error);
+    return handleHttpError(res, "Error al eliminar archivo", 500);
   }
 };
-
-/*--- Funciones Extras ---*/
-const normalizarNombreArchivo = (nombre) => {
-  const texto = Buffer.from(nombre, 'latin1').toString('utf8'); // fuerza la decodificación correcta
-
-  return texto
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")   // elimina tildes
-    .replace(/ñ/gi, "n")               // ñ por n
-    .replace(/[^a-z0-9.\s-]/gi, "")    // remueve cualquier otra rareza
-    .replace(/\s+/g, "-")              // espacios por guiones
-    .toLowerCase();                   // todo a minúsculas
-};
-
