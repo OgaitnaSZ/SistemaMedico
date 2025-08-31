@@ -25,6 +25,8 @@ const { validatorPaciente, validatorId } = require("../validators/paciente");
  *          responses:
  *              '201':
  *                  description: Paciente creado 
+ *              '401':
+ *                  description: No inicio session
  *              '500':
  *                  description: Error del servidor 
  */
@@ -62,6 +64,8 @@ router.post('/Crear', authMiddleware, validatorPaciente, pacienteController.crea
  *          responses:
  *              '200':
  *                  description: Listado de pacientes 
+ *              '401':
+ *                  description: No inicio session
  *              '500':
  *                  description: Error del servidor 
  */
@@ -88,6 +92,8 @@ router.get('/Pacientes', authMiddleware, pacienteController.obtenerPacientes);
  *          responses:
  *              '200':
  *                  description: Paciente actualizado 
+ *              '401':
+ *                  description: No inicio session
  *              '404':
  *                  description: Paciente no encontrado
  *              '500':
@@ -118,8 +124,10 @@ router.put('/Actualizar', authMiddleware, validatorPaciente, pacienteController.
  *          responses:
  *              '200':
  *                  description: Datos del pacientes 
+ *              '401':
+ *                  description: No inicio session
  *              '404':
- *                  desccription: Paciente no encontrado
+ *                  description: Paciente no encontrado
  *              '500':
  *                  description: Error del servidor 
  */
@@ -148,8 +156,10 @@ router.get('/Paciente/:id', authMiddleware, validatorId, pacienteController.obte
  *          responses:
  *              '200':
  *                  description: Paciente eliminado
+ *              '401':
+ *                  description: No inicio session
  *              '404':
- *                  desccription: Paciente no encontrado
+ *                  description: Paciente no encontrado
  *              '500':
  *                  description: Error del servidor 
  */

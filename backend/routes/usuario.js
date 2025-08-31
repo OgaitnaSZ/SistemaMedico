@@ -24,7 +24,7 @@ const authMiddleware = require("../middleware/session");
  *          responses:
  *              '200':
  *                  description: Datos correctos 
- *              '401': 
+ *              '400': 
  *                  description: Password invalido 
  *              '404':
  *                  description: Usuario no existe 
@@ -54,8 +54,10 @@ router.post('/login', validatorLogin, usuarioController.loginUsuario);
  *          responses:
  *              '200':
  *                  description: Datos actualizados correctamente 
+ *              '400':
+ *                  description: Password invalido
  *              '401': 
- *                  description: Password invalido 
+ *                  description: No inicio session
  *              '404':
  *                  description: Usuario no existe 
  *              '500':

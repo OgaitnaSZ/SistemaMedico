@@ -17,7 +17,7 @@ exports.loginUsuario = async (req, res) =>{
         const hashPassword = user.get("password");
         const check = await compare(req.password, hashPassword);
         if(!check){
-            handleHttpError(res, "PASSWORD INVALIDO", 401)
+            handleHttpError(res, "PASSWORD INVALIDO", 400)
             return
         }
         
