@@ -1,6 +1,8 @@
 const express = require('express');
 const conectarDB = require('./config/db')
 const cors = require('cors');
+const swaggerUI = require('swagger-ui-express');
+const openApiConfiguration = require('./docs/swagger');
 
 // Crear servidor
 const app = express();
@@ -11,6 +13,14 @@ conectarDB();
 app.use(cors());
 app.use(express.json());
 
+/**
+ * Documentacion de rutas
+ */
+app.use('/documentation', 
+    swaggerUI.serve,
+    swaggerUI.setup(openApiConfiguration)
+)
+
 
 // Rutas
 app.use('/api/pacientes', require('./routes/paciente'));
@@ -19,8 +29,5 @@ app.use('/api/consultas', require('./routes/consulta'));
 app.use('/api/archivo', require('./routes/archivo'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 
-// Hacer pública la carpeta 'uploads' para acceder a los archivos
-const path = require('path');
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
+// Correr el servidor
 app.listen(4000)

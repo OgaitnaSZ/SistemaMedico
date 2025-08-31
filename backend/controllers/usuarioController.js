@@ -1,7 +1,6 @@
 const Usuario = require('../models/Usuario');
-const bcrypt = require('bcryptjs');
 const { matchedData } = require('express-validator');
-const { compare } = require("../utils/handlePassword");
+const { compare, encrypt } = require("../utils/handlePassword");
 const { tokenSign } = require("../utils/handlerJwt");
 const { handleHttpError } = require("../utils/handleError");
 
@@ -33,30 +32,30 @@ exports.loginUsuario = async (req, res) =>{
         res.send({data})
 
     } catch (error) {
-        res.status(401)
+        res.status(500)
         handleHttpError(res, "ERROR_LOGIN_USER")
     }
 }
 
 exports.actualizarUsuario = async (req, res) => {
     try {
-        const usuario = req.body;
+        req = matchedData(req);
+        const userDB = await Usuario.findOne({user: req.user});
 
-        // Buscar usuario por _id 
-        const userDB = await Usuario.findById(usuario._id);
+        console.log(userDB);
+
         if (!userDB) return handleHttpError(res, "Usuario no encontrado", 404);
-
         
         // Verificar contraseña actual
-        const esPasswordValido = await bcrypt.compare(usuario.password, userDB.password);
+        const esPasswordValido = await compare(req.password, userDB.password);
         if (!esPasswordValido) return handleHttpError(res, "La contraseña actual no es correcta", 400);
         
         // Actualizar campos
-        userDB.nombre = usuario.nombre;
-        userDB.user = usuario.user;
+        userDB.nombre = req.nombre;
+        userDB.user = req.user;
         
         // Si hay nueva contraseña, hashearla y actualizar
-        if (usuario.newPassword && usuario.newPassword.trim() !== '') userDB.password = await bcrypt.hash(usuario.newPassword, 10);
+        if (req.newPassword && req.newPassword.trim() !== '') userDB.password = await bcrypt.hash(req.newPassword, 10);
         
         await userDB.save();
 

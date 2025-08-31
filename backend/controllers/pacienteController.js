@@ -48,7 +48,7 @@ exports.obtenerPacientes = async (req, res) => {
             Paciente.countDocuments(query)
         ]);
 
-        res.json({
+        res.status(200).json({
             data: pacientes,
             currentPage: page,
             totalPages: Math.ceil(total / limit),
@@ -81,11 +81,10 @@ exports.actualizarPaciente = async (req, res) => {
 exports.obtenerPaciente = async (req, res) => {
     try{
         let paciente = await Paciente.findById(req.params.id);
-        console.log(paciente);
 
         if(!paciente) return handleHttpError(res, "No existe el paciente", 404);
         
-        res.json(paciente);
+        res.status(200).json(paciente);
 
     }catch(error){
         return handleHttpError(res, "Error al obtener paciente", 500);
@@ -95,7 +94,6 @@ exports.obtenerPaciente = async (req, res) => {
 exports.eliminarPaciente = async (req, res) => {
     try {
         const { id } = req.params;
-        if (!id) return handleHttpError(res, "ID del paciente es requerido", 400);
 
         const paciente = await Paciente.findById(id);
         if (!paciente) return handleHttpError(res, "No existe el paciente", 404);
@@ -112,7 +110,7 @@ exports.eliminarPaciente = async (req, res) => {
         // Eliminar paciente
         await Paciente.findByIdAndDelete(id);
 
-        res.json({ msg: "Paciente eliminado correctamente con sus consultas y archivos asociados" });
+        res.status(200).json({ msg: "Paciente eliminado correctamente con sus consultas y archivos asociados" });
     } catch (error) {
         return handleHttpError(res, "Error al eliminar paciente", 500);
     }
