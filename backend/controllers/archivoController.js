@@ -1,6 +1,5 @@
 const Archivo = require('../models/Archivo');
 const fs = require('fs');
-const { matchedData } = require('express-validator');
 const { handleHttpError } = require("../utils/handleError");
 const PUBLIC_URL = process.env.PUBLIC_URL;
 const MEDIA_PATH = `${__dirname}/../uploads`;
@@ -24,6 +23,7 @@ exports.subirArchivos = async (req, res) => {
     return res.status(201).send({ mensaje: 'Archivo subido con exito', data });
 
   } catch (error) {
+    console.log(error);
     return handleHttpError(res, "Error al subir archivo", 500);
   }
 };

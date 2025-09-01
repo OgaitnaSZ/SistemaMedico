@@ -282,22 +282,7 @@ const swaggerDefinition = {
                         }
                     }
                 }
-            },
-            archivo:{
-                type:"object",
-                required:["idConsulta", "name", "url"],
-                properties:{
-                    idConsulta: {
-                        type: "string",
-                    },
-                    name: {
-                        type: "string",
-                    },
-                    url: {
-                        type: "string"
-                    }
-                }
-            },
+            }
         }
     },
 }

@@ -20,14 +20,18 @@ const authMiddleware = require("../middleware/session");
  *              - bearerAuth: []
  *          requestBody:
  *              content:
- *                  application/json:
+ *                  multipart/form-data:
  *                      schema:
- *                          $ref: "#/components/schemas/archivo"
+ *                          type: object
+ *                          properties:
+ *                              archivos:
+ *                                  type: string
+ *                                  format: binary
+ *                              idConsulta:
+ *                                  type: string
  *          responses:
  *              '201':
  *                  description: Archivos subidos con exito
- *              '400':
- *                  description: No hay archivos para esta consulta
  *              '401':
  *                  description: No inicio session
  *              '500':
@@ -40,8 +44,8 @@ router.post('/Subir', authMiddleware, uploadMiddleware.array("archivos"), valida
  * 
  * Route update user
  * @openapi
- * /archivo/Consulta/{id}:
- *      post:
+ * /archivos/Consulta/{id}:
+ *      get:
  *          tags:
  *              - archivos
  *          summary: "Obtener archivos de una consulta"
@@ -72,7 +76,7 @@ router.get('/Consulta/:id', authMiddleware, validatorId, archivoController.lista
  * 
  * Route update user
  * @openapi
- * /archivo/Eliminar/{id}:
+ * /archivos/Eliminar/{id}:
  *      delete:
  *          tags:
  *              - archivos

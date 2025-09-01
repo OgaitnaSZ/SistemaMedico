@@ -26,7 +26,7 @@ app.use('/documentation',
 app.use('/api/pacientes', require('./routes/paciente'));
 app.use('/api/usuarios', require('./routes/usuario'));
 app.use('/api/consultas', require('./routes/consulta'));
-app.use('/api/archivo', require('./routes/archivo'));
+app.use('/api/archivos', require('./routes/archivo'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 
 // Correr el servidor

@@ -38,7 +38,7 @@ router.post('/Crear', authMiddleware, validatorConsulta, consultaController.crea
  * Route update user
  * @openapi
  * /consultas/Paciente/{id}:
- *      post:
+ *      get:
  *          tags:
  *              - consultas
  *          summary: "Obtener consultas de un paciente"
@@ -72,7 +72,7 @@ router.get('/Paciente/:id', authMiddleware, validatorId, consultaController.list
  * /consultas/Actualizar:
  *      put:
  *          tags:
- *              - consulta
+ *              - consultas
  *          summary: "Actualizar Consulta"
  *          description: "Ruta para actualizar consulta"
  *          security:
@@ -102,7 +102,7 @@ router.put('/Actualizar', authMiddleware, validatorConsulta, consultaController.
  * /consultas/Eliminar/{id}:
  *      delete:
  *          tags:
- *              - consulta
+ *              - consultas
  *          summary: "Eliminar Consulta"
  *          description: "Ruta para eliminar consulta"
  *          security:
