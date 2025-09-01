@@ -118,7 +118,7 @@ router.put('/Actualizar', authMiddleware, validatorPaciente, pacienteController.
  *          - name: id
  *            in: path
  *            description: ID del paciente
- *            required: trye
+ *            required: true
  *            schema:
  *              type: string
  *          responses:
@@ -150,7 +150,7 @@ router.get('/Paciente/:id', authMiddleware, validatorId, pacienteController.obte
  *          - name: id
  *            in: path
  *            description: ID del paciente
- *            required: trye
+ *            required: true
  *            schema:
  *              type: string
  *          responses:

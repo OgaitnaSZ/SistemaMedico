@@ -3,101 +3,115 @@ const Consulta = require('../models/Consulta');
 const Archivo = require('../models/Archivo');
 const { handleHttpError } = require("../utils/handleError");
 
+
 exports.obtenerDashboard = async (req, res) => {
   try {
-    const hoy = new Date();
-    const hace7Dias = new Date();
-    hace7Dias.setDate(hoy.getDate() - 6);
+    const [stats, ultimoPaciente, consultasDTO, archivosDTO] = await Promise.all([
+      obtenerStatsUltimos7Dias(),
+      obtenerUltimoPaciente(),
+      obtenerUltimasConsultas(),
+      obtenerUltimosArchivos()
+    ]);
 
-    // Estadisticas de los ultimos 7 dias
-    const stats = await Promise.all([...Array(7)].map(async (_, i) => {
-      const fecha = new Date(hace7Dias);
-      fecha.setDate(hace7Dias.getDate() + i);
-      const diaStr = fecha.toISOString().split('T')[0];
-
-      // Cantidad de pacientes
-      const pacientesDia = await Paciente.countDocuments({
-        createdAt: {
-          $gte: new Date(diaStr + 'T00:00:00.000Z'),
-          $lte: new Date(diaStr + 'T23:59:59.999Z')
-        }
-      });
-
-      // Cantidad de consultas
-      const consultasDia = await Consulta.countDocuments({
-        fecha: {
-          $gte: new Date(diaStr + 'T00:00:00.000Z'),
-          $lte: new Date(diaStr + 'T23:59:59.999Z')
-        }
-      });
-
-      // Cantidad de archivos
-      const archivosDia = await Archivo.countDocuments({
-        createdAt: {
-          $gte: new Date(diaStr + 'T00:00:00.000Z'),
-          $lte: new Date(diaStr + 'T23:59:59.999Z')
-        }
-      });
-
-      return {
-        dia: fecha.toLocaleDateString('es-AR', { weekday: 'long' }),
-        fecha: diaStr,
-        pacientes: pacientesDia,
-        consultas: consultasDia,
-        archivos: archivosDia
-      };
-    }));
-
-    // Buscar al paciente de la ultima consulta
-    const ultimoPaciente = await Paciente.findOne({ ultima_visita: { $ne: null } })
-      .sort({ ultima_visita: -1 });
-
-    const pacienteDTO = ultimoPaciente
-      ? {
-          idPaciente: ultimoPaciente._id,
-          nombre: ultimoPaciente.nombre,
-          apellido: ultimoPaciente.apellido,
-          fechaNacimiento: ultimoPaciente.fechaNacimiento?.toISOString().split('T')[0] || null,
-          dni: ultimoPaciente.dni,
-          genero: ultimoPaciente.genero,
-          ultima_visita: ultimoPaciente.ultima_visita
-        }
-      : null;
-
-    // Buscar ultimas 10 consultas
-    const ultimasConsultas = await Consulta.find().sort({ fecha: -1 }).limit(10);
-
-    const consultasDTO = await Promise.all(ultimasConsultas.map(async (consulta) => {
-      const paciente = await Paciente.findOne({ _id: consulta.idPaciente });
-      return {
-        idPaciente: paciente?._id,
-        nombreCompleto: paciente ? `${paciente.nombre} ${paciente.apellido}` : 'Desconocido',
-        fecha: consulta.fecha
-      };
-    }));
-
-    // Buscar ultimos 10 archivos
-    const ultimosArchivos = await Archivo.find()
-      .sort({ createdAt: -1 })
-      .limit(10)
-      .select('_id name createdAt');
-
-    const archivosDTO = ultimosArchivos.map(archivo => ({
-      _id: archivo._id,
-      name: archivo.name,
-      createdAt: archivo.createdAt
-    }));
-
-    // Adjuntar todos los datos
     const dashboard = {
       statsUltimos7Dias: stats,
-      ultimoPaciente: pacienteDTO,
+      ultimoPaciente,
       ultimas10Consultas: consultasDTO,
       ultimos10Archivos: archivosDTO
     };
 
-    res.json(dashboard);
+    res.status(200).json(dashboard);
   } catch (error) {
     return handleHttpError(res, "Error al obtener el dashboard", 500);
   }
+};
+
+const formatearFechaISO = (fecha) => fecha.toISOString().split('T')[0];
+
+const obtenerStatsDia = async (fecha) => {
+  const diaStr = formatearFechaISO(fecha);
+
+  const pacientes = await Paciente.countDocuments({
+    createdAt: {
+      $gte: new Date(`${diaStr}T00:00:00.000Z`),
+      $lte: new Date(`${diaStr}T23:59:59.999Z`)
+    }
+  });
+
+  const consultas = await Consulta.countDocuments({
+    fecha: {
+      $gte: new Date(`${diaStr}T00:00:00.000Z`),
+      $lte: new Date(`${diaStr}T23:59:59.999Z`)
+    }
+  });
+
+  const archivos = await Archivo.countDocuments({
+    createdAt: {
+      $gte: new Date(`${diaStr}T00:00:00.000Z`),
+      $lte: new Date(`${diaStr}T23:59:59.999Z`)
+    }
+  });
+
+  return {
+    dia: fecha.toLocaleDateString('es-AR', { weekday: 'long' }),
+    fecha: diaStr,
+    pacientes,
+    consultas,
+    archivos
+  };
+};
+
+const obtenerStatsUltimos7Dias = async () => {
+  const hoy = new Date();
+  const hace7Dias = new Date();
+  hace7Dias.setDate(hoy.getDate() - 6);
+
+  return Promise.all([...Array(7)].map((_, i) => {
+    const fecha = new Date(hace7Dias);
+    fecha.setDate(hace7Dias.getDate() + i);
+    return obtenerStatsDia(fecha);
+  }));
+};
+
+const obtenerUltimoPaciente = async () => {
+  const paciente = await Paciente.findOne({ ultima_visita: { $ne: null } })
+    .sort({ ultima_visita: -1 });
+
+  if (!paciente) return null;
+
+  return {
+    idPaciente: paciente._id,
+    nombre: paciente.nombre,
+    apellido: paciente.apellido,
+    fechaNacimiento: paciente.fechaNacimiento?.toISOString().split('T')[0] || null,
+    dni: paciente.dni,
+    genero: paciente.genero,
+    ultima_visita: paciente.ultima_visita
+  };
+};
+
+const obtenerUltimasConsultas = async (limite = 10) => {
+  const consultas = await Consulta.find().sort({ fecha: -1 }).limit(limite);
+
+  return Promise.all(consultas.map(async (consulta) => {
+    const paciente = await Paciente.findById(consulta.idPaciente);
+    return {
+      idPaciente: paciente?._id || null,
+      nombreCompleto: paciente ? `${paciente.nombre} ${paciente.apellido}` : 'Desconocido',
+      fecha: consulta.fecha
+    };
+  }));
+};
+
+const obtenerUltimosArchivos = async (limite = 10) => {
+  const archivos = await Archivo.find()
+    .sort({ createdAt: -1 })
+    .limit(limite)
+    .select('_id name createdAt');
+
+  return archivos.map(archivo => ({
+    _id: archivo._id,
+    name: archivo.name,
+    createdAt: archivo.createdAt
+  }));
 };

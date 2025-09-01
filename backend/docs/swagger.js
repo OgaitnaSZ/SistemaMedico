@@ -161,8 +161,93 @@ const swaggerDefinition = {
                 type:"object",
                 required:["idPaciente", "fecha", "motivoConsulta"],
                 properties:{
+                    _id:{
+                        type:"string"
+                    },
                     idPaciente: {
                         type: "string"
+                    },
+                    fecha: {
+                        type:"string",
+                        format: "date"
+                    },
+                    motivoConsulta: {
+                        type:"string"
+                    },
+                    diagnostico: {
+                        type:"string"
+                    },
+                    tratamiento: {
+                        type:"string"
+                    },
+                    observaciones: {
+                        type:"string"
+                    },
+                    parametros: {
+                        type: "array",
+                        items:{
+                            type: "object",
+                            required:["nombre", "valor"],
+                            properties:{
+                                nombre: {
+                                    type: "string"
+                                },
+                                valor: {
+                                    type: "string"
+                                }
+                            }
+
+                        }
+                    }
+                }
+            },
+            consultaNew:{
+                type:"object",
+                required:["idPaciente", "fecha", "motivoConsulta"],
+                properties:{
+                    idPaciente: {
+                        type: "string"
+                    },
+                    fecha: {
+                        type:"string",
+                        format: "date"
+                    },
+                    motivoConsulta: {
+                        type:"string"
+                    },
+                    diagnostico: {
+                        type:"string"
+                    },
+                    tratamiento: {
+                        type:"string"
+                    },
+                    observaciones: {
+                        type:"string"
+                    },
+                    parametros: {
+                        type: "array",
+                        items:{
+                            type: "object",
+                            required:["nombre", "valor"],
+                            properties:{
+                                nombre: {
+                                    type: "string"
+                                },
+                                valor: {
+                                    type: "string"
+                                }
+                            }
+
+                        }
+                    }
+                }
+            },
+            consultaUpdate:{
+                type:"object",
+                required:["idPaciente", "fecha", "motivoConsulta"],
+                properties:{
+                    _id:{
+                        type:"string"
                     },
                     fecha: {
                         type:"string",

@@ -34,7 +34,7 @@ exports.crearConsulta = async (req, res) => {
         // Actualizar fecha de ultima consulta del paciente
         await recalcularUltimaVisita(consulta.idPaciente);
 
-        res.json({ message: 'Consulta creada correctamente:', consulta});
+        res.status(201).json({ message: 'Consulta creada correctamente:', consulta});
     } catch (error) {
         return handleHttpError(res, "Error al crear consulta", 500);
     }
