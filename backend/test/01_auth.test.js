@@ -1,29 +1,25 @@
 const request = require("supertest");
 const app = require("../index");
+const { usuarioPasswordErronea, usuarioCorrecto } = require("./helper/helperData");
 
-const testAuthLoginError = {
-    "usuario": "admin",
-    "password": "admin1"
-}
-
-const testAuthLoginCorrect = {
-    "usuario": "admin",
-    "password": "admin"
-}
+// Se ejecuta antes de las pruebas
+beforeAll(async ()=>{
+    //await Usuario.deleteMany();
+})
 
 describe("[AUTH] esta es la prueba de /api/usuarios/login", ()=>{
     test("Esto deberia retornar 400", async ()=>{
         const response = await request(app)
         .post('/api/usuarios/login')
-        .send(testAuthLoginError);
+        .send(usuarioPasswordErronea);
 
-        expect(response.statusCode).toEqual(200);
+        expect(response.statusCode).toEqual(400);
     })
 
     test("Esto deberia retornar 200", async ()=>{
         const response = await request(app)
         .post('/api/usuarios/login')
-        .send(testAuthLoginCorrect);
+        .send(usuarioCorrecto);
 
         expect(response.statusCode).toEqual(200);
         expect(response.body).toHaveProperty("data");

@@ -32,6 +32,7 @@ exports.loginUsuario = async (req, res) =>{
         res.send({data})
 
     } catch (error) {
+        console.log(error);
         res.status(500)
         handleHttpError(res, "ERROR_LOGIN_USER")
     }
