@@ -7,6 +7,9 @@ const openApiConfiguration = require('./docs/swagger');
 // Crear servidor
 const app = express();
 
+// Ejecutar servidor en dev o prod
+const NODE_ENV = process.env.NODE_ENV || 'development';
+
 // Conectar db
 conectarDB();
 
@@ -30,4 +33,9 @@ app.use('/api/archivos', require('./routes/archivo'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 
 // Correr el servidor
-app.listen(4000)
+const port = 4000;
+if(NODE_ENV !== 'test') app.listen(port);
+
+
+// Importar app para fines de testing
+module.exports = app
