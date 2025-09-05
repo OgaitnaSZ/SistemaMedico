@@ -110,7 +110,7 @@ exports.eliminarPaciente = async (req, res) => {
         // Eliminar paciente
         await Paciente.findByIdAndDelete(id);
 
-        res.status(200).json({ msg: "Paciente eliminado correctamente con sus consultas y archivos asociados" });
+        res.status(200).json({ msg: "Paciente eliminado correctamente con sus consultas y archivos asociados", pacienteEliminado: paciente });
     } catch (error) {
         return handleHttpError(res, "Error al eliminar paciente", 500);
     }
