@@ -7,9 +7,8 @@ const validatorConsulta = [
     .notEmpty()
     .isMongoId(),
     check("fecha")
-    .exists()
-    .notEmpty()
-    .isDate(),
+    .isISO8601()  
+    .toDate(),
     check("motivoConsulta")
     .exists()
     .notEmpty(),
