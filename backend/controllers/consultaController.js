@@ -15,7 +15,7 @@ exports.listarPorPaciente = async (req, res) => {
 
         if (!consultas || consultas.length == 0) return handleHttpError(res, "No hay consultas para este paciente", 404);
 
-        res.status(200).json(consultas);
+        res.status(200).json({ "consultas": consultas });
 
     } catch (error) {
         return handleHttpError(res, "Error al obtener consultas clínicas", 500);

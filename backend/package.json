@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest",
+    "test:watch":"cross-env NODE_ENV=test jest --watch --silent",
     "dev": "nodemon ."
   },
   "author": "Santiago Zelaya",

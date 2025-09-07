@@ -55,6 +55,60 @@ describe("[Consulta] esta es la prueba de /api/consultas/Crear", ()=>{
     })
 })
 
+// Obtener consultas de un paciente
+describe("[Consulta] esta es la prueba de /api/consultas/Paciente/{id}", ()=>{
+    let pacienteCreado;
+    let consultaCreada;
+    
+    beforeAll(async () => {
+        const pacienteRes = await request(app)
+        .post("/api/pacientes/Crear")
+        .set("Authorization", `Bearer ${JWT_TOKEN}`)
+        .send(newPaciente());
+        pacienteCreado = pacienteRes.body.paciente;
+        
+        const consultaRes = await request(app)
+        .post("/api/consultas/Crear")
+        .set("Authorization", `Bearer ${JWT_TOKEN}`)
+        .send({ ...newConsulta(), idPaciente: pacienteCreado._id });
+        consultaCreada = consultaRes.body.consulta;
+    });
+
+    // Prueba sin login
+    test("Esto deberia retornar 401", async ()=>{
+        const response = await request(app)
+        .get(`/api/consultas/Paciente/${pacienteCreado._id}`)
+
+        expect(response.statusCode).toEqual(401);
+    })
+
+    // Prueba con login
+    test("Esto deberia retornar 200", async ()=>{
+        const response = await request(app)
+        .get(`/api/consultas/Paciente/${pacienteCreado._id}`)
+        .set("Authorization", `Bearer ${JWT_TOKEN}`)
+
+        expect(response.statusCode).toEqual(200);
+        expect(response.body).toHaveProperty("consultas");
+        expect(Array.isArray(response.body.consultas)).toBe(true);
+        expect(response.body.consultas.length).toBeGreaterThan(0);
+        const consulta = response.body.consultas[0];
+        expect(consulta).toHaveProperty("_id");
+        expect(consulta).toHaveProperty("idPaciente", pacienteCreado._id);
+    })
+
+    // Prueba con paciente inexistente
+    test("Esto deberia retornar 404", async ()=>{
+        const fakeId = new mongoose.Types.ObjectId(); // MongoID aleatorio
+        
+        const response = await request(app)
+        .get(`/api/consultas/Paciente/${fakeId}`)
+        .set("Authorization", `Bearer ${JWT_TOKEN}`)
+
+        expect(response.statusCode).toEqual(404);
+    })
+})
+
 // Actualizar consulta
 describe("[Consulta] esta es la prueba de /api/consultas/Actualizar", ()=>{
     let pacienteCreado;
@@ -75,6 +129,15 @@ describe("[Consulta] esta es la prueba de /api/consultas/Actualizar", ()=>{
         consultaCreada = consultaRes.body.consulta;
     });
 
+    // Prueba sin login
+    test("Esto deberia retornar 401", async ()=>{
+        const response = await request(app)
+        .put('/api/consultas/Actualizar')
+        .send({ ...consultaCreada, motivoConsulta: "Dolor de cuello" })
+
+        expect(response.statusCode).toEqual(401);
+    })
+
     // Prueba con login y consulta existente
     test("Esto deberia retornar 200", async ()=>{
         const response = await request(app)
@@ -94,6 +157,56 @@ describe("[Consulta] esta es la prueba de /api/consultas/Actualizar", ()=>{
         const response = await request(app)
         .put('/api/consultas/Actualizar')
         .send({ ...consultaCreada, _id: fakeId.toString() })
+        .set("Authorization", `Bearer ${JWT_TOKEN}`)
+
+        expect(response.statusCode).toEqual(404);
+    })
+})
+
+// Eliminar consulta por id
+describe("[Consulta] esta es la prueba de /api/consultas/Eliminar/:id", ()=>{
+    let pacienteCreado;
+    let consultaCreada;
+
+    beforeAll(async () => {
+        const pacienteRes = await request(app)
+            .post("/api/pacientes/Crear")
+            .set("Authorization", `Bearer ${JWT_TOKEN}`)
+            .send(newPaciente());
+        pacienteCreado = pacienteRes.body.paciente;
+
+        const consultaRes = await request(app)
+            .post("/api/consultas/Crear")
+            .set("Authorization", `Bearer ${JWT_TOKEN}`)
+            .send({ ...newConsulta(), idPaciente: pacienteCreado._id });
+
+        consultaCreada = consultaRes.body.consulta;
+    });
+    
+    // Prueba sin login
+    test("Esto deberia retornar 401", async ()=>{
+        const response = await request(app)
+        .delete(`/api/consultas/Eliminar/${consultaCreada._id}`)
+
+        expect(response.statusCode).toEqual(401);
+    })
+
+    // Prueba con login
+    test("Esto deberia retornar 200", async ()=>{
+        const response = await request(app)
+        .delete(`/api/consultas/Eliminar/${consultaCreada._id}`)
+        .set("Authorization", `Bearer ${JWT_TOKEN}`)
+
+        expect(response.statusCode).toEqual(200);
+        expect(response.body).toHaveProperty("message");
+    })
+
+    // Prueba con consulta inexistente
+    test("Esto deberia retornar 404", async ()=>{
+        const fakeId = new mongoose.Types.ObjectId(); // MongoID aleatorio
+        
+        const response = await request(app)
+        .delete(`/api/consultas/Eliminar/${fakeId}`)
         .set("Authorization", `Bearer ${JWT_TOKEN}`)
 
         expect(response.statusCode).toEqual(404);
