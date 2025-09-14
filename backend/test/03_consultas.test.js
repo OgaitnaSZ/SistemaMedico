@@ -2,6 +2,7 @@ const request = require("supertest");
 const mongoose = require("mongoose");
 const app = require("../index");
 const Consulta = require("../models/Consulta");
+const Paciente = require("../models/Paciente");
 let JWT_TOKEN = "";
 const { usuarioCorrecto, pacienteDePrueba, consultaDePrueba } = require("./helper/helperData");
 
@@ -11,6 +12,7 @@ const newConsulta = () => ({ ...consultaDePrueba });
 // Se ejecuta antes de las pruebas
 beforeAll(async ()=>{
     await Consulta.deleteMany();
+    await Paciente.deleteMany();
 
     const response = await request(app)
         .post('/api/usuarios/login')

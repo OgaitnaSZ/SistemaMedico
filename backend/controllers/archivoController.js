@@ -34,6 +34,8 @@ exports.listarArchivos = async (req, res) => {
 
     const archivos = await Archivo.find({ idConsulta: id });
 
+    if(archivos.length == 0) return handleHttpError(res, "No hay archivos para esta consulta", 404);
+
     const archivosSimplificados = archivos.map(a => ({
       _id: a._id,
       idConsulta: a.idConsulta,
