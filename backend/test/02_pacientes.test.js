@@ -166,3 +166,7 @@ describe("[Paciente] esta es la prueba de /api/pacientes/Eliminar/:id", ()=>{
         expect(response.statusCode).toEqual(404);
     })
 })
+
+afterAll(()=>{
+    mongoose.connection.close()
+})

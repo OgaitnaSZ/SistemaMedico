@@ -162,3 +162,7 @@ describe("[Consulta] esta es la prueba de /api/consultas/Eliminar/:id", ()=>{
         expect(response.statusCode).toEqual(404);
     })
 })
+
+afterAll(()=>{
+    mongoose.connection.close()
+})

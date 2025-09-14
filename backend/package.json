@@ -4,7 +4,7 @@
   "description": "backend de app de sistema medico",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest",
+    "test": "cross-env NODE_ENV=test jest --silent",
     "test:watch":"cross-env NODE_ENV=test jest --watch --silent",
     "dev": "nodemon ."
   },
@@ -33,6 +33,7 @@
     "testEnvironment": "node",
     "coveragePathIgnorePatterns": [
       "/node_modules/"
-    ]
+    ],
+    "globalTearDown": "./global-kill.js"
   }
 }

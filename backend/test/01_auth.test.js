@@ -1,5 +1,6 @@
 const request = require("supertest");
 const app = require("../index");
+const mongoose = require("mongoose");
 const { usuarioPasswordErronea, usuarioCorrecto } = require("./helper/helperData");
 
 // Se ejecuta antes de las pruebas
@@ -28,3 +29,6 @@ describe("[AUTH] esta es la prueba de /api/usuarios/login", ()=>{
     })
 })
 
+afterAll(()=>{
+    mongoose.connection.close()
+})
