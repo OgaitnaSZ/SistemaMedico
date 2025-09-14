@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const app = require("../index");
 const Paciente = require("../models/Paciente");
 let JWT_TOKEN = "";
-const { pacienteDePrueba, usuarioCorrecto } = require("./helper/helperData");
+const { pacienteDePrueba, pacientesDePrueba, usuarioLogin } = require("./helper/helperData");
 
 const newPaciente = () => ({ ...pacienteDePrueba });
 let pacienteCreado;
@@ -14,7 +14,7 @@ beforeAll(async ()=>{
 
     const response = await request(app)
         .post('/api/usuarios/login')
-        .send(usuarioCorrecto);
+        .send(usuarioLogin);
     
     JWT_TOKEN = response.body.data.token;
 })
@@ -39,10 +39,24 @@ describe("[Paciente] esta es la prueba de /api/pacientes/Crear", ()=>{
         .send(newPaciente());
 
         const { body } = response;
+
+        console.log(response);
         expect(response.statusCode).toEqual(201);
         expect(body).toHaveProperty("paciente");
 
         pacienteCreado = response.body.paciente;
+    })
+
+    // Crear multiples pacientes
+    test("Esto deberia retornar 201", async ()=>{
+        const response = await request(app)
+        .post('/api/pacientes/Crear')
+        .set("Authorization", `Bearer ${JWT_TOKEN}`)
+        .send(pacientesDePrueba);
+
+        const { body } = response;
+        expect(response.statusCode).toEqual(201);
+        expect(body).toHaveProperty("pacientes");
     })
 })
 

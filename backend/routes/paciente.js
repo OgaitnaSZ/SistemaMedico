@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pacienteController = require('../controllers/pacienteController');
 const authMiddleware = require("../middleware/session");
-const { validatorPaciente, validatorId } = require("../validators/paciente");
+const { validatorPaciente, validatorPacienteUpdate, validatorId } = require("../validators/paciente");
 
 /**
  * http://localhost:4000/api
@@ -99,7 +99,7 @@ router.get('/Pacientes', authMiddleware, pacienteController.obtenerPacientes);
  *              '500':
  *                  description: Error del servidor 
  */
-router.put('/Actualizar', authMiddleware, validatorPaciente, pacienteController.actualizarPaciente);
+router.put('/Actualizar', authMiddleware, validatorPacienteUpdate, pacienteController.actualizarPaciente);
 
 /**
  * http://localhost:4000/api

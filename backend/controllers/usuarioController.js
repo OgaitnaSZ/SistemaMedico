@@ -10,7 +10,7 @@ exports.loginUsuario = async (req, res) =>{
         const user = await Usuario.findOne({user: req.usuario});
         
         if(!user){
-            handleHttpError(res, "USUARIO NO EXISTE")
+            handleHttpError(res, "USUARIO NO EXISTE", 404)
             return
         }
         
@@ -32,7 +32,6 @@ exports.loginUsuario = async (req, res) =>{
         res.send({data})
 
     } catch (error) {
-        console.log(error);
         res.status(500)
         handleHttpError(res, "ERROR_LOGIN_USER")
     }
@@ -41,9 +40,7 @@ exports.loginUsuario = async (req, res) =>{
 exports.actualizarUsuario = async (req, res) => {
     try {
         req = matchedData(req);
-        const userDB = await Usuario.findOne({user: req.user});
-
-        console.log(userDB);
+        const userDB = await Usuario.findOne({user: req.usuario});
 
         if (!userDB) return handleHttpError(res, "Usuario no encontrado", 404);
         
@@ -53,7 +50,7 @@ exports.actualizarUsuario = async (req, res) => {
         
         // Actualizar campos
         userDB.nombre = req.nombre;
-        userDB.user = req.user;
+        userDB.user = req.usuario;
         
         // Si hay nueva contraseña, hashearla y actualizar
         if (req.newPassword && req.newPassword.trim() !== '') userDB.password = await bcrypt.hash(req.newPassword, 10);

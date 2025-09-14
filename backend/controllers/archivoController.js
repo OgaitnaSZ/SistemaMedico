@@ -23,7 +23,6 @@ exports.subirArchivos = async (req, res) => {
     return res.status(201).send({ mensaje: 'Archivo subido con exito', data });
 
   } catch (error) {
-    console.log(error);
     return handleHttpError(res, "Error al subir archivo", 500);
   }
 };
@@ -60,17 +59,14 @@ exports.eliminarArchivo = async (req, res) => {
     const deleteResponse = await Archivo.findByIdAndDelete({ _id: id });
 
     const filename  = archivo.name;
-    console.log(filename);
     const filePath = `${MEDIA_PATH}/${filename}`; 
-    
-    console.log(filePath);
 
     // Verificar si el archivo existe
     if (fs.existsSync(filePath)) {
       // Eliminar archivo físico
       fs.unlinkSync(filePath);
     } else {
-      console.warn('El archivo físico no existía, pero se procederá a eliminar el registro de la BD');
+      res.json('El archivo físico no existía, pero se procederá a eliminar el registro de la BD');
     }
 
     const data = {
@@ -81,7 +77,6 @@ exports.eliminarArchivo = async (req, res) => {
     return res.status(200).json({ mensaje: 'Archivo eliminado con exito', data });
 
   } catch (error) {
-    console.log(error);
     return handleHttpError(res, "Error al eliminar archivo", 500);
   }
 };

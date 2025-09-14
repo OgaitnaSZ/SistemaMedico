@@ -6,7 +6,7 @@ const Paciente = require("../models/Paciente");
 const Archivo = require("../models/Archivo");
 let JWT_TOKEN = "";
 const filePath = `${__dirname}/dump/mañaná es---lunes.png`;
-const { usuarioCorrecto, pacienteDePrueba, consultaDePrueba } = require("./helper/helperData");
+const { usuarioLogin, pacienteDePrueba, consultaDePrueba } = require("./helper/helperData");
 
 const newPaciente = () => ({ ...pacienteDePrueba });
 const newConsulta = () => ({ ...consultaDePrueba });
@@ -23,7 +23,7 @@ beforeAll(async ()=>{
 
     const response = await request(app)
         .post('/api/usuarios/login')
-        .send(usuarioCorrecto);
+        .send(usuarioLogin);
     
     JWT_TOKEN = response.body.data.token;
 

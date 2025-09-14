@@ -1,10 +1,10 @@
 // Usuarios
-const usuarioPasswordErronea = {
+const usuarioLogin = {
     "usuario": "admin",
-    "password": "admin1"
+    "password": "admin"
 }
-
-const usuarioCorrecto = {
+const usuarioUpdate = {
+    "nombre": "santiago",
     "usuario": "admin",
     "password": "admin"
 }
@@ -14,12 +14,34 @@ const pacienteDePrueba = {
     "nombre": "Carlos",
     "apellido": "Zelaya",
     "genero": "Hombre",
-    "dni": "123456789",
+    "dni": "12345678",
     "fechaNacimiento": "08-03-1990",
     "telefono": "123456789",
     "email": "carlos@test.com",
     "direccion": "Av. Roca 1600"
 }
+const pacientesDePrueba = [
+    {
+        "nombre": "Carlos",
+        "apellido": "Zelaya",
+        "genero": "Hombre",
+        "dni": "12345678",
+        "fechaNacimiento": "08-03-1990",
+        "telefono": "123456789",
+        "email": "carlos@test.com",
+        "direccion": "Av. Roca 1600"
+    },
+    {
+        "nombre": "Santiago",
+        "apellido": "Zelaya",
+        "genero": "Hombre",
+        "dni": "12345678",
+        "fechaNacimiento": "09-10-2002",
+        "telefono": "412321321",
+        "email": "santiago@test.com",
+        "direccion": "Av. Roca 1600"
+    }
+]
 
 // Consultas
 const consultaDePrueba = {
@@ -42,8 +64,9 @@ const consultaDePrueba = {
 }
 
 module.exports = {
-    usuarioPasswordErronea,
-    usuarioCorrecto,
+    usuarioLogin,
+    usuarioUpdate,
     pacienteDePrueba,
+    pacientesDePrueba,
     consultaDePrueba
 }

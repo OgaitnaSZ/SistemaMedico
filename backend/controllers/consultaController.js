@@ -67,7 +67,6 @@ exports.actualizarConsulta = async (req, res) => {
         return res.status(200).json({ mensaje: 'Consulta actualizada correctamente', consultaActualizada });
 
     } catch (error) {
-        console.log(error);
         return handleHttpError(res, "Error al actualizar Consulta", 500);
     }
 };
@@ -116,7 +115,6 @@ const recalcularUltimaVisita = async (idPaciente) => {
 
         await paciente.save();
     } catch (error) {
-        console.error("Error al recalcular última visita:", error);
     }
 };
 
@@ -134,9 +132,9 @@ const eliminarArchivosPorConsulta = async (idConsulta) => {
         await fs.promises.unlink(ruta);
       } catch (err) {
         if (err.code === 'ENOENT') {
-          console.warn(`Archivo no encontrado en disco: ${ruta}`);
+          //console.warn(`Archivo no encontrado en disco: ${ruta}`);
         } else {
-          console.error(`Error al eliminar archivo físico: ${ruta}`, err);
+          //console.error(`Error al eliminar archivo físico: ${ruta}`, err);
         }
         // Seguir eliminando los demás aunque uno falle
       }

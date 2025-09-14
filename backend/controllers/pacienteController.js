@@ -131,9 +131,9 @@ const eliminarArchivosPorConsulta = async (idConsulta) => {
         await fs.promises.unlink(ruta);
       } catch (err) {
         if (err.code === 'ENOENT') {
-          console.warn(`Archivo no encontrado en disco: ${ruta}`);
+          //console.warn(`Archivo no encontrado en disco: ${ruta}`);
         } else {
-          console.error(`Error al eliminar archivo físico: ${ruta}`, err);
+          //console.error(`Error al eliminar archivo físico: ${ruta}`, err);
         }
         // Seguir eliminando los demás aunque uno falle
       }
@@ -143,7 +143,6 @@ const eliminarArchivosPorConsulta = async (idConsulta) => {
     await Archivo.deleteMany({ idConsulta });
     
   } catch (error) {
-    console.error('Error al eliminar archivos de Consulta:', error);
     throw error;
   }
 };

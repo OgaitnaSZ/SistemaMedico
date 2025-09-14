@@ -37,12 +37,12 @@ const swaggerDefinition = {
             },
             usuarioUpdate:{
                 type:"object",
-                required:["nombre", "user", "password"],
+                required:["nombre", "usuario", "password"],
                 properties:{
                     nombre:{
                         type:"string"
                     },
-                    user:{
+                    usuario:{
                         type:"string"
                     },
                     password:{

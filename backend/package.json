@@ -4,8 +4,8 @@
   "description": "backend de app de sistema medico",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --silent",
-    "test:watch":"cross-env NODE_ENV=test jest --watch --silent",
+    "test": "cross-env NODE_ENV=test jest --coverage --silent --runInBand",
+    "test:watch":"cross-env NODE_ENV=test jest --coverage --watch --silent --runInBand",
     "dev": "nodemon ."
   },
   "author": "Santiago Zelaya",
@@ -34,6 +34,7 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ],
-    "globalTearDown": "./global-kill.js"
+    "globalTearDown": "./global-kill.js",
+    "coverageReporters": ["json", "html"]
   }
 }

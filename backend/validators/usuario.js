@@ -5,7 +5,7 @@ const validatorUsuario = [
     check("nombre")
     .exists()
     .notEmpty(),
-    check("user")
+    check("usuario")
     .exists()
     .notEmpty(),
     check("password")
