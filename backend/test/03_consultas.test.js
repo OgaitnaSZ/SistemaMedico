@@ -9,6 +9,10 @@ const { usuarioCorrecto, pacienteDePrueba, consultaDePrueba } = require("./helpe
 const newPaciente = () => ({ ...pacienteDePrueba });
 const newConsulta = () => ({ ...consultaDePrueba });
 
+let pacienteCreado;
+let consultaBase;
+let consultaCreada;
+
 // Se ejecuta antes de las pruebas
 beforeAll(async ()=>{
     await Consulta.deleteMany();
@@ -19,27 +23,32 @@ beforeAll(async ()=>{
         .send(usuarioCorrecto);
     
     JWT_TOKEN = response.body.data.token;
+
+    // Crear paciente
+    const pacienteRes = await request(app)
+        .post("/api/pacientes/Crear")
+        .set("Authorization", `Bearer ${JWT_TOKEN}`)
+        .send(newPaciente());
+
+    pacienteCreado = pacienteRes.body.paciente;
 })
 
 // Crear consulta
 describe("[Consulta] esta es la prueba de /api/consultas/Crear", ()=>{
-    let pacienteCreado;
-    let consultaCreada
-    
     beforeAll(async () => {
         const res = await request(app)
         .post("/api/pacientes/Crear")
         .set("Authorization", `Bearer ${JWT_TOKEN}`)
         .send(newPaciente());
         pacienteCreado = res.body.paciente;
-        consultaCreada = { ...newConsulta(), idPaciente: pacienteCreado._id };
+        consultaBase = { ...newConsulta(), idPaciente: pacienteCreado._id };
     });
 
     // Prueba sin login
     test("Esto deberia retornar 401", async ()=>{
         const response = await request(app)
         .post('/api/consultas/Crear')
-        .send(consultaCreada);
+        .send(consultaBase);
 
         expect(response.statusCode).toEqual(401);
     })
@@ -49,33 +58,18 @@ describe("[Consulta] esta es la prueba de /api/consultas/Crear", ()=>{
         const response = await request(app)
         .post('/api/consultas/Crear')
         .set("Authorization", `Bearer ${JWT_TOKEN}`)
-        .send(consultaCreada);
+        .send(consultaBase);
 
         const { body } = response;
         expect(response.statusCode).toEqual(201);
         expect(body).toHaveProperty("consulta");
+
+        consultaCreada = response.body.consulta;
     })
 })
 
 // Obtener consultas de un paciente
 describe("[Consulta] esta es la prueba de /api/consultas/Paciente/{id}", ()=>{
-    let pacienteCreado;
-    let consultaCreada;
-    
-    beforeAll(async () => {
-        const pacienteRes = await request(app)
-        .post("/api/pacientes/Crear")
-        .set("Authorization", `Bearer ${JWT_TOKEN}`)
-        .send(newPaciente());
-        pacienteCreado = pacienteRes.body.paciente;
-        
-        const consultaRes = await request(app)
-        .post("/api/consultas/Crear")
-        .set("Authorization", `Bearer ${JWT_TOKEN}`)
-        .send({ ...newConsulta(), idPaciente: pacienteCreado._id });
-        consultaCreada = consultaRes.body.consulta;
-    });
-
     // Prueba sin login
     test("Esto deberia retornar 401", async ()=>{
         const response = await request(app)
@@ -113,24 +107,6 @@ describe("[Consulta] esta es la prueba de /api/consultas/Paciente/{id}", ()=>{
 
 // Actualizar consulta
 describe("[Consulta] esta es la prueba de /api/consultas/Actualizar", ()=>{
-    let pacienteCreado;
-    let consultaCreada;
-
-    beforeAll(async () => {
-        const pacienteRes = await request(app)
-            .post("/api/pacientes/Crear")
-            .set("Authorization", `Bearer ${JWT_TOKEN}`)
-            .send(newPaciente());
-        pacienteCreado = pacienteRes.body.paciente;
-
-        const consultaRes = await request(app)
-            .post("/api/consultas/Crear")
-            .set("Authorization", `Bearer ${JWT_TOKEN}`)
-            .send({ ...newConsulta(), idPaciente: pacienteCreado._id });
-
-        consultaCreada = consultaRes.body.consulta;
-    });
-
     // Prueba sin login
     test("Esto deberia retornar 401", async ()=>{
         const response = await request(app)
@@ -167,24 +143,6 @@ describe("[Consulta] esta es la prueba de /api/consultas/Actualizar", ()=>{
 
 // Eliminar consulta por id
 describe("[Consulta] esta es la prueba de /api/consultas/Eliminar/:id", ()=>{
-    let pacienteCreado;
-    let consultaCreada;
-
-    beforeAll(async () => {
-        const pacienteRes = await request(app)
-            .post("/api/pacientes/Crear")
-            .set("Authorization", `Bearer ${JWT_TOKEN}`)
-            .send(newPaciente());
-        pacienteCreado = pacienteRes.body.paciente;
-
-        const consultaRes = await request(app)
-            .post("/api/consultas/Crear")
-            .set("Authorization", `Bearer ${JWT_TOKEN}`)
-            .send({ ...newConsulta(), idPaciente: pacienteCreado._id });
-
-        consultaCreada = consultaRes.body.consulta;
-    });
-    
     // Prueba sin login
     test("Esto deberia retornar 401", async ()=>{
         const response = await request(app)
