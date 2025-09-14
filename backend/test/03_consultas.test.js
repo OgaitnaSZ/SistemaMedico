@@ -10,7 +10,6 @@ const newPaciente = () => ({ ...pacienteDePrueba });
 const newConsulta = () => ({ ...consultaDePrueba });
 
 let pacienteCreado;
-let consultaBase;
 let consultaCreada;
 
 // Se ejecuta antes de las pruebas
@@ -35,20 +34,11 @@ beforeAll(async ()=>{
 
 // Crear consulta
 describe("[Consulta] esta es la prueba de /api/consultas/Crear", ()=>{
-    beforeAll(async () => {
-        const res = await request(app)
-        .post("/api/pacientes/Crear")
-        .set("Authorization", `Bearer ${JWT_TOKEN}`)
-        .send(newPaciente());
-        pacienteCreado = res.body.paciente;
-        consultaBase = { ...newConsulta(), idPaciente: pacienteCreado._id };
-    });
-
     // Prueba sin login
     test("Esto deberia retornar 401", async ()=>{
         const response = await request(app)
         .post('/api/consultas/Crear')
-        .send(consultaBase);
+        .send({ ...newConsulta(), idPaciente: pacienteCreado._id });
 
         expect(response.statusCode).toEqual(401);
     })
@@ -58,7 +48,7 @@ describe("[Consulta] esta es la prueba de /api/consultas/Crear", ()=>{
         const response = await request(app)
         .post('/api/consultas/Crear')
         .set("Authorization", `Bearer ${JWT_TOKEN}`)
-        .send(consultaBase);
+        .send({ ...newConsulta(), idPaciente: pacienteCreado._id });
 
         const { body } = response;
         expect(response.statusCode).toEqual(201);

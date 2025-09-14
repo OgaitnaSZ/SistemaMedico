@@ -6,6 +6,7 @@ let JWT_TOKEN = "";
 const { pacienteDePrueba, usuarioCorrecto } = require("./helper/helperData");
 
 const newPaciente = () => ({ ...pacienteDePrueba });
+let pacienteCreado;
 
 // Se ejecuta antes de las pruebas
 beforeAll(async ()=>{
@@ -40,6 +41,8 @@ describe("[Paciente] esta es la prueba de /api/pacientes/Crear", ()=>{
         const { body } = response;
         expect(response.statusCode).toEqual(201);
         expect(body).toHaveProperty("paciente");
+
+        pacienteCreado = response.body.paciente;
     })
 })
 
@@ -67,16 +70,6 @@ describe("[Paciente] esta es la prueba de /api/pacientes/Pacientes", ()=>{
 
 // Actualizar paciente
 describe("[Paciente] esta es la prueba de /api/pacientes/Actualizar", ()=>{
-    let pacienteCreado;
-
-    beforeAll(async () => {
-        const res = await request(app)
-        .post("/api/pacientes/Crear")
-        .set("Authorization", `Bearer ${JWT_TOKEN}`)
-        .send(newPaciente());
-        pacienteCreado = res.body.paciente;
-    });
-
     // Prueba sin login
     test("Esto deberia retornar 401", async ()=>{
         const response = await request(app)
@@ -112,16 +105,6 @@ describe("[Paciente] esta es la prueba de /api/pacientes/Actualizar", ()=>{
 
 // Obtener paciente por id
 describe("[Paciente] esta es la prueba de /api/pacientes/Paciente/:id", ()=>{
-    let pacienteCreado;
-
-    beforeAll(async () => {
-        const response = await request(app)
-        .post("/api/pacientes/Crear")
-        .set("Authorization", `Bearer ${JWT_TOKEN}`)
-        .send(newPaciente());
-        pacienteCreado = response.body.paciente;
-    });
-
     // Prueba sin login
     test("Esto deberia retornar 401", async ()=>{
         const response = await request(app)
@@ -154,16 +137,6 @@ describe("[Paciente] esta es la prueba de /api/pacientes/Paciente/:id", ()=>{
 
 // Eliminar paciente por id
 describe("[Paciente] esta es la prueba de /api/pacientes/Eliminar/:id", ()=>{
-    let pacienteCreado;
-
-    beforeAll(async () => {
-        const response = await request(app)
-        .post("/api/pacientes/Crear")
-        .set("Authorization", `Bearer ${JWT_TOKEN}`)
-        .send(newPaciente());
-        pacienteCreado = response.body.paciente;
-    });
-
     // Prueba sin login
     test("Esto deberia retornar 401", async ()=>{
         const response = await request(app)
