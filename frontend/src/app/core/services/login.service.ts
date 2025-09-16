@@ -11,7 +11,7 @@ export class LoginService {
   constructor(private http: HttpClient, private router: Router) {}
 
   login(user: string, pass: string) {
-    return this.http.post<{ token: string ; idUsuario: string ; nombre:string}>(`${this.apiUrl}`, { user, pass });
+    return this.http.post<{ token: string ; idUsuario: string ; nombre:string}>(`${this.apiUrl}login`, { usuario: user, password: pass });
   }
 
   setToken(token: string) {

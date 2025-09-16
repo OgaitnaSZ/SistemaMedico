@@ -4,15 +4,15 @@ const validateResults = require("../utils/handleValidator");
 // Validaciones para un solo paciente
 const validatePaciente = [
   check("nombre")
-    .exists().withMessage("El nombre es requerido")
-    .notEmpty().withMessage("El nombre no puede estar vacío"),
+    .exists()
+    .notEmpty(),
   check("apellido")
-    .exists().withMessage("El apellido es requerido")
-    .notEmpty().withMessage("El apellido no puede estar vacío"),
+    .exists()
+    .notEmpty(),
   check("dni")
-    .exists().withMessage("El DNI es requerido")
-    .notEmpty().withMessage("El DNI no puede estar vacío")
-    .isLength({ min: 8, max: 8 }).withMessage("El DNI debe tener 8 dígitos"),
+    .exists()
+    .notEmpty()
+    .isLength({ min: 8, max: 8 }),
 ];
 
 // Middleware dinámico para validar múltiples o un solo paciente
@@ -60,7 +60,7 @@ const validatorPacienteUpdate = [
     check("dni")
     .exists()
     .notEmpty()
-    .isLength(8),
+    .isLength({ min: 8, max: 8 }),
     (req, res, next) => validateResults(req, res, next)
 ]
 
