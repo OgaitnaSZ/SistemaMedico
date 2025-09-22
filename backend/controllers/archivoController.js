@@ -13,7 +13,7 @@ exports.subirArchivos = async (req, res) => {
     // Mapear todos los archivos subidos
     const archivosData = files.map(file => ({
       idConsulta: body.idConsulta,
-      name: file.filename,
+      nombre: file.filename,
       url: `${PUBLIC_URL}/uploads/${file.filename}`
     }));
 
@@ -38,7 +38,7 @@ exports.listarArchivos = async (req, res) => {
     const archivosSimplificados = archivos.map(a => ({
       _id: a._id,
       idConsulta: a.idConsulta,
-      name: a.name,
+      nombre: a.name,
       url: a.url
     }));
 
@@ -58,7 +58,7 @@ exports.eliminarArchivo = async (req, res) => {
 
     const deleteResponse = await Archivo.findByIdAndDelete({ _id: id });
 
-    const filename  = archivo.name;
+    const filename  = archivo.nombre;
     const filePath = `${MEDIA_PATH}/${filename}`; 
 
     // Verificar si el archivo existe

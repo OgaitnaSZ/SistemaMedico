@@ -53,7 +53,7 @@ router.post('/Subir', authMiddleware, uploadMiddleware.array("archivos"), valida
  *          security:
  *              - bearerAuth: []
  *          parameters:
- *          - name: id
+ *          - nombre: id
  *            in: path
  *            description: ID de la consulta
  *            required: true
@@ -85,7 +85,7 @@ router.get('/Consulta/:id', authMiddleware, validatorId, archivoController.lista
  *          security:
  *              - bearerAuth: []
  *          parameters:
- *          - name: id
+ *          - nombre: id
  *            in: path
  *            description: ID del archivo
  *            required: true

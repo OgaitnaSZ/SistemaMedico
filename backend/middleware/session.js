@@ -17,7 +17,7 @@ const authMiddleware = async (req, res, next) => {
 
         const user = await Usuario.findOne({_id: dataToken._id});
         
-        req.user = user
+        req.usuario = user
 
         return next()
 

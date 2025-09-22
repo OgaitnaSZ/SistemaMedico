@@ -5,7 +5,7 @@ const archivoSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    name: {
+    nombre: {
         type: String
     },
     url: {
