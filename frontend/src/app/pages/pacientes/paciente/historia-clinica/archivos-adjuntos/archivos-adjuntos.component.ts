@@ -24,10 +24,8 @@ export class ArchivosComponent {
     if (this.idConsulta !== undefined && this.idConsulta != '') {
       this.consultaService.getArchivos(this.idConsulta).subscribe(
         (data) => {
+          console.log(data);
           this.archivos = data;
-        },
-        (error) => {
-          this.snackbarService.show('Error al cargar archivos.', 'error');
         }
       );
     }
@@ -44,8 +42,8 @@ export class ArchivosComponent {
     event.preventDefault();
     if (this.idConsulta !== undefined && this.idConsulta != '') {
       const formData = new FormData();
-      this.archivosSeleccionados.forEach(file => formData.append('archivos[]', file));
-      formData.append('IdConsulta', this.idConsulta.toString());
+      this.archivosSeleccionados.forEach(file => formData.append('archivos', file));
+      formData.append('idConsulta', this.idConsulta.toString());
 
       this.consultaService.agregarArchivo(formData).subscribe(
         (data) => {

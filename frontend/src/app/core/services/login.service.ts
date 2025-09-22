@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -8,10 +8,39 @@ import { Router } from '@angular/router';
 export class LoginService {
   private apiUrl = 'http://localhost:4000/api/usuarios/';
 
+  // Crear los encabezados con el Bearer Token
+  private headers = new HttpHeaders({
+    'Authorization': `Bearer ${this.getToken()}`, // Obtener token
+    'Content-Type': 'application/json'
+  });
+
   constructor(private http: HttpClient, private router: Router) {}
 
   login(user: string, pass: string) {
-    return this.http.post<{ token: string ; idUsuario: string ; nombre:string}>(`${this.apiUrl}login`, { usuario: user, password: pass });
+    return this.http.post<{ data: any }>(`${this.apiUrl}login`, { usuario: user, password: pass });
+  }
+
+  actualizarDatos(
+    _id: string, nombre: string, usuario: string, password: string,newPassword?: string // opcional
+  ){
+    const body: any = { _id, nombre, usuario, password };
+    
+    if (newPassword && newPassword.trim() !== '') {
+      body.newPassword = newPassword;
+    }
+
+    this.setUser(usuario);
+    this.setUserName(nombre);
+  
+    return this.http.put<{ message: string }>(`${this.apiUrl}actualizar`, body, { headers: this.createHeaders() });
+  }
+
+  private createHeaders(): HttpHeaders {
+      const token = this.getToken();
+      return new HttpHeaders({
+        'Authorization': token ? `Bearer ${token}` : '',
+        'Content-Type': 'application/json'
+      });
   }
 
   setToken(token: string) {
@@ -26,18 +55,23 @@ export class LoginService {
     localStorage.setItem('idUsuario', idUsuario);
   }
   setUserName(nombre: string) {
-    console.log(nombre);
     localStorage.setItem('nombre', nombre);
+  }
+  setUser(usuario: string){
+    localStorage.setItem('usuario', usuario);
   }
 
   getUserId(): string {
     const id = localStorage.getItem('idUsuario');
     return id ? id:'';
   }
-
   getUserName(): string {
     const nombre = localStorage.getItem('nombre');
     return nombre !== null ? nombre : 'Doctor';
+  }
+  getUser(): string {
+    const usuario = localStorage.getItem('usuario');
+    return usuario !== null ? usuario : '';
   }
 
   isLoggedIn(): boolean {
@@ -48,21 +82,4 @@ export class LoginService {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
-
-  cargarDatos(idUsuario: string){
-    return this.http.get<{ nombre: string ; user: string }>(`${this.apiUrl}${idUsuario}`);
-  }
-
-  actualizarDatos(
-    idUsuario: string, nombre: string, user: string, password: string,newPassword?: string // opcional
-  ){
-    const body: any = { idUsuario, nombre, user, password };
-    
-    if (newPassword && newPassword.trim() !== '') {
-      body.newPassword = newPassword;
-    }
-  
-    return this.http.put<{ message: string }>(`${this.apiUrl}`, body);
-  }
-
 }

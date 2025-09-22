@@ -31,6 +31,7 @@ export interface Consulta {
 
 export interface Archivo {
   _id: string;
-  name: string;
+  nombre: string;
+  url: string;
   created_at: Date; 
 }

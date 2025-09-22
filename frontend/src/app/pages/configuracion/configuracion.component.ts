@@ -17,13 +17,13 @@ export class ConfiguracionComponent {
   oldPass: string = '';
   newPass: string = '';
   confirmPass: string = '';
-  idUsuario: string = '';
+  _id: string = '';
 
   constructor (private login: LoginService, private snackbarService: SnackbarService){}
 
   onChange() {
     if (this.validarCambioDeDatos()) {
-      this.login.actualizarDatos(this.idUsuario, this.nombre, this.user, this.oldPass).subscribe({
+      this.login.actualizarDatos(this._id, this.nombre, this.user, this.oldPass).subscribe({
         next: (response) => {
           console.log("Datos actualizados con éxito:", response);
           this.snackbarService.show('Datos actualizados correctamente.', 'success');
@@ -41,7 +41,7 @@ export class ConfiguracionComponent {
   
   onChangePass() {
     if (this.validarCambioDePassword()) {
-      this.login.actualizarDatos(this.idUsuario, this.nombre, this.user, this.oldPass, this.newPass).subscribe(
+      this.login.actualizarDatos(this._id, this.nombre, this.user, this.oldPass, this.newPass).subscribe(
         (response) => {
           this.login.setUserName(this.nombre);
           this.resetPasswords();
@@ -57,7 +57,7 @@ export class ConfiguracionComponent {
   }
   
   validarCambioDeDatos(): boolean {
-    return this.idUsuario != '' && this.nombre.trim() !== '' && this.user.trim() !== '' && this.oldPass.trim() !== '';
+    return this._id != '' && this.nombre.trim() !== '' && this.user.trim() !== '' && this.oldPass.trim() !== '';
   }
   
   validarCambioDePassword(): boolean {
@@ -71,16 +71,9 @@ export class ConfiguracionComponent {
 
   ngOnInit(): void {
     // Cargar datos de user
-    this.idUsuario = this.login.getUserId();
-    this.login.cargarDatos(this.idUsuario).subscribe(
-      (response) =>{
-        this.nombre = response.nombre;
-        this.user = response.user;
-      },
-      (error) => {
-        console.log("Error al cargar datos del usuario.", error);
-      }
-    )
+    this.nombre = this.login.getUserName();
+    this.user = this.login.getUser();
+    this._id = this.login.getUserId();
 
     // Cargar modo oscuro
     this.isDark = localStorage.getItem('theme') === 'dark';

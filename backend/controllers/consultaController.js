@@ -26,9 +26,9 @@ exports.listarPorPaciente = async (req, res) => {
 exports.crearConsulta = async (req, res) => {
     try {
         const nuevaConsulta = req.body;
-
+        
         const consulta = new Consulta(nuevaConsulta);
-
+        
         await consulta.save();
 
         // Actualizar fecha de ultima consulta del paciente

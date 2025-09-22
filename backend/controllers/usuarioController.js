@@ -39,9 +39,9 @@ exports.loginUsuario = async (req, res) =>{
 
 exports.actualizarUsuario = async (req, res) => {
     try {
-        req = matchedData(req);
+        req = req.body;
         const userDB = await Usuario.findOne({usuario: req.usuario});
-
+        
         if (!userDB) return handleHttpError(res, "Usuario no encontrado", 404);
         
         // Verificar contraseña actual
@@ -53,7 +53,7 @@ exports.actualizarUsuario = async (req, res) => {
         userDB.usuario = req.usuario;
         
         // Si hay nueva contraseña, hashearla y actualizar
-        if (req.newPassword && req.newPassword.trim() !== '') userDB.password = await bcrypt.hash(req.newPassword, 10);
+        if (req.newPassword && req.newPassword.trim() !== '') userDB.password = await encrypt(req.newPassword, 10);
         
         await userDB.save();
 

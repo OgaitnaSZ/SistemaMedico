@@ -1,5 +1,6 @@
 const express = require('express');
 const conectarDB = require('./config/db')
+const path = require('path');
 const cors = require('cors');
 const swaggerUI = require('swagger-ui-express');
 const openApiConfiguration = require('./docs/swagger');
@@ -15,6 +16,7 @@ conectarDB();
 
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 /**
  * Documentacion de rutas
@@ -23,7 +25,6 @@ app.use('/documentation',
     swaggerUI.serve,
     swaggerUI.setup(openApiConfiguration)
 )
-
 
 // Rutas
 app.use('/api/pacientes', require('./routes/paciente'));
@@ -35,7 +36,6 @@ app.use('/api/dashboard', require('./routes/dashboard'));
 // Correr el servidor
 const port = 4000;
 if(NODE_ENV !== 'test') app.listen(port);
-
 
 // Importar app para fines de testing
 module.exports = app

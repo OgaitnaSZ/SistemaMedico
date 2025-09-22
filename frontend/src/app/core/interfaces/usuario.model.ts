@@ -1,6 +1,6 @@
 export interface Usuario {
   _id: string;
   nombre: string;
-  user: string;
+  usuario: string;
   password: string; // Hash
 }

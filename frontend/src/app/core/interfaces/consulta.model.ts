@@ -1,5 +1,5 @@
 export interface Consulta {
-  _id: string;
+  _id: string | undefined;
   idPaciente: string;
   fecha: string;
   motivoConsulta: string;

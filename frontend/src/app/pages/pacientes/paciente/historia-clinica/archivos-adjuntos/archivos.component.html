@@ -36,19 +36,19 @@
 
     @if (archivos.length>0) {
       <ul class="list-disc list-inside space-y-1 text-blue-500 text-sm">
-        @for (archivo of archivos; track archivo) {
+        @for (archivo of archivos; track archivo._id) {
           <li class="group flex items-center justify-between relative">
             <div class="flex items-center space-x-2">
-              <a target="_blank" [href]="'http://localhost:4000/uploads/' + archivo._id + '-' + archivo.name"
+              <a target="_blank" [href]="archivo.url"
                 class="hover:underline transform group-hover:translate-x-5 group-hover:ms-1 transition-transform duration-200">
-                {{ archivo.name }}
+                {{ archivo.nombre }}
               </a>
               <p class="text-gray-400 text-sm group-hover:translate-x-5 group-hover:ms-1">{{ archivo.createdAt }}</p>
             </div>
             <!-- Botón de eliminar -->
              @if(archivo._id){
             <button class="absolute left-0 text-red-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200 material-symbols-outlined"
-              (click)="eliminarArchivo(archivo._id, archivo.name)">
+              (click)="eliminarArchivo(archivo._id, archivo.nombre)">
               delete
             </button>
             }

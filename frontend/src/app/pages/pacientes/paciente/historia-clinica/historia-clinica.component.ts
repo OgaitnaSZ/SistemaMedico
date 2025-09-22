@@ -14,7 +14,7 @@ import { SnackbarService } from '../../../../core/services/snackbar.service';
 export class HistoriaClinicaComponent {
   @Input() idPaciente: string | undefined; // ID recibido del componente padre
   agregarConsulta: boolean = false;
-  idEditando: string | null = null;
+  idEditando: string | undefined;
     
   constructor(private consultaService: ConsultasApiService, private snackbarService: SnackbarService){}
   
@@ -31,10 +31,10 @@ export class HistoriaClinicaComponent {
   }
 
   cargarHistoriasClinicas(){
-    if (this.idPaciente !== undefined && this.idPaciente != '') {
+    if (this.idPaciente !== undefined && this.idPaciente != '' && this.idPaciente !== null) {
       this.consultaService.getHistoriasClinicas(this.idPaciente).subscribe(
         (data) => {
-          this.historialClinico = data;
+          this.historialClinico = data.consultas;
         },
         (error) => {
           this.snackbarService.show('No hay historia clinica.', 'error');
@@ -43,8 +43,8 @@ export class HistoriaClinicaComponent {
     }
   }
 
-  eliminarConsulta(idConsulta: string){
-    if (confirm(`¿Estás seguro de que deseas eliminar la consulta}?`)) {
+  eliminarConsulta(idConsulta: string | undefined){
+    if (idConsulta != undefined && confirm(`¿Estás seguro de que deseas eliminar la consulta}?`)) {
       this.consultaService.eliminarConsulta(idConsulta).subscribe(
         (response) => {
           this.snackbarService.show('Eliminación exitosa.', 'success');

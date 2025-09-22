@@ -1,6 +1,7 @@
 export interface Archivo {
   _id?: string;
   idConsulta: number;
-  name: string;
+  nombre: string;
+  url: string;
   createdAt?: Date;
 }

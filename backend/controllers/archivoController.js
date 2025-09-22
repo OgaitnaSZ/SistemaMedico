@@ -37,8 +37,7 @@ exports.listarArchivos = async (req, res) => {
 
     const archivosSimplificados = archivos.map(a => ({
       _id: a._id,
-      idConsulta: a.idConsulta,
-      nombre: a.name,
+      nombre: a.nombre,
       url: a.url
     }));
 

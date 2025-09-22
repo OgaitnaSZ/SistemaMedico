@@ -19,10 +19,11 @@ export class LoginComponent {
     if(this.validarDatos()){
       this.login.login(this.user, this.pass).subscribe(
         (res) => {
-          if (res.token) {
-            this.login.setToken(res.token);  // Guarda el token
-            this.login.setUserId(res.idUsuario);  // Guardar ID de usuario
-            this.login.setUserName(res.nombre);  // Guardar nombre de usuario
+          if (res.data.token) {
+            this.login.setToken(res.data.token);  // Guarda el token
+            this.login.setUserId(res.data.user._id);  // Guardar ID de usuario
+            this.login.setUser(res.data.user.usuario);  // Guardar el usuario
+            this.login.setUserName(res.data.user.nombre);  // Guardar nombre de usuario
             this.router.navigate(['/dashboard']);  // Redirige al usuario
           } else {
             this.snackbarService.show('Token no recibido', 'error');

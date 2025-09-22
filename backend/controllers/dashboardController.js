@@ -107,11 +107,11 @@ const obtenerUltimosArchivos = async (limite = 10) => {
   const archivos = await Archivo.find()
     .sort({ createdAt: -1 })
     .limit(limite)
-    .select('_id name createdAt');
+    .select('_id nombre url createdAt');
 
   return archivos.map(archivo => ({
-    _id: archivo._id,
-    name: archivo.name,
+    nombre: archivo.nombre,
+    url: archivo.url,
     createdAt: archivo.createdAt
   }));
 };
