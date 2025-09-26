@@ -8,7 +8,7 @@ import { Dashboard } from '../interfaces/dashboard.model';
 })
 export class DashboardService {
 
-  private apiUrl = 'http://localhost:4000/api/dashboard/';
+  private apiUrl = 'https://sistemamedico.onrender.com/api/dashboard/';
 
   constructor(private http: HttpClient) {}
 

@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class LoginService {
-  private apiUrl = 'http://localhost:4000/api/usuarios/';
+  private apiUrl = 'https://sistemamedico.onrender.com/api/usuarios/';
 
   // Crear los encabezados con el Bearer Token
   private headers = new HttpHeaders({
