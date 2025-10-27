@@ -16,3 +16,9 @@ El sistema está orientado a médicos que buscan una herramienta ágil, intuitiv
 - **ng2-charts** - Visualización de gráficos estadísticos.
 - **snack-bar** - Visualización de mensajes.
 - **xlsx** - Importación y exportación de archivos Excel
+
+## Probar app
+Puedes probarlo en vivo en [https://sistema-medico-pzn4.vercel.app/](https://sistema-medico-pzn4.vercel.app/)
+### Acceso:
+- *User: *admin
+- *Password: *admin
