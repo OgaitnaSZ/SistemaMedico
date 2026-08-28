@@ -85,36 +85,38 @@
            'bg-blue-500': isDark
         }"
         style="box-shadow: inset 6px 6px 8px #bebebe, inset -6px -6px 8px #ffffff;"
-      >
-      <!-- Circulo deslizante con icono -->
+        >
+        <!-- Circulo deslizante con icono -->
         <div
           class="flex items-center justify-center w-6 h-6 rounded-full transition-transform duration-300 bg-white"
           [ngClass]="{
             'translate-x-0 bg-gray-300 shadow-[2px_2px_3px_#bebebe,-2px_-2px_3px_#ffffff]': !isDark,
             'translate-x-8 bg-gray-700 shadow-[2px_2px_4px_#2a2a2a,-2px_-2px_4px_#4a4a4a]': isDark
           }"
-        >
+          >
 
           <!-- Icono de sol/luna -->
-          <span
-            *ngIf="!isDark"
-            class="material-symbols-outlined text-yellow-500 switch"
-            >light_mode</span
-          >
-          <span
-            *ngIf="isDark"
-            class="material-symbols-outlined text-blue-300 switch"
-            >dark_mode</span
-          >
+          @if (!isDark) {
+            <span
+              class="material-symbols-outlined text-yellow-500 switch"
+              >light_mode</span
+              >
+            }
+            @if (isDark) {
+              <span
+                class="material-symbols-outlined text-blue-300 switch"
+                >dark_mode</span
+                >
+              }
+            </div>
+          </button>
         </div>
+      </div>
+    </section>
+    <!-- Cerrar Session -->
+    <section class="max-w-4xl w-full mx-auto px-6 flex justify-end">
+      <button (click)="cerrarSession()" class="flex items-center pt-2 text-red-500">
+        Cerrar Session
+        <span class="material-symbols-outlined ms-2">logout </span>
       </button>
-    </div>
-  </div>
-</section>
-<!-- Cerrar Session -->
-<section class="max-w-4xl w-full mx-auto px-6 flex justify-end">
-  <button (click)="cerrarSession()" class="flex items-center pt-2 text-red-500">
-    Cerrar Session
-    <span class="material-symbols-outlined ms-2">logout </span>
-  </button>
-</section>
+    </section>
