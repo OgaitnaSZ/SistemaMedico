@@ -3,6 +3,7 @@ require('dotenv').config({path: 'variables.env'});
 NODE_ENV = process.env.NODE_ENV;
 
 const conectarDB = async () => {
+    console.log(NODE_ENV)
     const DB_URI = (NODE_ENV === "test") ? process.env.DB_URI_TEST : process.env.DB_URI;
 
     try{

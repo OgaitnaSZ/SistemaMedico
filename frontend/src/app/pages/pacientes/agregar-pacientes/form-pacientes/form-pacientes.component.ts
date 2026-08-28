@@ -32,6 +32,7 @@ export class FormPacientesComponent {
     telefono: '',
     email: '',
     direccion: '',
+    healthInsurance: '',
     createdAt: new Date
   };
 
@@ -98,7 +99,10 @@ export class FormPacientesComponent {
   cargarPaciente(){
     this.pacienteService.getPaciente(this.idPaciente).subscribe(
       (response) => {
-        this.paciente = response;
+        this.paciente = {
+          ...response,
+          healthInsurance: response.healthInsurance ?? ''
+        };
         // Formatear fecha para el input
         this.paciente.fechaNacimiento = new Date(this.paciente.fechaNacimiento).toISOString().substring(0, 10);
       },

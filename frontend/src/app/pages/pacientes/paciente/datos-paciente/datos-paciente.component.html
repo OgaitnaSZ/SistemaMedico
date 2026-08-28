@@ -40,6 +40,10 @@
           <p class="font-medium text-lg dark:text-gray-100">{{ paciente.direccion }}</p>
         </div>
         <div>
+          <p class="text-sm text-gray-500 dark:text-gray-500">Obra social</p>
+          <p class="font-medium text-lg dark:text-gray-100">{{ paciente.healthInsurance || 'No informado' }}</p>
+        </div>
+        <div>
           <p class="text-sm text-gray-500 dark:text-gray-500">Fecha de Creación</p>
           <p class="font-medium text-lg dark:text-gray-100">{{ paciente.createdAt | date:'dd/MM/yyyy':'UTC' }}</p>
         </div>

@@ -20,6 +20,7 @@ export interface UltimoPaciente {
   fechaNacimiento: string;
   dni: string;
   genero: string;
+  healthInsurance?: string;
   ultima_visita: Date;
 }
 

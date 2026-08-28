@@ -18,7 +18,8 @@ const pacienteDePrueba = {
     "fechaNacimiento": "08-03-1990",
     "telefono": "123456789",
     "email": "carlos@test.com",
-    "direccion": "Av. Roca 1600"
+    "direccion": "Av. Roca 1600",
+    "healthInsurance": "OSDE"
 }
 const pacientesDePrueba = [
     {
@@ -29,7 +30,8 @@ const pacientesDePrueba = [
         "fechaNacimiento": "08-03-1990",
         "telefono": "123456789",
         "email": "carlos@test.com",
-        "direccion": "Av. Roca 1600"
+        "direccion": "Av. Roca 1600",
+        "healthInsurance": "OSDE"
     },
     {
         "nombre": "Santiago",

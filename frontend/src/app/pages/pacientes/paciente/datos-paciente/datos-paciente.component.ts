@@ -20,6 +20,7 @@ export class DatosPacienteComponent {
     telefono: '',
     email: '',
     direccion: '',
+    healthInsurance: '',
     createdAt: new Date
   };
   

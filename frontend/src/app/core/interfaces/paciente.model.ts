@@ -8,6 +8,7 @@ export interface Paciente {
   telefono: string;
   email: string;
   direccion: string;
+  healthInsurance?: string;
   createdAt: Date;
   ultima_visita?: Date;
 }

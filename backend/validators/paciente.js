@@ -13,6 +13,9 @@ const validatePaciente = [
     .exists()
     .notEmpty()
     .isLength({ min: 8, max: 8 }),
+  check("healthInsurance")
+    .optional()
+    .isString(),
 ];
 
 // Middleware dinámico para validar múltiples o un solo paciente
@@ -61,6 +64,9 @@ const validatorPacienteUpdate = [
     .exists()
     .notEmpty()
     .isLength({ min: 8, max: 8 }),
+    check("healthInsurance")
+    .optional()
+    .isString(),
     (req, res, next) => validateResults(req, res, next)
 ]
 

@@ -86,6 +86,7 @@ const obtenerUltimoPaciente = async () => {
     fechaNacimiento: paciente.fechaNacimiento?.toISOString().split('T')[0] || null,
     dni: paciente.dni,
     genero: paciente.genero,
+    healthInsurance: paciente.healthInsurance || '',
     ultima_visita: paciente.ultima_visita
   };
 };

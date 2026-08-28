@@ -82,6 +82,9 @@ const swaggerDefinition = {
                     direccion:{
                         type:"string"
                     },
+                    healthInsurance:{
+                        type:"string"
+                    },
                     ultima_visita: {
                         type:"string",
                         format: "date"
@@ -120,6 +123,9 @@ const swaggerDefinition = {
                     },
                     direccion:{
                         type:"string"
+                    },
+                    healthInsurance:{
+                        type:"string"
                     }
                 }
             },
@@ -153,6 +159,9 @@ const swaggerDefinition = {
                         type:"string"
                     },
                     direccion:{
+                        type:"string"
+                    },
+                    healthInsurance:{
                         type:"string"
                     }
                 }

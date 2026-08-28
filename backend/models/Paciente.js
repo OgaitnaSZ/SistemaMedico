@@ -28,6 +28,9 @@ const pacienteSchema = mongoose.Schema({
     direccion:{
         type: String
     },
+    healthInsurance: {
+        type: String
+    },
     ultima_visita: {
         type: Date
     },

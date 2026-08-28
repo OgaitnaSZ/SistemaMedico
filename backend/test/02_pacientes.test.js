@@ -43,8 +43,22 @@ describe("[Paciente] esta es la prueba de /api/pacientes/Crear", ()=>{
         console.log(response);
         expect(response.statusCode).toEqual(201);
         expect(body).toHaveProperty("paciente");
+        expect(body.paciente.healthInsurance).toEqual("OSDE");
 
         pacienteCreado = response.body.paciente;
+    })
+
+    test("Esto deberia permitir crear sin obra social", async ()=>{
+        const pacienteSinObraSocial = newPaciente();
+        delete pacienteSinObraSocial.healthInsurance;
+
+        const response = await request(app)
+        .post('/api/pacientes/Crear')
+        .set("Authorization", `Bearer ${JWT_TOKEN}`)
+        .send(pacienteSinObraSocial);
+
+        expect(response.statusCode).toEqual(201);
+        expect(response.body).toHaveProperty("paciente");
     })
 
     // Crear multiples pacientes
@@ -97,11 +111,12 @@ describe("[Paciente] esta es la prueba de /api/pacientes/Actualizar", ()=>{
     test("Esto deberia retornar 200", async ()=>{
         const response = await request(app)
         .put('/api/pacientes/Actualizar')
-        .send({ ...pacienteCreado, nombre: "Fernando" })
+        .send({ ...pacienteCreado, nombre: "Fernando", healthInsurance: "Swiss Medical" })
         .set("Authorization", `Bearer ${JWT_TOKEN}`)
 
         expect(response.statusCode).toEqual(200);
         expect(response.body.pacienteActualizado.nombre).toEqual("Fernando");
+        expect(response.body.pacienteActualizado.healthInsurance).toEqual("Swiss Medical");
     })
 
     // Prueba con usuario inexistente
@@ -135,6 +150,7 @@ describe("[Paciente] esta es la prueba de /api/pacientes/Paciente/:id", ()=>{
 
         expect(response.statusCode).toEqual(200);
         expect(response.body._id).toEqual(pacienteCreado._id);
+        expect(response.body.healthInsurance).toEqual("OSDE");
     })
 
     // Prueba con usuario inexistente

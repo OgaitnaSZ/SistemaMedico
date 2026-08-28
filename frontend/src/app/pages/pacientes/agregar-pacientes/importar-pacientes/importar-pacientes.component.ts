@@ -25,6 +25,7 @@ export class ImportarPacientesComponent {
     telefono: '',
     email: '',
     direccion: '',
+    healthInsurance: '',
     createdAt: new Date
   };
   pacientesImportados: Paciente[] = [];
@@ -98,6 +99,7 @@ export class ImportarPacientesComponent {
             telefono: valores[5] || '',
             email: valores[6] || '',
             direccion: valores[7] || '',
+            healthInsurance: valores[8] || '',
             createdAt: new Date()
         };
         

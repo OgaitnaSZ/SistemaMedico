@@ -25,6 +25,7 @@ export class PacienteComponent {
     telefono: '',
     email: '',
     direccion: '',
+    healthInsurance: '',
     createdAt: new Date
   };
 

@@ -31,6 +31,7 @@
         <div class="space-y-1">
             <p><strong>Edad:</strong> {{ calcularEdad(dashboard.ultimoPaciente?.fechaNacimiento) }}</p>
             <p><strong>Género:</strong> {{ dashboard.ultimoPaciente?.genero }}</p>
+            <p><strong>Obra social:</strong> {{ dashboard.ultimoPaciente?.healthInsurance || 'No informado' }}</p>
             <p><strong>Visita:</strong> {{ dashboard.ultimoPaciente?.ultima_visita | date:'dd/MM/yyyy':'UTC' }}</p>
             <button [routerLink]="['/pacientes', dashboard.ultimoPaciente?.idPaciente]"
             class="mt-4 inline-flex items-center justify-center bg-white text-blue-500  px-4 py-2 rounded-lg hover:bg-blue-50 transition duration-200">
