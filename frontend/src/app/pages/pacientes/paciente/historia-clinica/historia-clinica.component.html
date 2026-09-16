@@ -1,73 +1,217 @@
-<section class="flex justify-between">
-  <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Historia Clínica</h3>
-  @if (!agregarConsulta) {
-    <button class="bg-blue-500 text-white px-4 py-2 mb-6 rounded-lg hover:bg-blue-700 transition"
-      (click)="agregarConsulta = true">
-      + Nueva Consulta
-    </button>
-  }
-</section>
+<!-- Encabezado de Historia Clínica -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100 dark:border-slate-800">
+  <div>
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/60 border border-blue-100 dark:border-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400">
+        <span class="material-symbols-outlined text-xl">timeline</span>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white">
+          Historia Clínica y Evoluciones
+        </h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          Registro cronológico de consultas, diagnósticos y tratamientos
+        </p>
+      </div>
+    </div>
+  </div>
 
+  <div class="flex items-center gap-3">
+    @if (!agregarConsulta) {
+      <button
+        type="button"
+        (click)="agregarConsulta = true"
+        class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-xs font-semibold rounded-xl shadow-sm transition-all"
+      >
+        <span class="material-symbols-outlined text-base">add</span>
+        <span>Nueva Consulta</span>
+      </button>
+    }
+  </div>
+</div>
+
+<!-- Panel para Agregar Nueva Consulta -->
 @if (agregarConsulta) {
-  <section class="bg-gray-50 dark:bg-gray-800 border border-gray-200 p-4 rounded-lg mb-6 mt-6">
-    <button class="w-full text-right text-red-400 material-symbols-outlined" (click)="agregarConsulta = false">close</button>
+  <div class="my-6 p-5 sm:p-6 bg-slate-50 dark:bg-slate-800/60 border border-blue-200 dark:border-blue-900/60 rounded-2xl shadow-sm space-y-4">
+    <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-700">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">post_add</span>
+        <h4 class="text-base font-bold text-slate-900 dark:text-white">Registrar Nueva Consulta</h4>
+      </div>
+      <button
+        type="button"
+        (click)="agregarConsulta = false"
+        class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg transition-colors"
+        title="Cerrar formulario"
+      >
+        <span class="material-symbols-outlined text-xl">close</span>
+      </button>
+    </div>
     <app-form-consulta (onFormularioEnviado)="actualizarDatos()"></app-form-consulta>
-  </section>
+  </div>
 }
 
-@if (historialClinico.length>0) {
-  <section class="space-y-6">
-    @for (consulta of historialClinico; track $index) {
-      <div class="border dark:border-gray-100 rounded-lg p-4 space-y-2">
+<!-- Línea de Tiempo de Consultas (Clinical Timeline) -->
+@if (historialClinico.length > 0) {
+  <div class="mt-8 relative pl-6 sm:pl-8 border-l-2 border-blue-200 dark:border-blue-900/60 space-y-8 ml-2 sm:ml-4">
+    @for (consulta of historialClinico; track consulta._id; let i = $index) {
+      <div class="relative group">
+        <!-- Nodo del Timeline -->
+        <div class="absolute -left-[31px] sm:-left-[39px] top-4 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-blue-600 text-white flex items-center justify-center ring-4 ring-white dark:ring-slate-900 shadow-sm text-xs font-bold">
+          <span class="material-symbols-outlined text-sm sm:text-base">clinical_notes</span>
+        </div>
+
+        <!-- Tarjeta de Consulta o Formulario de Edición -->
         @if (idEditando === consulta._id) {
-          <button class="w-full text-right text-red-400 material-symbols-outlined" (click)="idEditando = ''">close</button>
-          <app-form-consulta
-            (onFormularioEnviado)="actualizarDatos()"
-            [consulta]="consulta">
-          </app-form-consulta>
+          <div class="p-5 sm:p-6 bg-slate-50 dark:bg-slate-800/80 border border-amber-300 dark:border-amber-700 rounded-2xl shadow-sm space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-700">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-amber-500">edit_note</span>
+                <h4 class="text-base font-bold text-slate-900 dark:text-white">Modificar Consulta</h4>
+              </div>
+              <button
+                type="button"
+                (click)="idEditando = ''"
+                class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg transition-colors"
+                title="Cancelar edición"
+              >
+                <span class="material-symbols-outlined text-xl">close</span>
+              </button>
+            </div>
+            <app-form-consulta
+              (onFormularioEnviado)="actualizarDatos()"
+              [consulta]="consulta"
+            ></app-form-consulta>
+          </div>
         } @else {
-          <div class="flex justify-between items-center">
-            <p class="text-gray-600 dark:text-gray-100 font-semibold">Consulta del {{ consulta.fecha | date:'dd/MM/yyyy':'UTC' }}</p>
-            <div class="flex space-x-2">
-              <button (click)="idEditando = consulta._id" class="flex items-center text-yellow-500 hover:text-yellow-600 rounded-lg transition-colors duration-200">
-                <span class="material-symbols-outlined mr-1">edit</span>
-              </button>
-              <button (click)="eliminarConsulta(consulta._id)"
-                class="flex items-center text-red-600 hover:text-red-700 rounded-lg transition-colors duration-200">
-                <span class="material-symbols-outlined mr-1">delete</span>
-              </button>
+          <!-- Tarjeta de Lectura de la Consulta -->
+          <div class="bg-slate-50/70 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm space-y-4 hover:border-slate-300 dark:hover:border-slate-700 transition-colors">
+            <!-- Encabezado de la consulta individual -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200/70 dark:border-slate-800">
+              <div class="flex items-center gap-2.5">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300">
+                  <span class="material-symbols-outlined text-sm">event</span>
+                  {{ consulta.fecha | date:'dd/MM/yyyy':'UTC' }}
+                </span>
+                <span class="text-xs text-slate-400 dark:text-slate-500">
+                  Consulta #{{ historialClinico.length - i }}
+                </span>
+              </div>
+
+              <!-- Botones de Acción (Editar / Eliminar) -->
+              <div class="flex items-center gap-1">
+                <button
+                  type="button"
+                  (click)="idEditando = consulta._id"
+                  class="p-1.5 text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/40 rounded-lg transition-colors"
+                  title="Editar consulta"
+                >
+                  <span class="material-symbols-outlined text-base">edit</span>
+                </button>
+                <button
+                  type="button"
+                  (click)="eliminarConsulta(consulta._id)"
+                  class="p-1.5 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors"
+                  title="Eliminar consulta"
+                >
+                  <span class="material-symbols-outlined text-base">delete</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Motivo de Consulta -->
+            <div class="bg-white dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/80 rounded-xl p-3.5">
+              <span class="block text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-0.5">
+                Motivo de Consulta
+              </span>
+              <p class="text-sm font-bold text-slate-900 dark:text-slate-100">
+                {{ consulta.motivoConsulta }}
+              </p>
+            </div>
+
+            <!-- Diagnóstico y Tratamiento en Grilla -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Diagnóstico -->
+              <div class="p-3.5 rounded-xl bg-white dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/80">
+                <span class="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">
+                  <span class="material-symbols-outlined text-sm text-blue-500">stethoscope</span>
+                  Diagnóstico
+                </span>
+                <p class="text-sm text-slate-800 dark:text-slate-200 whitespace-pre-line">
+                  {{ consulta.diagnostico || 'Sin diagnóstico registrado' }}
+                </p>
+              </div>
+
+              <!-- Tratamiento -->
+              <div class="p-3.5 rounded-xl bg-white dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/80">
+                <span class="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">
+                  <span class="material-symbols-outlined text-sm text-emerald-500">medication</span>
+                  Tratamiento / Indicaciones
+                </span>
+                <p class="text-sm text-slate-800 dark:text-slate-200 whitespace-pre-line">
+                  {{ consulta.tratamiento || 'Sin indicaciones terapéuticas' }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Observaciones si existen -->
+            @if (consulta.observaciones) {
+              <div class="p-3.5 rounded-xl bg-white dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/80">
+                <span class="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">
+                  <span class="material-symbols-outlined text-sm text-purple-500">notes</span>
+                  Observaciones Adicionales
+                </span>
+                <p class="text-sm text-slate-700 dark:text-slate-300">
+                  {{ consulta.observaciones }}
+                </p>
+              </div>
+            }
+
+            <!-- Parámetros Médicos (Signos Vitales, Mediciones) -->
+            @if (consulta.parametros && consulta.parametros.length > 0) {
+              <div>
+                <span class="block text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
+                  Parámetros Clínicos & Mediciones
+                </span>
+                <div class="flex flex-wrap gap-2">
+                  @for (parametro of consulta.parametros; track parametro.nombre) {
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700 text-xs">
+                      <span class="font-medium text-slate-500 dark:text-slate-400">{{ parametro.nombre }}:</span>
+                      <strong class="font-semibold text-slate-900 dark:text-slate-100">{{ parametro.valor }}</strong>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+
+            <!-- Archivos y Estudios Adjuntos -->
+            <div class="pt-2 border-t border-slate-200/60 dark:border-slate-800">
+              <app-archivos [idConsulta]="consulta._id"></app-archivos>
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
-            <div>
-              <p class="text-sm text-gray-500">Motivo</p>
-              <p class="font-medium dark:text-gray-100">{{ consulta.motivoConsulta }}</p>
-            </div>
-            <div>
-              <p class="text-sm text-gray-500">Diagnóstico</p>
-              <p class="font-medium dark:text-gray-100">{{ consulta.diagnostico }}</p>
-            </div>
-            <div>
-              <p class="text-sm text-gray-500">Tratamiento</p>
-              <p class="font-medium dark:text-gray-100">{{ consulta.tratamiento }}</p>
-            </div>
-            <div>
-              <p class="text-sm text-gray-500">Observaciones</p>
-              <p class="font-medium dark:text-gray-100">{{ consulta.observaciones }}</p>
-            </div>
-          </div>
-          <div>
-            <p class="text-sm text-gray-500">Parámetros médicos</p>
-            <div class="flex space-x-5">
-              @for (parametro of consulta.parametros; track parametro){
-                <p>{{ parametro.nombre }}: <strong>{{ parametro.valor }}</strong></p>
-              }
-            </div>
-          </div>
-          <!-- Archivos -->
-          <app-archivos [idConsulta]="consulta._id" class="pt-2"></app-archivos>
         }
       </div>
     }
-  </section>
+  </div>
+}
+
+<!-- Estado Vacío: Sin Consultas Previas -->
+@if (historialClinico.length === 0 && !agregarConsulta) {
+  <div class="py-12 text-center">
+    <div class="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 mx-auto flex items-center justify-center mb-3">
+      <span class="material-symbols-outlined text-2xl">medical_information</span>
+    </div>
+    <h4 class="text-base font-bold text-slate-900 dark:text-slate-100">Sin consultas registradas</h4>
+    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
+      Este paciente aún no tiene ninguna evolución clínica en su historia.
+    </p>
+    <button
+      type="button"
+      (click)="agregarConsulta = true"
+      class="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl shadow-sm transition-all"
+    >
+      <span class="material-symbols-outlined text-base">add</span>
+      <span>Registrar Primera Consulta</span>
+    </button>
+  </div>
 }

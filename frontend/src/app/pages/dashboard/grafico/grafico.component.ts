@@ -7,26 +7,49 @@ import { DiaEstadisticaConDia } from '../../../core/interfaces/dashboard.model';
 
 @Component({
   selector: 'app-grafico',
-  imports: [BaseChartDirective, BaseChartDirective, CommonModule, FormsModule],
+  standalone: true,
+  imports: [BaseChartDirective, CommonModule, FormsModule],
   templateUrl: './grafico.component.html',
 })
 export class GraficoComponent {
   @Input() estadisticas: DiaEstadisticaConDia[] = []; 
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
-  opciones = ['consultas', 'archivos', 'pacientes'];
-  tipoSeleccionado: string = 'consultas'; // default
+  opciones = [
+    { id: 'consultas', label: 'Consultas', icon: 'stethoscope' },
+    { id: 'pacientes', label: 'Pacientes', icon: 'person_add' },
+    { id: 'archivos', label: 'Archivos', icon: 'description' }
+  ];
+  tipoSeleccionado: string = 'consultas';
 
   chartOptions: ChartOptions = {
     responsive: true,
-    plugins: { legend: { display: false } },
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#0f172a',
+        titleFont: { family: 'Inter', size: 12, weight: 'bold' },
+        bodyFont: { family: 'Inter', size: 12 },
+        padding: 10,
+        cornerRadius: 8,
+        displayColors: false
+      }
+    },
     scales: {
+      x: {
+        grid: { display: false },
+        ticks: { font: { family: 'Inter', size: 11 }, color: '#64748b' }
+      },
       y: {
-        beginAtZero: true, // Siempre empieza en 0
+        beginAtZero: true,
+        grid: { color: 'rgba(148, 163, 184, 0.1)' },
         ticks: {
-          stepSize: 1 // Va de uno en uno
+          stepSize: 1,
+          font: { family: 'Inter', size: 11 },
+          color: '#64748b'
         },
-        suggestedMax: 10 // Opcional: fuerza un máximo sugerido
+        suggestedMax: 6
       },
     },
   };
@@ -35,11 +58,16 @@ export class GraficoComponent {
     labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
     datasets: [
       {
-        label: 'Historias Clínicas',
+        label: 'Consultas',
         data: [0, 0, 0, 0, 0, 0, 0],
-        borderColor: 'rgb(59, 130, 246)',
-        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-        tension: 0.4,
+        borderColor: '#2563eb',
+        backgroundColor: 'rgba(37, 99, 235, 0.08)',
+        pointBackgroundColor: '#2563eb',
+        pointBorderColor: '#ffffff',
+        pointBorderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        tension: 0.35,
         fill: true,
         type: 'line'
       },
@@ -52,44 +80,59 @@ export class GraficoComponent {
     }
   }
 
-  onTipoChange(): void {
+  seleccionarTipo(tipo: string): void {
+    this.tipoSeleccionado = tipo;
     this.actualizarDatosDelGrafico();
   }
 
   actualizarDatosDelGrafico(): void {
-    const labels = this.estadisticas.map(d => d.dia);
+    const labels = this.estadisticas.map(d => {
+      // Capitalizar día de la semana
+      const dStr = d.dia || '';
+      return dStr.charAt(0).toUpperCase() + dStr.slice(1, 3);
+    });
   
-    const pacientesData = this.estadisticas.map(d => d.pacientes);
-    const consultasData = this.estadisticas.map(d => d.consultas);
-    const archivosData = this.estadisticas.map(d => d.archivos);
+    const pacientesData = this.estadisticas.map(d => d.pacientes || 0);
+    const consultasData = this.estadisticas.map(d => d.consultas || 0);
+    const archivosData = this.estadisticas.map(d => d.archivos || 0);
   
-    // Datos segun tipo seleccionado
     let datosSeleccionados: number[];
+    let colorBorde = '#2563eb';
+    let colorFondo = 'rgba(37, 99, 235, 0.08)';
+
     switch (this.tipoSeleccionado) {
       case 'pacientes':
         datosSeleccionados = pacientesData;
-        break;
-      case 'consultas':
-        datosSeleccionados = consultasData;
+        colorBorde = '#059669';
+        colorFondo = 'rgba(5, 150, 105, 0.08)';
         break;
       case 'archivos':
         datosSeleccionados = archivosData;
+        colorBorde = '#7c3aed';
+        colorFondo = 'rgba(124, 58, 237, 0.08)';
         break;
+      case 'consultas':
       default:
-        datosSeleccionados = []; 
+        datosSeleccionados = consultasData;
+        colorBorde = '#2563eb';
+        colorFondo = 'rgba(37, 99, 235, 0.08)';
     }
   
-    this.chartData.datasets[0].label = this.obtenerEtiqueta(this.tipoSeleccionado);
-    this.chartData.datasets[0].data = datosSeleccionados;
+    const ds = this.chartData.datasets[0];
+    ds.label = this.obtenerEtiqueta(this.tipoSeleccionado);
+    ds.data = datosSeleccionados;
+    ds.borderColor = colorBorde;
+    ds.backgroundColor = colorFondo;
+    ds.pointBackgroundColor = colorBorde;
     this.chartData.labels = labels;
     this.chart?.update();
   }
 
   obtenerEtiqueta(tipo: string): string {
     switch (tipo) {
-      case 'consultas': return 'Historias Clínicas';
-      case 'archivos': return 'Archivos';
-      case 'pacientes': return 'Pacientes';
+      case 'consultas': return 'Consultas Médicas';
+      case 'archivos': return 'Archivos Clínicos';
+      case 'pacientes': return 'Nuevos Pacientes';
       default: return 'Datos';
     }
   }

@@ -1,12 +1,23 @@
-<div class="bg-white dark:bg-gray-800 rounded-xl p-6 text-gray-800 dark:text-gray-100 shadow-md">
-  <div class="flex justify-between items-center mb-6 border-b pb-3 dark:border-gray-700">
-    <h3 class="text-2xl font-semibold flex items-center gap-2">
-      <span class="material-symbols-outlined text-blue-500">
-        {{ modoEdicion ? 'edit_calendar' : 'calendar_add_on' }}
-      </span>
-      {{ modoEdicion ? 'Editar Turno' : 'Agendar Nuevo Turno' }}
-    </h3>
-    <button (click)="cancelar()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 material-symbols-outlined">
+<div class="bg-white dark:bg-slate-900 rounded-2xl p-6 text-slate-800 dark:text-slate-100 shadow-2xl border border-slate-200/80 dark:border-slate-800">
+  <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100 dark:border-slate-800">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-900/30 flex items-center justify-center">
+        <span class="material-symbols-outlined text-xl">
+          {{ modoEdicion ? 'edit_calendar' : 'calendar_add_on' }}
+        </span>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold tracking-tight">
+          {{ modoEdicion ? 'Editar Turno Médico' : 'Agendar Nuevo Turno' }}
+        </h3>
+        <p class="text-xs text-slate-400">Completá los datos para registrar la cita en la agenda</p>
+      </div>
+    </div>
+    <button
+      (click)="cancelar()"
+      aria-label="Cerrar formulario"
+      class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 material-symbols-outlined p-1 rounded-lg"
+    >
       close
     </button>
   </div>
@@ -14,63 +25,74 @@
   <form (ngSubmit)="guardar()" class="space-y-4">
     <!-- Selector de Paciente -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-        Paciente <span class="text-red-500">*</span>
+      <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+        Paciente <span class="text-rose-500">*</span>
       </label>
 
       @if (pacienteSeleccionado) {
-        <div class="flex items-center justify-between p-3 bg-blue-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-lg">
+        <div class="flex items-center justify-between p-3 bg-blue-50/60 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800/60 rounded-xl">
           <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">person</span>
+            <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
+              {{ pacienteSeleccionado.nombre.charAt(0) }}{{ pacienteSeleccionado.apellido.charAt(0) }}
+            </div>
             <div>
-              <p class="font-semibold text-gray-900 dark:text-gray-100">
+              <p class="font-bold text-sm text-slate-900 dark:text-slate-100">
                 {{ pacienteSeleccionado.nombre }} {{ pacienteSeleccionado.apellido }}
               </p>
-              <p class="text-xs text-gray-500 dark:text-gray-300">
+              <p class="text-xs text-slate-500 dark:text-slate-400">
                 DNI: {{ pacienteSeleccionado.dni }} 
                 @if (pacienteSeleccionado.healthInsurance) {
-                  | Obra Social: {{ pacienteSeleccionado.healthInsurance }}
+                  • {{ pacienteSeleccionado.healthInsurance }}
                 }
               </p>
             </div>
           </div>
-          <button type="button" (click)="deseleccionarPaciente()" class="text-sm text-red-500 hover:text-red-700 font-medium">
+          <button
+            type="button"
+            (click)="deseleccionarPaciente()"
+            class="text-xs font-semibold text-rose-600 hover:text-rose-700 dark:text-rose-400 px-2 py-1 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/40 transition"
+          >
             Cambiar
           </button>
         </div>
       } @else {
         <div class="relative">
-          <input
-            type="text"
-            placeholder="Buscar por nombre, apellido o DNI..."
-            [ngModel]="terminoBusqueda"
-            (ngModelChange)="onInputBusqueda($event)"
-            name="buscarPaciente"
-            autocomplete="off"
-            class="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:text-gray-100"
-          >
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined text-slate-400 text-lg absolute left-3 pointer-events-none">search</span>
+            <input
+              type="text"
+              placeholder="Buscar por nombre, apellido o DNI..."
+              [ngModel]="terminoBusqueda"
+              (ngModelChange)="onInputBusqueda($event)"
+              name="buscarPaciente"
+              autocomplete="off"
+              class="w-full border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/60 pl-9 pr-4 py-2.5 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none dark:text-slate-100 text-sm placeholder:text-slate-400"
+            >
+          </div>
 
           @if (buscandoPacientes) {
-            <div class="absolute right-3 top-3 text-sm text-gray-400">Buscando...</div>
+            <div class="absolute right-3 top-3 text-xs text-slate-400 flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm animate-spin">progress_activity</span>
+            </div>
           }
 
           @if (mostrarResultadosPacientes && pacientesEncontrados.length > 0) {
-            <ul class="absolute z-50 left-0 right-0 mt-1 max-h-52 overflow-y-auto bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg divide-y divide-gray-100 dark:divide-gray-600">
+            <ul class="absolute z-50 left-0 right-0 mt-1 max-h-52 overflow-y-auto bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl divide-y divide-slate-100 dark:divide-slate-700">
               @for (paciente of pacientesEncontrados; track paciente._id) {
                 <li
                   (click)="seleccionarPaciente(paciente)"
-                  class="p-2.5 hover:bg-blue-50 dark:hover:bg-gray-600 cursor-pointer transition flex justify-between items-center"
+                  class="p-3 hover:bg-blue-50 dark:hover:bg-slate-700/60 cursor-pointer transition flex justify-between items-center"
                 >
                   <div>
-                    <span class="font-medium text-gray-900 dark:text-gray-100">
+                    <span class="font-bold text-sm text-slate-900 dark:text-slate-100">
                       {{ paciente.nombre }} {{ paciente.apellido }}
                     </span>
-                    <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">
+                    <span class="text-xs text-slate-400 ml-2">
                       (DNI: {{ paciente.dni }})
                     </span>
                   </div>
                   @if (paciente.healthInsurance) {
-                    <span class="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-0.5 rounded text-gray-700 dark:text-gray-200">
+                    <span class="text-[11px] font-medium bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded text-slate-600 dark:text-slate-300">
                       {{ paciente.healthInsurance }}
                     </span>
                   }
@@ -80,7 +102,7 @@
           }
 
           @if (mostrarResultadosPacientes && !buscandoPacientes && terminoBusqueda.length >= 2 && pacientesEncontrados.length === 0) {
-            <div class="absolute z-50 left-0 right-0 mt-1 p-3 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg shadow text-sm text-gray-500 dark:text-gray-400 text-center">
+            <div class="absolute z-50 left-0 right-0 mt-1 p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-lg text-xs text-slate-400 text-center">
               No se encontraron pacientes con ese criterio.
             </div>
           }
@@ -91,28 +113,28 @@
     <!-- Fecha y Hora -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Fecha <span class="text-red-500">*</span>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+          Fecha <span class="text-rose-500">*</span>
         </label>
         <input
           type="date"
           [(ngModel)]="fecha"
           name="fecha"
           required
-          class="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:text-gray-100"
+          class="w-full border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/60 p-2.5 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none dark:text-slate-100 text-sm"
         >
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Hora <span class="text-red-500">*</span>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+          Hora <span class="text-rose-500">*</span>
         </label>
         <input
           type="time"
           [(ngModel)]="hora"
           name="hora"
           required
-          class="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:text-gray-100"
+          class="w-full border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/60 p-2.5 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none dark:text-slate-100 text-sm"
         >
       </div>
     </div>
@@ -120,13 +142,13 @@
     <!-- Estado y Motivo -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Estado
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+          Estado del Turno
         </label>
         <select
           [(ngModel)]="estado"
           name="estado"
-          class="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:text-gray-100"
+          class="w-full border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/60 p-2.5 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none dark:text-slate-100 text-sm"
         >
           @for (est of estados; track est) {
             <option [value]="est">{{ est }}</option>
@@ -135,51 +157,51 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Motivo
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+          Motivo de la Cita
         </label>
         <input
           type="text"
           [(ngModel)]="motivo"
           name="motivo"
-          placeholder="Ej: Control general, Seguimiento..."
-          class="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:text-gray-100"
+          placeholder="Ej: Control de rutina, Revisión..."
+          class="w-full border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/60 p-2.5 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none dark:text-slate-100 text-sm placeholder:text-slate-400"
         >
       </div>
     </div>
 
     <!-- Notas -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-        Notas u Observaciones (opcional)
+      <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+        Observaciones o Indicaciones (opcional)
       </label>
       <textarea
         [(ngModel)]="notas"
         name="notas"
         rows="3"
-        placeholder="Indicaciones previas, requerimientos de estudios..."
-        class="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:text-gray-100"
+        placeholder="Indicaciones previas, ayuno, traer estudios anteriores..."
+        class="w-full border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/60 p-2.5 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none dark:text-slate-100 text-sm placeholder:text-slate-400"
       ></textarea>
     </div>
 
-    <!-- Botones de Acción -->
-    <div class="flex justify-end gap-3 pt-4 border-t dark:border-gray-700">
+    <!-- Botones -->
+    <div class="flex justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
       <button
         type="button"
         (click)="cancelar()"
-        class="px-5 py-2.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+        class="px-4 py-2.5 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition"
       >
         Cancelar
       </button>
       <button
         type="submit"
         [disabled]="guardando"
-        class="px-5 py-2.5 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition disabled:opacity-50 flex items-center gap-2"
+        class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl transition shadow-xs disabled:opacity-50 flex items-center gap-2"
       >
         @if (guardando) {
           <span class="material-symbols-outlined animate-spin text-sm">progress_activity</span>
         }
-        {{ modoEdicion ? 'Actualizar Turno' : 'Agendar Turno' }}
+        <span>{{ modoEdicion ? 'Actualizar Cita' : 'Confirmar y Agendar' }}</span>
       </button>
     </div>
   </form>

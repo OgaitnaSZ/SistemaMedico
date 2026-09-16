@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Archivo } from '../../../../../core/interfaces/archivo.model';
 import { ConsultasApiService } from '../../../../../core/services/consultas.service';
 import { SnackbarService } from '../../../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-archivos',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './archivos.component.html',
 })
 export class ArchivosComponent {

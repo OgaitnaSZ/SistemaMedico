@@ -1,75 +1,226 @@
-<div class="flex flex-col space-x-4 p-4 md:px-0">
-  @if(this.idPaciente != ''){
-    <a routerLink="/pacientes/{{idPaciente}}" class="group flex items-center text-blue-500">
-        <span class="material-symbols-outlined mr-1 transition-transform duration-200 ease-in-out group-hover:-translate-x-1">arrow_back</span>
-        Volver
-    </a>
-  } @else {
-    <a routerLink="/pacientes" class="group flex items-center text-blue-500">
-      <span class="material-symbols-outlined mr-1 transition-transform duration-200 ease-in-out group-hover:-translate-x-1">arrow_back</span>
-      Volver
-    </a>
-  }
-  <h1 class="text-4xl font-semibold dark:text-gray-100">{{ title }}</h1>
+<div class="space-y-6">
+  <!-- Navegación y Título -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+      <nav class="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">
+        <a [routerLink]="idPaciente ? ['/pacientes', idPaciente] : ['/pacientes']" class="inline-flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+          <span class="material-symbols-outlined text-sm">arrow_back</span>
+          <span>{{ idPaciente ? 'Ficha del Paciente' : 'Pacientes' }}</span>
+        </a>
+        <span>/</span>
+        <span class="text-slate-800 dark:text-slate-200 font-semibold">
+          {{ modoEdicion ? 'Modificar Paciente' : 'Nuevo Paciente' }}
+        </span>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/60 border border-blue-100 dark:border-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400">
+          <span class="material-symbols-outlined text-2xl">{{ modoEdicion ? 'edit' : 'person_add' }}</span>
+        </div>
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+            {{ modoEdicion ? 'Modificar Paciente' : 'Registrar Nuevo Paciente' }}
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+            {{ modoEdicion ? 'Actualice la información de filiación y cobertura del paciente' : 'Complete el formulario para incorporar al paciente al padrón médico' }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenedor del Formulario -->
+  <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm p-6 sm:p-8">
+    <form (ngSubmit)="guardarPaciente()" class="space-y-8">
+      <!-- Sección 1: Datos de Filiación e Identificación -->
+      <div>
+        <div class="flex items-center gap-2 pb-3 mb-4 border-b border-slate-100 dark:border-slate-800">
+          <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg">badge</span>
+          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
+            Datos Personales e Identificación
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          <!-- Nombre -->
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+              Nombre(s) <span class="text-rose-500">*</span>
+            </label>
+            <input
+              type="text"
+              [(ngModel)]="paciente.nombre"
+              name="nombre"
+              placeholder="Ej: Juan Carlos"
+              class="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              required
+            />
+          </div>
+
+          <!-- Apellido -->
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+              Apellido(s) <span class="text-rose-500">*</span>
+            </label>
+            <input
+              type="text"
+              [(ngModel)]="paciente.apellido"
+              name="apellido"
+              placeholder="Ej: Pérez Rodríguez"
+              class="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              required
+            />
+          </div>
+
+          <!-- DNI -->
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+              DNI / Documento <span class="text-rose-500">*</span>
+            </label>
+            <input
+              type="text"
+              [(ngModel)]="paciente.dni"
+              name="dni"
+              placeholder="Ej: 38450123"
+              class="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-mono"
+              required
+            />
+          </div>
+
+          <!-- Género -->
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+              Género <span class="text-rose-500">*</span>
+            </label>
+            <select
+              [(ngModel)]="paciente.genero"
+              name="genero"
+              class="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all cursor-pointer"
+              required
+            >
+              <option value="">Seleccione una opción</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Otro">Otro / No binario</option>
+            </select>
+          </div>
+
+          <!-- Fecha de Nacimiento -->
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+              Fecha de Nacimiento <span class="text-rose-500">*</span>
+            </label>
+            <input
+              type="date"
+              [(ngModel)]="paciente.fechaNacimiento"
+              [max]="hoy"
+              name="fechaNacimiento"
+              class="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              required
+            />
+          </div>
+
+          <!-- Obra Social / Prepaga -->
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+              Obra Social / Cobertura
+            </label>
+            <input
+              type="text"
+              [(ngModel)]="paciente.healthInsurance"
+              name="healthInsurance"
+              placeholder="Ej: OSDE, Swiss Medical, Particular..."
+              class="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección 2: Contacto y Residencia -->
+      <div>
+        <div class="flex items-center gap-2 pb-3 mb-4 border-b border-slate-100 dark:border-slate-800">
+          <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg">contact_phone</span>
+          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
+            Información de Contacto y Residencia
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          <!-- Teléfono -->
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+              Teléfono de Contacto
+            </label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">
+                phone
+              </span>
+              <input
+                type="text"
+                [(ngModel)]="paciente.telefono"
+                name="telefono"
+                placeholder="Ej: +54 9 11 4567-8901"
+                class="w-full pl-9 pr-3.5 py-2.5 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              />
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+              Correo Electrónico
+            </label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">
+                mail
+              </span>
+              <input
+                type="email"
+                [(ngModel)]="paciente.email"
+                name="email"
+                placeholder="Ej: paciente@correo.com"
+                class="w-full pl-9 pr-3.5 py-2.5 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              />
+            </div>
+          </div>
+
+          <!-- Dirección -->
+          <div class="sm:col-span-2 lg:col-span-1">
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+              Dirección Residencial
+            </label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">
+                location_on
+              </span>
+              <input
+                type="text"
+                [(ngModel)]="paciente.direccion"
+                name="direccion"
+                placeholder="Ej: Av. Santa Fe 1234, CABA"
+                class="w-full pl-9 pr-3.5 py-2.5 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de Acciones y Guardado -->
+      <div class="flex items-center justify-end gap-3 pt-6 border-t border-slate-100 dark:border-slate-800">
+        <a
+          [routerLink]="idPaciente ? ['/pacientes', idPaciente] : ['/pacientes']"
+          class="px-5 py-2.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
+        >
+          Cancelar
+        </a>
+        <button
+          type="submit"
+          class="inline-flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-xs font-semibold rounded-xl shadow-sm hover:shadow transition-all duration-150"
+        >
+          <span class="material-symbols-outlined text-base">save</span>
+          <span>Guardar Paciente</span>
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
-
-<section class="p-4 md:px-0">
-
-  <form (ngSubmit)="guardarPaciente()" class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-white dark:bg-gray-700 rounded-lg dark:text-gray-100 shadow">
-    <div>
-      <label class="text-sm text-gray-500 dark:text-gray-300">Nombre *</label>
-      <input type="text" [(ngModel)]="paciente.nombre" name="nombre" class="w-full border p-2 rounded-lg dark:text-gray-100" required>
-    </div>
-  
-    <div>
-      <label class="text-sm text-gray-500 dark:text-gray-300">Apellido *</label>
-      <input type="text" [(ngModel)]="paciente.apellido" name="apellido" class="w-full border p-2 rounded-lg dark:text-gray-100" required>
-    </div>
-  
-    <div>
-      <label class="text-sm text-gray-500 dark:text-gray-300">Género *</label>
-      <select [(ngModel)]="paciente.genero" name="genero" class="w-full border p-2 rounded-lg dark:text-gray-100 dark:bg-gray-700" required>
-        <option value="">Seleccione</option>
-        <option value="Masculino">Masculino</option>
-        <option value="Femenino">Femenino</option>
-        <option value="Otro">Otro</option>
-      </select>
-    </div>
-  
-    <div>
-      <label class="text-sm text-gray-500 dark:text-gray-300">DNI *</label>
-      <input type="text" [(ngModel)]="paciente.dni" name="dni" class="w-full border p-2 rounded-lg dark:text-gray-100" required>
-    </div>
-  
-    <div>
-      <label class="text-sm text-gray-500 dark:text-gray-300">Fecha de Nacimiento *</label>
-      <input type="date" [(ngModel)]="paciente.fechaNacimiento" [max]="hoy" name="fechaNacimiento" class="w-full border p-2 rounded-lg dark:text-gray-100" required>
-    </div>
-  
-    <div>
-      <label class="text-sm text-gray-500 dark:text-gray-300">Teléfono</label>
-      <input type="text" [(ngModel)]="paciente.telefono" name="telefono" class="w-full border p-2 rounded-lg dark:text-gray-100">
-    </div>
-  
-    <div>
-      <label class="text-sm text-gray-500 dark:text-gray-300">Email</label>
-      <input type="email" [(ngModel)]="paciente.email" name="email" class="w-full border p-2 rounded-lg dark:text-gray-100">
-    </div>
-  
-    <div>
-      <label class="text-sm text-gray-500 dark:text-gray-300">Dirección</label>
-      <input type="text" [(ngModel)]="paciente.direccion" name="direccion" class="w-full border p-2 rounded-lg dark:text-gray-100">
-    </div>
-
-    <div>
-      <label class="text-sm text-gray-500 dark:text-gray-300">Obra social</label>
-      <input type="text" [(ngModel)]="paciente.healthInsurance" name="healthInsurance" class="w-full border p-2 rounded-lg dark:text-gray-100">
-    </div>
-  
-    <div class="col-span-full mt-4">
-      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-lg dark:text-gray-100">
-        Guardar Paciente
-      </button>
-    </div>
-  </form>
-</section>

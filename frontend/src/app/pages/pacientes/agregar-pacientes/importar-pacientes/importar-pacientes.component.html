@@ -1,33 +1,72 @@
-<!-- Zona para importar archivos Excel con arrastrar y soltar -->
-<div class="mt-8 p-4 md:px-0">
-  <label class="flex items-center mb-2 text-gray-700 dark:text-gray-100 font-semibold" for="file">
-    Importar archivo Excel
-    <span class="relative group cursor-pointer ml-1 align-middle">
-      <span class="text-blue-500 font-bold text-2xl">?</span>
-      <span class="absolute left-full top-1/5 transform -translate-y-1/2 ml-2 w-max bg-gray-800 text-white text-sm rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-lg">
-        Formato: Nombre, Apellido, Género, DNI, Fecha de nacimiento, Teléfono, Email, Dirección, Obra social (opcional)
-      </span>
-    </span>
-  </label>
-  <div 
-    class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-blue-400 rounded-lg bg-blue-50 dark:bg-gray-900 cursor-pointer hover:bg-blue-100 transition-colors"
-    (click)="abrirSelectorArchivo()"
-    (drop)="archivoSoltado($event)"
-    (dragover)="onDragOver($event)"
+<div class="space-y-6">
+  <!-- Tarjeta Contenedora de Importación -->
+  <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm p-6 sm:p-8 space-y-6">
+    <!-- Encabezado -->
+    <div class="flex items-center gap-3 pb-4 border-b border-slate-100 dark:border-slate-800">
+      <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/60 border border-blue-100 dark:border-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400">
+        <span class="material-symbols-outlined text-2xl">table_view</span>
+      </div>
+      <div>
+        <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+          Importación Masiva desde Planilla Excel
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+          Cargue múltiples pacientes a la vez subiendo un archivo .xlsx o .xls
+        </p>
+      </div>
+    </div>
+
+    <!-- Guía de formato de columnas esperadas -->
+    <div class="p-4 rounded-xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-900/50 space-y-2">
+      <div class="flex items-center gap-2 text-xs font-bold text-blue-900 dark:text-blue-200 uppercase tracking-wider">
+        <span class="material-symbols-outlined text-base text-blue-600 dark:text-blue-400">info</span>
+        Estructura requerida del archivo Excel
+      </div>
+      <p class="text-xs text-blue-800 dark:text-blue-300">
+        La primera hoja del archivo debe incluir las columnas en el siguiente orden estricto:
+      </p>
+      <div class="flex flex-wrap gap-1.5 pt-1">
+        <span class="px-2 py-0.5 rounded-md bg-white dark:bg-slate-900 border border-blue-200 dark:border-blue-800 text-[11px] font-semibold text-slate-700 dark:text-slate-300">1. Nombre *</span>
+        <span class="px-2 py-0.5 rounded-md bg-white dark:bg-slate-900 border border-blue-200 dark:border-blue-800 text-[11px] font-semibold text-slate-700 dark:text-slate-300">2. Apellido *</span>
+        <span class="px-2 py-0.5 rounded-md bg-white dark:bg-slate-900 border border-blue-200 dark:border-blue-800 text-[11px] font-semibold text-slate-700 dark:text-slate-300">3. Género *</span>
+        <span class="px-2 py-0.5 rounded-md bg-white dark:bg-slate-900 border border-blue-200 dark:border-blue-800 text-[11px] font-semibold text-slate-700 dark:text-slate-300">4. DNI *</span>
+        <span class="px-2 py-0.5 rounded-md bg-white dark:bg-slate-900 border border-blue-200 dark:border-blue-800 text-[11px] font-semibold text-slate-700 dark:text-slate-300">5. Fecha de Nacimiento *</span>
+        <span class="px-2 py-0.5 rounded-md bg-white dark:bg-slate-900 border border-blue-200 dark:border-blue-800 text-[11px] font-semibold text-slate-700 dark:text-slate-300">6. Teléfono</span>
+        <span class="px-2 py-0.5 rounded-md bg-white dark:bg-slate-900 border border-blue-200 dark:border-blue-800 text-[11px] font-semibold text-slate-700 dark:text-slate-300">7. Email</span>
+        <span class="px-2 py-0.5 rounded-md bg-white dark:bg-slate-900 border border-blue-200 dark:border-blue-800 text-[11px] font-semibold text-slate-700 dark:text-slate-300">8. Dirección</span>
+        <span class="px-2 py-0.5 rounded-md bg-white dark:bg-slate-900 border border-blue-200 dark:border-blue-800 text-[11px] font-semibold text-slate-700 dark:text-slate-300">9. Obra Social</span>
+      </div>
+    </div>
+
+    <!-- Zona Drag & Drop -->
+    <div
+      class="group relative flex flex-col items-center justify-center w-full min-h-[180px] p-6 border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-500 rounded-2xl bg-slate-50/50 dark:bg-slate-800/30 hover:bg-blue-50/30 dark:hover:bg-blue-950/20 cursor-pointer transition-all duration-200"
+      (click)="abrirSelectorArchivo()"
+      (drop)="archivoSoltado($event)"
+      (dragover)="onDragOver($event)"
     >
-    <span class="material-symbols-outlined text-blue-500 mb-4">upload_file</span>
-    <p class="text-blue-600 font-medium">Arrastra y suelta tu archivo aquí</p>
-    <p class="text-sm text-blue-400">o haz clic para seleccionar un archivo</p>
-    <input
-      name="file"
-      type="file"
-      #fileInput
-      accept=".xls,.xlsx"
-      class="hidden"
-      (change)="archivoSeleccionado($event)"
-    />
+      <div class="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+        <span class="material-symbols-outlined text-2xl">upload_file</span>
+      </div>
+      <p class="text-sm font-bold text-slate-800 dark:text-slate-200 text-center">
+        Arrastra y suelta tu archivo Excel aquí
+      </p>
+      <p class="text-xs text-slate-500 dark:text-slate-400 text-center mt-1">
+        o haz clic para explorar tus archivos (.xlsx, .xls)
+      </p>
+      <input
+        name="file"
+        type="file"
+        #fileInput
+        accept=".xls,.xlsx"
+        class="hidden"
+        (change)="archivoSeleccionado($event)"
+      />
+    </div>
   </div>
+
+  <!-- Vista Previa de Registros Cargados -->
+  @if(pacientesImportados.length > 0){
+    <app-previsualizar-pacientes [pacientesImportados]="pacientesImportados"></app-previsualizar-pacientes>
+  }
 </div>
-@if(pacientesImportados.length > 0){
-  <app-previsualizar-pacientes [pacientesImportados]="pacientesImportados"></app-previsualizar-pacientes>
-}

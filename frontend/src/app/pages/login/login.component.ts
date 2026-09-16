@@ -12,35 +12,38 @@ import { SnackbarService } from '../../core/services/snackbar.service';
 export class LoginComponent {
   user = '';
   pass = '';
+  cargando = false;
+  mostrarPassword = false;
 
   constructor(private login: LoginService, private router: Router, private snackbarService: SnackbarService) {}
 
   onLogin() {
-    if(this.validarDatos()){
+    if (this.validarDatos()) {
+      this.cargando = true;
       this.login.login(this.user, this.pass).subscribe(
         (res) => {
-          if (res.data.token) {
-            this.login.setToken(res.data.token);  // Guarda el token
-            this.login.setUserId(res.data.user._id);  // Guardar ID de usuario
-            this.login.setUser(res.data.user.usuario);  // Guardar el usuario
-            this.login.setUserName(res.data.user.nombre);  // Guardar nombre de usuario
-            this.router.navigate(['/dashboard']);  // Redirige al usuario
+          this.cargando = false;
+          if (res?.data?.token) {
+            this.login.setToken(res.data.token);
+            this.login.setUserId(res.data.user._id);
+            this.login.setUser(res.data.user.usuario);
+            this.login.setUserName(res.data.user.nombre);
+            this.router.navigate(['/dashboard']);
           } else {
             this.snackbarService.show('Token no recibido', 'error');
           }
         },
         (err) => {
-          // Muestra el error si las credenciales son incorrectas
-          this.snackbarService.show('Datos incorrectos.', 'error');
+          this.cargando = false;
+          this.snackbarService.show(err?.error?.message || 'Usuario o contraseña incorrectos.', 'error');
         }
       );
-    }else{
-      this.snackbarService.show('Faltan datos.', 'error');
+    } else {
+      this.snackbarService.show('Por favor ingrese usuario y contraseña.', 'error');
     }
   }
 
   validarDatos(): boolean {
-    return (this.user != '' && this.pass != '')
+    return this.user.trim() !== '' && this.pass.trim() !== '';
   }
-
 }

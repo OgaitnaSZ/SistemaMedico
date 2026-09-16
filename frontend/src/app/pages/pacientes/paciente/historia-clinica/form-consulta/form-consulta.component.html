@@ -1,58 +1,131 @@
-<form (ngSubmit)="guardarConsulta()">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Motivo</label>
-            <input type="text" [(ngModel)]="consulta.motivoConsulta"  name="motivo" class="mt-1 w-full border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2" required>
-        </div>
-        <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Diagnóstico</label>
-            <input type="text" [(ngModel)]="consulta.diagnostico" name="diagnostico" class="mt-1 w-full border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2" required>
-        </div>
-        <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tratamiento</label>
-            <input type="text" [(ngModel)]="consulta.tratamiento" name="tratamiento" class="mt-1 w-full border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2" required>
-        </div>
-        <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Observaciones</label>
-            <input type="text" [(ngModel)]="consulta.observaciones" name="observaciones" class="mt-1 w-full border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2">
-        </div>
-        <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fecha</label>
-            <input
-                type="date"
-                [max]="hoy"
-                [(ngModel)]="consulta.fecha"
-                name="fecha"
-                class="mt-1 w-full border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2"
-            >
-        </div>
-        <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Parámetros Clínicos</label>
-            @for (parametro of consulta.parametros; track $index){
-                <div class="flex space-x-2 items-center">
-                    <input
-                        [(ngModel)]="parametro.nombre"
-                        name="nombreParametro{{ $index }}"
-                        class="mt-1 border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2 w-1/2"
-                        placeholder="Parámetro (ej: Glucosa)"
-                    />
-                    <input
-                        [(ngModel)]="parametro.valor"
-                        name="valorParametro{{ $index }}"
-                        class="mt-1 border border-gray-300 dark:text-gray-100 rounded-lg px-3 py-2 w-1/2"
-                        placeholder="Valor (ej: 110 mg/dL)"
-                    />
-                    <button type="button" (click)="eliminarParametro($index)" class="text-red-500 material-symbols-outlined">delete</button>
-                </div>
-            }
-            <button type="button" (click)="agregarParametro()" class="mt-2 text-sm text-blue-500 hover:underline">
-                + Agregar parámetro
-            </button>
-        </div>
+<form (ngSubmit)="guardarConsulta()" class="space-y-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <!-- Motivo de Consulta -->
+    <div class="sm:col-span-2">
+      <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+        Motivo de Consulta <span class="text-rose-500">*</span>
+      </label>
+      <input
+        type="text"
+        [(ngModel)]="consulta.motivoConsulta"
+        name="motivo"
+        placeholder="Ej: Control de rutina, dolor lumbar, cefalea persistente..."
+        class="w-full px-3.5 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+        required
+      />
     </div>
-    <div class="flex justify-end mt-4">
-        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
-            {{ title }}
+
+    <!-- Fecha de Consulta -->
+    <div>
+      <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+        Fecha de Atención <span class="text-rose-500">*</span>
+      </label>
+      <input
+        type="date"
+        [max]="hoy"
+        [(ngModel)]="consulta.fecha"
+        name="fecha"
+        class="w-full px-3.5 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+        required
+      />
+    </div>
+
+    <!-- Observaciones -->
+    <div>
+      <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+        Observaciones Adicionales
+      </label>
+      <input
+        type="text"
+        [(ngModel)]="consulta.observaciones"
+        name="observaciones"
+        placeholder="Notas complementarias, antecedentes..."
+        class="w-full px-3.5 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+      />
+    </div>
+
+    <!-- Diagnóstico -->
+    <div>
+      <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+        Diagnóstico Clínico <span class="text-rose-500">*</span>
+      </label>
+      <textarea
+        rows="3"
+        [(ngModel)]="consulta.diagnostico"
+        name="diagnostico"
+        placeholder="Evaluación médica, sospecha o diagnóstico presuntivo..."
+        class="w-full px-3.5 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none"
+        required
+      ></textarea>
+    </div>
+
+    <!-- Tratamiento -->
+    <div>
+      <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+        Tratamiento e Indicaciones <span class="text-rose-500">*</span>
+      </label>
+      <textarea
+        rows="3"
+        [(ngModel)]="consulta.tratamiento"
+        name="tratamiento"
+        placeholder="Plan farmacológico, posología, pautas de alarma o derivaciones..."
+        class="w-full px-3.5 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none"
+        required
+      ></textarea>
+    </div>
+
+    <!-- Parámetros Clínicos -->
+    <div class="sm:col-span-2 pt-2 border-t border-slate-200 dark:border-slate-700/60">
+      <div class="flex items-center justify-between mb-2">
+        <label class="text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+          Signos Vitales y Parámetros Clínicos
+        </label>
+        <button
+          type="button"
+          (click)="agregarParametro()"
+          class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+        >
+          <span class="material-symbols-outlined text-base">add</span>
+          <span>Agregar parámetro</span>
         </button>
+      </div>
+
+      <div class="space-y-2">
+        @for (parametro of consulta.parametros; track $index) {
+          <div class="flex items-center gap-2">
+            <input
+              [(ngModel)]="parametro.nombre"
+              name="nombreParametro{{ $index }}"
+              class="w-1/2 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              placeholder="Parámetro (ej: Glucosa, Presión arterial)"
+            />
+            <input
+              [(ngModel)]="parametro.valor"
+              name="valorParametro{{ $index }}"
+              class="w-1/2 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              placeholder="Valor (ej: 110 mg/dL, 120/80 mmHg)"
+            />
+            <button
+              type="button"
+              (click)="eliminarParametro($index)"
+              class="p-1 text-slate-400 hover:text-rose-500 rounded-lg transition-colors shrink-0"
+              title="Eliminar parámetro"
+            >
+              <span class="material-symbols-outlined text-lg">delete</span>
+            </button>
+          </div>
+        }
+      </div>
     </div>
+  </div>
+
+  <div class="flex justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-700/60">
+    <button
+      type="submit"
+      class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-xs font-semibold rounded-xl shadow-sm hover:shadow transition-all"
+    >
+      <span class="material-symbols-outlined text-base">save</span>
+      <span>{{ title }}</span>
+    </button>
+  </div>
 </form>

@@ -1,46 +1,78 @@
-<section class="space-y-6">
-  <div class="mt-6 overflow-auto max-h-96 border rounded-lg shadow">
-    <table class="min-w-full border-collapse border border-gray-300 dark:border-gray-100">
-      <thead class="text-gray-700 border-gray-300 font-extrabold uppercase text-xs">
+<div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm p-6 space-y-5">
+  <!-- Encabezado de la Previsualización -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 dark:border-slate-800">
+    <div class="flex items-center gap-2.5">
+      <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-xl">preview</span>
+      <div>
+        <h3 class="text-base font-bold text-slate-900 dark:text-white">
+          Previsualización de Pacientes Detectados
+        </h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400">
+          Revise los registros antes de guardarlos definitivamente en la base de datos
+        </p>
+      </div>
+    </div>
+
+    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 self-start sm:self-auto">
+      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+      {{ pacientesImportados?.length || 0 }} registros listos
+    </span>
+  </div>
+
+  <!-- Tabla con Scroll -->
+  <div class="overflow-x-auto overflow-y-auto max-h-96 border border-slate-200/80 dark:border-slate-800 rounded-xl">
+    <table class="w-full text-left border-collapse text-xs">
+      <thead class="sticky top-0 bg-slate-50 dark:bg-slate-800/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
         <tr>
-          <th class="border border-gray-300 dark:text-gray-300 px-3 py-2">Nombre</th>
-          <th class="border border-gray-300 dark:text-gray-300 px-3 py-2">Apellido</th>
-          <th class="border border-gray-300 dark:text-gray-300 px-3 py-2">Género</th>
-          <th class="border border-gray-300 dark:text-gray-300 px-3 py-2">DNI</th>
-          <th class="border border-gray-300 dark:text-gray-300 px-3 py-2">Fecha Nac.</th>
-          <th class="border border-gray-300 dark:text-gray-300 px-3 py-2">Teléfono</th>
-          <th class="border border-gray-300 dark:text-gray-300 px-3 py-2">Email</th>
-          <th class="border border-gray-300 dark:text-gray-300 px-3 py-2">Dirección</th>
-          <th class="border border-gray-300 dark:text-gray-300 px-3 py-2">Obra social</th>
-          <th class="border border-gray-300 dark:text-gray-300 px-3 py-2 text-center"></th>
+          <th class="py-3 px-4">Nombre</th>
+          <th class="py-3 px-4">Apellido</th>
+          <th class="py-3 px-4">Género</th>
+          <th class="py-3 px-4">DNI</th>
+          <th class="py-3 px-4">Fecha Nac.</th>
+          <th class="py-3 px-4">Teléfono</th>
+          <th class="py-3 px-4">Email</th>
+          <th class="py-3 px-4">Dirección</th>
+          <th class="py-3 px-4">Obra Social</th>
+          <th class="py-3 px-4 text-center">Descartar</th>
         </tr>
       </thead>
-      <tbody>
-          @for (paciente of pacientesImportados ; track paciente) {
-          <tr class="hover:bg-red-100">
-              <td class="border border-gray-300 dark:text-gray-100 px-3 py-1">{{ paciente.nombre }}</td>
-              <td class="border border-gray-300 dark:text-gray-100 px-3 py-1">{{ paciente.apellido }}</td>
-              <td class="border border-gray-300 dark:text-gray-100 px-3 py-1">{{ paciente.genero }}</td>
-              <td class="border border-gray-300 dark:text-gray-100 px-3 py-1">{{ paciente.dni }}</td>
-              <td class="border border-gray-300 dark:text-gray-100 px-3 py-1">{{ paciente.fechaNacimiento | date: "dd/MM/y" }}</td>
-              <td class="border border-gray-300 dark:text-gray-100 px-3 py-1">{{ paciente.telefono }}</td>
-              <td class="border border-gray-300 dark:text-gray-100 px-3 py-1">{{ paciente.email }}</td>
-              <td class="border border-gray-300 dark:text-gray-100 px-3 py-1">{{ paciente.direccion }}</td>
-              <td class="border border-gray-300 dark:text-gray-100 px-3 py-1">{{ paciente.healthInsurance || 'No informado' }}</td>
-              <td class="border border-gray-300 dark:text-gray-100 px-3 py-1 text-center">
-                <button
-                  (click)="eliminarPacienteImportado(paciente)">
-                  <span class="material-symbols-outlined text-red-600">delete</span>
-                </button>
-              </td>
+      <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
+        @for (paciente of pacientesImportados; track $index) {
+          <tr class="hover:bg-blue-50/30 dark:hover:bg-slate-800/40 transition-colors">
+            <td class="py-2.5 px-4 font-semibold text-slate-900 dark:text-slate-100">{{ paciente.nombre }}</td>
+            <td class="py-2.5 px-4 font-semibold text-slate-900 dark:text-slate-100">{{ paciente.apellido }}</td>
+            <td class="py-2.5 px-4 text-slate-600 dark:text-slate-300">{{ paciente.genero }}</td>
+            <td class="py-2.5 px-4 font-mono font-medium text-slate-700 dark:text-slate-300">{{ paciente.dni }}</td>
+            <td class="py-2.5 px-4 text-slate-600 dark:text-slate-300">{{ paciente.fechaNacimiento | date: "dd/MM/yyyy" }}</td>
+            <td class="py-2.5 px-4 text-slate-600 dark:text-slate-300">{{ paciente.telefono || '-' }}</td>
+            <td class="py-2.5 px-4 text-slate-600 dark:text-slate-300">{{ paciente.email || '-' }}</td>
+            <td class="py-2.5 px-4 text-slate-600 dark:text-slate-300">{{ paciente.direccion || '-' }}</td>
+            <td class="py-2.5 px-4 text-slate-600 dark:text-slate-300">{{ paciente.healthInsurance || 'Particular' }}</td>
+            <td class="py-2.5 px-4 text-center">
+              <button
+                type="button"
+                (click)="eliminarPacienteImportado(paciente)"
+                class="p-1 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 rounded-lg transition-colors"
+                title="Quitar de la lista"
+              >
+                <span class="material-symbols-outlined text-base">delete</span>
+              </button>
+            </td>
           </tr>
-          }
+        }
       </tbody>
     </table>
   </div>
-  <a 
-  class="bg-blue-600 text-white text-center px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-  (click)="guardarPacientes()">
-    Finalizar Importacion
-  </a>
-</section>
+
+  <!-- Botón de Confirmación -->
+  <div class="flex justify-end pt-2">
+    <button
+      type="button"
+      (click)="guardarPacientes()"
+      class="inline-flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-xs font-semibold rounded-xl shadow-sm hover:shadow transition-all"
+    >
+      <span class="material-symbols-outlined text-base">cloud_done</span>
+      <span>Finalizar e Importar {{ pacientesImportados?.length || 0 }} Pacientes</span>
+    </button>
+  </div>
+</div>

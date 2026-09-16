@@ -1,59 +1,112 @@
-<section>
-  <div class="flex items-center space-x-1">
-    <p class="text-sm text-gray-500">Archivos Adjuntos:</p>
-    <button class="text-blue-500 flex items-center group overflow-hidden" (click)="verSubir = true">
-      <span class="material-symbols-outlined transition-transform duration-300">
-        add_circle
+<div class="space-y-3">
+  <!-- Encabezado de la Sección de Archivos -->
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-sm text-slate-400">attach_file</span>
+      <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+        Estudios y Archivos Adjuntos ({{ archivos.length }})
       </span>
-      <span
-        class="ml-1 whitespace-nowrap overflow-hidden max-w-0 group-hover:max-w-xs transition-all duration-500 ease-in-out">
-        Agregar Archivos
-      </span>
-    </button>
+    </div>
+
+    @if (!verSubir) {
+      <button
+        type="button"
+        (click)="verSubir = true"
+        class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+      >
+        <span class="material-symbols-outlined text-sm">upload_file</span>
+        <span>Adjuntar estudio</span>
+      </button>
+    }
   </div>
 
-  <!-- Subida de archivos -->
+  <!-- Panel de Subida de Archivos -->
   @if (verSubir) {
-    <div class="p-4 bg-white rounded-lg shadow border border-gray-200 max-w-md mx-auto">
-      <form (submit)="subirArchivos($event)" enctype="multipart/form-data" class="space-y-4">
-        <div class="flex justify-between items-center">
-          <label class="block text-sm font-medium text-gray-700">Seleccionar archivo</label>
-          <a (click)="verSubir = false" class="text-red-400 material-symbols-outlined">close</a>
-        </div>
-        <input
-          type="file" multiple
-          (change)="onFileSelected($event)"
-          class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
-          <div class="flex justify-end">
-            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition-colors">
-              Subir
-            </button>
-          </div>
-        </form>
+    <div class="p-4 bg-white dark:bg-slate-800 border border-blue-200 dark:border-blue-900/60 rounded-xl shadow-sm space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold text-slate-900 dark:text-slate-100">
+          Seleccionar Archivos (PDF, Imágenes, Informes)
+        </span>
+        <button
+          type="button"
+          (click)="verSubir = false"
+          class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg transition-colors"
+          title="Cerrar"
+        >
+          <span class="material-symbols-outlined text-base">close</span>
+        </button>
       </div>
-    }
 
+      <form (submit)="subirArchivos($event)" enctype="multipart/form-data" class="space-y-3">
+        <input
+          type="file"
+          multiple
+          (change)="onFileSelected($event)"
+          class="block w-full text-xs text-slate-600 dark:text-slate-300 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 dark:file:bg-blue-950/60 file:text-blue-700 dark:file:text-blue-300 hover:file:bg-blue-100 cursor-pointer border border-slate-200 dark:border-slate-700 rounded-xl"
+        />
 
-    @if (archivos.length>0) {
-      <ul class="list-disc list-inside space-y-1 text-blue-500 text-sm">
-        @for (archivo of archivos; track archivo._id) {
-          <li class="group flex items-center justify-between relative">
-            <div class="flex items-center space-x-2">
-              <a target="_blank" [href]="archivo.url"
-                class="hover:underline transform group-hover:translate-x-5 group-hover:ms-1 transition-transform duration-200">
+        <div class="flex justify-end gap-2">
+          <button
+            type="button"
+            (click)="verSubir = false"
+            class="px-3 py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            [disabled]="archivosSeleccionados.length === 0"
+            class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-xs font-semibold rounded-lg shadow-sm transition-all"
+          >
+            <span class="material-symbols-outlined text-sm">cloud_upload</span>
+            <span>Subir ({{ archivosSeleccionados.length }})</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+
+  <!-- Listado de Archivos Adjuntos -->
+  @if (archivos.length > 0) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+      @for (archivo of archivos; track archivo._id) {
+        <div class="flex items-center justify-between p-2.5 bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 rounded-xl hover:border-blue-300 dark:hover:border-blue-700/60 transition-colors">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/60 border border-blue-100 dark:border-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
+              <span class="material-symbols-outlined text-base">description</span>
+            </div>
+            <div class="min-w-0">
+              <a
+                target="_blank"
+                [href]="archivo.url"
+                class="text-xs font-semibold text-slate-800 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate block"
+                title="Abrir archivo"
+              >
                 {{ archivo.nombre }}
               </a>
-              <p class="text-gray-400 text-sm group-hover:translate-x-5 group-hover:ms-1">{{ archivo.createdAt }}</p>
+              <span class="text-[11px] text-slate-400 dark:text-slate-500 block truncate">
+                Adjuntado el {{ archivo.createdAt | date:'dd/MM/yyyy' }}
+              </span>
             </div>
-            <!-- Botón de eliminar -->
-             @if(archivo._id){
-            <button class="absolute left-0 text-red-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200 material-symbols-outlined"
-              (click)="eliminarArchivo(archivo._id, archivo.nombre)">
-              delete
+          </div>
+
+          <!-- Botón de Eliminar Archivo -->
+          @if (archivo._id) {
+            <button
+              type="button"
+              (click)="eliminarArchivo(archivo._id, archivo.nombre)"
+              class="p-1 text-slate-400 hover:text-rose-500 rounded-lg transition-colors shrink-0"
+              title="Eliminar archivo"
+            >
+              <span class="material-symbols-outlined text-base">delete</span>
             </button>
-            }
-          </li>
-        }
-      </ul>
-    }
-  </section>
+          }
+        </div>
+      }
+    </div>
+  } @else if (!verSubir) {
+    <p class="text-xs text-slate-400 dark:text-slate-500 italic">
+      Sin estudios ni archivos adjuntos a esta consulta.
+    </p>
+  }
+</div>

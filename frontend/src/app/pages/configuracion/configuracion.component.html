@@ -1,122 +1,271 @@
-<section class="p-4 md:px-0">
-  <h1 class="text-5xl font-medium text-gray-900 dark:text-gray-100">Configuración</h1>
-</section>
-
-<section class="max-w-4xl w-full mx-auto p-4 md:p-6 bg-white dark:bg-gray-800 rounded-lg shadow space-y-6">
-  <div class="grid md:grid-cols-2 gap-6">
-    <!-- Formulario de Actualización de Datos -->
-    <form (ngSubmit)="onChange()" class="space-y-4 bg-gray-50 dark:bg-gray-700 p-6 rounded-lg shadow">
-      <h2 class="text-xl font-bold flex items-center gap-2 text-gray-800 dark:text-gray-100">
-        <span class="material-symbols-outlined text-blue-500">account_circle</span>
-        Actualizar Datos
-      </h2>
-
-      <div class="space-y-2">
-        <label class="block text-sm text-gray-700 dark:text-gray-300">Nombre</label>
-        <input [(ngModel)]="nombre" name="nombre" type="text"
-          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-      </div>
-
-      <div class="space-y-2">
-        <label class="block text-sm text-gray-700 dark:text-gray-300">Usuario</label>
-        <input [(ngModel)]="user" name="user" type="text"
-          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-      </div>
-
-      <div class="space-y-2">
-        <label class="block text-sm text-gray-700 dark:text-gray-300">Contraseña Actual</label>
-        <input [(ngModel)]="oldPass" name="oldPass" type="password"
-          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-      </div>
-
-      <button type="submit"
-        class="w-full bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-colors duration-200">
-        Guardar Cambios
-      </button>
-    </form>
-
-    <!-- Formulario de Contraseña -->
-    <form (ngSubmit)="onChangePass()" class="space-y-4 bg-gray-50 dark:bg-gray-700 p-6 rounded-lg shadow">
-      <h2 class="text-xl font-bold flex items-center gap-2 text-gray-800 dark:text-gray-100">
-        <span class="material-symbols-outlined text-red-400">lock</span>
-        Cambiar Contraseña
-      </h2>
-
-      <div class="space-y-2">
-        <label class="block text-sm text-gray-700 dark:text-gray-300">Contraseña Actual</label>
-        <input [(ngModel)]="oldPass" name="oldPass" type="password"
-          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400">
-      </div>
-
-      <div class="space-y-2">
-        <label class="block text-sm text-gray-700 dark:text-gray-300">Nueva Contraseña</label>
-        <input [(ngModel)]="newPass" name="newPass" type="password"
-          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400">
-      </div>
-
-      <div class="space-y-2">
-        <label class="block text-sm text-gray-700 dark:text-gray-300">Confirmar Nueva Contraseña</label>
-        <input [(ngModel)]="confirmPass" name="confirmPass" type="password"
-          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400">
-      </div>
-
-      <button type="submit"
-        class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg transition-colors duration-200">
-        Cambiar Contraseña
-      </button>
-    </form>
+<div class="space-y-6 max-w-5xl">
+  <!-- Encabezado -->
+  <div class="flex items-center gap-3">
+    <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/60 border border-blue-100 dark:border-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400">
+      <span class="material-symbols-outlined text-2xl">settings</span>
+    </div>
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+        Configuración
+      </h1>
+      <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+        Gestión del perfil médico, credenciales de acceso y preferencias visuales
+      </p>
+    </div>
   </div>
 
-  <!-- Toggle de Modo Oscuro -->
-  <div class="pt-4 border-t dark:border-gray-700">
-    <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">Tema</h2>
-
-    <div class="flex items-center justify-between">
-      <label class="text-sm text-gray-700 dark:text-gray-300">Modo Oscuro</label>
-
-      <button
-        id="theme-toggle"
-        type="button"
-        (click)="toggleTheme()"
-        [attr.aria-label]="isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
-        [ngClass]="{
-          'flex items-center justify-start w-16 h-8 rounded-full p-1 transition-colors duration-300 focus:outline-none bg-white': true,
-          'bg-white': !isDark,
-           'bg-blue-500': isDark
-        }"
-        style="box-shadow: inset 6px 6px 8px #bebebe, inset -6px -6px 8px #ffffff;"
-        >
-        <!-- Circulo deslizante con icono -->
-        <div
-          class="flex items-center justify-center w-6 h-6 rounded-full transition-transform duration-300 bg-white"
-          [ngClass]="{
-            'translate-x-0 bg-gray-300 shadow-[2px_2px_3px_#bebebe,-2px_-2px_3px_#ffffff]': !isDark,
-            'translate-x-8 bg-gray-700 shadow-[2px_2px_4px_#2a2a2a,-2px_-2px_4px_#4a4a4a]': isDark
-          }"
-          >
-
-          <!-- Icono de sol/luna -->
-          @if (!isDark) {
-            <span
-              class="material-symbols-outlined text-yellow-500 switch"
-              >light_mode</span
-              >
-            }
-            @if (isDark) {
-              <span
-                class="material-symbols-outlined text-blue-300 switch"
-                >dark_mode</span
-                >
-              }
-            </div>
-          </button>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Tarjeta: Datos del Perfil Profesional -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm p-6 sm:p-7 space-y-5">
+      <div class="flex items-center gap-3 pb-4 border-b border-slate-100 dark:border-slate-800">
+        <div class="w-11 h-11 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-bold text-sm flex items-center justify-center shrink-0">
+          {{ obtenerIniciales(nombre) }}
+        </div>
+        <div>
+          <h2 class="text-base font-bold text-slate-900 dark:text-white">
+            Perfil Profesional
+          </h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400">
+            Nombre visible y usuario del sistema
+          </p>
         </div>
       </div>
-    </section>
-    <!-- Cerrar Session -->
-    <section class="max-w-4xl w-full mx-auto px-6 flex justify-end">
-      <button (click)="cerrarSession()" class="flex items-center pt-2 text-red-500">
-        Cerrar Session
-        <span class="material-symbols-outlined ms-2">logout </span>
+
+      <form (ngSubmit)="onChange()" class="space-y-4">
+        <!-- Nombre -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+            Nombre Completo <span class="text-rose-500">*</span>
+          </label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">
+              person
+            </span>
+            <input
+              [(ngModel)]="nombre"
+              name="nombre"
+              type="text"
+              placeholder="Dr. Juan Pérez"
+              class="w-full pl-9 pr-3.5 py-2.5 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Usuario -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+            Nombre de Usuario <span class="text-rose-500">*</span>
+          </label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">
+              badge
+            </span>
+            <input
+              [(ngModel)]="user"
+              name="user"
+              type="text"
+              placeholder="drjperez"
+              class="w-full pl-9 pr-3.5 py-2.5 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Contraseña Actual (Confirmación) -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+            Contraseña Actual (para autorizar) <span class="text-rose-500">*</span>
+          </label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">
+              key
+            </span>
+            <input
+              [(ngModel)]="oldPass"
+              name="oldPass"
+              type="password"
+              placeholder="••••••••"
+              class="w-full pl-9 pr-3.5 py-2.5 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button
+            type="submit"
+            [disabled]="guardandoDatos"
+            class="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-50 text-white text-xs font-semibold rounded-xl shadow-sm hover:shadow transition-all duration-150"
+          >
+            @if (guardandoDatos) {
+              <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            } @else {
+              <span class="material-symbols-outlined text-base">save</span>
+            }
+            <span>Guardar Cambios de Perfil</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Tarjeta: Seguridad y Contraseña -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm p-6 sm:p-7 space-y-5">
+      <div class="flex items-center gap-3 pb-4 border-b border-slate-100 dark:border-slate-800">
+        <div class="w-11 h-11 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-xl">lock_reset</span>
+        </div>
+        <div>
+          <h2 class="text-base font-bold text-slate-900 dark:text-white">
+            Seguridad de la Cuenta
+          </h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400">
+            Actualizar contraseña de acceso
+          </p>
+        </div>
+      </div>
+
+      <form (ngSubmit)="onChangePass()" class="space-y-4">
+        <!-- Contraseña Actual -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+            Contraseña Actual <span class="text-rose-500">*</span>
+          </label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">
+              lock
+            </span>
+            <input
+              [(ngModel)]="oldPass"
+              name="oldPassSeguridad"
+              type="password"
+              placeholder="••••••••"
+              class="w-full pl-9 pr-3.5 py-2.5 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Nueva Contraseña -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+            Nueva Contraseña <span class="text-rose-500">*</span>
+          </label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">
+              vpn_key
+            </span>
+            <input
+              [(ngModel)]="newPass"
+              name="newPass"
+              type="password"
+              placeholder="Mínimo 6 caracteres"
+              class="w-full pl-9 pr-3.5 py-2.5 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Confirmar Contraseña -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+            Confirmar Nueva Contraseña <span class="text-rose-500">*</span>
+          </label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">
+              check_circle
+            </span>
+            <input
+              [(ngModel)]="confirmPass"
+              name="confirmPass"
+              type="password"
+              placeholder="Repite la nueva contraseña"
+              class="w-full pl-9 pr-3.5 py-2.5 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button
+            type="submit"
+            [disabled]="guardandoPass"
+            class="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 disabled:opacity-50 text-white text-xs font-semibold rounded-xl shadow-sm hover:shadow transition-all duration-150"
+          >
+            @if (guardandoPass) {
+              <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            } @else {
+              <span class="material-symbols-outlined text-base">password</span>
+            }
+            <span>Actualizar Contraseña</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Tarjeta: Preferencias de Interfaz (Tema) -->
+  <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm p-6 sm:p-7">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-xl">palette</span>
+        </div>
+        <div>
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">
+            Tema Visual de la Aplicación
+          </h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            Alterne entre modo claro y oscuro para reducir la fatiga visual en consultas nocturnas
+          </p>
+        </div>
+      </div>
+
+      <!-- Modern Accessible Switch -->
+      <button
+        type="button"
+        role="switch"
+        (click)="toggleTheme()"
+        [attr.aria-checked]="isDark"
+        class="relative inline-flex h-7 w-14 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+        [ngClass]="isDark ? 'bg-blue-600' : 'bg-slate-200 dark:bg-slate-700'"
+      >
+        <span class="sr-only">Cambiar modo de color</span>
+        <span
+          class="pointer-events-none inline-flex h-6 w-6 transform items-center justify-center rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out"
+          [ngClass]="isDark ? 'translate-x-7 text-blue-600' : 'translate-x-0 text-amber-500'"
+        >
+          <span class="material-symbols-outlined text-sm">
+            {{ isDark ? 'dark_mode' : 'light_mode' }}
+          </span>
+        </span>
       </button>
-    </section>
+    </div>
+  </div>
+
+  <!-- Zona de Sesión: Cerrar Sesión -->
+  <div class="bg-rose-50/50 dark:bg-rose-950/20 border border-rose-200/80 dark:border-rose-900/40 rounded-2xl p-6 sm:p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0">
+        <span class="material-symbols-outlined text-xl">logout</span>
+      </div>
+      <div>
+        <h3 class="text-sm font-bold text-rose-900 dark:text-rose-200">
+          Cerrar Sesión Activa
+        </h3>
+        <p class="text-xs text-rose-700 dark:text-rose-300/80 mt-0.5">
+          Finaliza la sesión actual y protege la confidencialidad de las historias clínicas
+        </p>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      (click)="cerrarSession()"
+      class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white text-xs font-semibold rounded-xl shadow-sm hover:shadow transition-all duration-150 self-start sm:self-auto"
+    >
+      <span class="material-symbols-outlined text-base">logout</span>
+      <span>Cerrar Sesión</span>
+    </button>
+  </div>
+</div>

@@ -1,28 +1,40 @@
-<div class="flex flex-col">
-  <!-- Selector de tipo de dato -->
-  <div class="flex justify-between">
-    <p class="text-xl font-semibold mb-2 dark:text-gray-100">{{ tipoSeleccionado | titlecase }} (7 días)</p>
-    <div class="flex justify-end mb-4">
-      <label for="tipo" class="mr-2 text-sm font-medium text-gray-700 dark:text-gray-100 self-center">Filtrar por:</label>
-      <select
-        id="tipo"
-        [(ngModel)]="tipoSeleccionado"
-        (change)="onTipoChange()"
-        class="border dark:bg-gray-800 dark:text-gray-100 border-gray-300 rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+<div class="flex flex-col h-full">
+  <!-- Cabecera del Gráfico con Segmented Control -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+    <div>
+      <h3 class="text-base font-bold text-slate-900 dark:text-slate-100">
+        Actividad Clínica Reciente
+      </h3>
+      <p class="text-xs text-slate-400 dark:text-slate-500">
+        Tendencia diaria de los últimos 7 días
+      </p>
+    </div>
+
+    <!-- Segmented Control -->
+    <div class="inline-flex bg-slate-100 dark:bg-slate-800 p-1 rounded-lg self-start sm:self-auto border border-slate-200/60 dark:border-slate-700/60">
+      @for (opcion of opciones; track opcion.id) {
+        <button
+          type="button"
+          (click)="seleccionarTipo(opcion.id)"
+          class="px-2.5 py-1 text-xs font-semibold rounded-md transition flex items-center gap-1"
+          [ngClass]="{
+            'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-xs': tipoSeleccionado === opcion.id,
+            'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200': tipoSeleccionado !== opcion.id
+          }"
         >
-        @for (opcion of opciones; track opcion) {
-          <option [value]="opcion">
-            {{ opcion | titlecase }}
-          </option>
-        }
-      </select>
+          <span class="material-symbols-outlined text-xs">{{ opcion.icon }}</span>
+          <span>{{ opcion.label }}</span>
+        </button>
+      }
     </div>
   </div>
 
-  <!-- Gráfico -->
-  <canvas baseChart
-    [data]="chartData"
-    [options]="chartOptions"
-    chartType="line">
-  </canvas>
+  <!-- Contenedor del Gráfico -->
+  <div class="flex-1 min-h-[220px] sm:min-h-[260px] w-full relative">
+    <canvas baseChart
+      [data]="chartData"
+      [options]="chartOptions"
+      chartType="line">
+    </canvas>
+  </div>
 </div>

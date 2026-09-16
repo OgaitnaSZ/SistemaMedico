@@ -1,4 +1,39 @@
-<section class="mx-auto space-y-6">
+<div class="space-y-6">
+  <!-- Selector de Pestaña: Individual vs Importar -->
+  <div class="flex items-center justify-center">
+    <div class="inline-flex p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-inner">
+      <button
+        type="button"
+        (click)="pestanaActiva = 'individual'"
+        [ngClass]="{
+          'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-sm font-bold': pestanaActiva === 'individual',
+          'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-medium': pestanaActiva !== 'individual'
+        }"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-all duration-150"
+      >
+        <span class="material-symbols-outlined text-lg">person_add</span>
+        <span>Carga Individual</span>
+      </button>
+
+      <button
+        type="button"
+        (click)="pestanaActiva = 'importar'"
+        [ngClass]="{
+          'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-sm font-bold': pestanaActiva === 'importar',
+          'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-medium': pestanaActiva !== 'importar'
+        }"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-all duration-150"
+      >
+        <span class="material-symbols-outlined text-lg">upload_file</span>
+        <span>Importación Masiva (Excel)</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Vista Condicional -->
+  @if (pestanaActiva === 'individual') {
     <app-form-pacientes></app-form-pacientes>
+  } @else {
     <app-importar-pacientes></app-importar-pacientes>
-</section>
+  }
+</div>

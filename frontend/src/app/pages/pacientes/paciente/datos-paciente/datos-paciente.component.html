@@ -1,52 +1,124 @@
 @if (paciente._id != '') {
-  <section class="flex flex-col md:flex-row gap-6">
-    <div class="flex justify-center items-center">
-      <img src="https://ui-avatars.com/api/?name={{ paciente.nombre }}+{{ paciente.apellido }}&background=0D8ABC&color=fff&size=128"
-        alt="Avatar"
-        class="rounded-full w-32 h-32 border-4 border-blue-500 shadow-md">
+  <div class="space-y-6">
+    <!-- Encabezado de la Ficha: Avatar e Identidad Principal -->
+    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 pb-6 border-b border-slate-100 dark:border-slate-800">
+      <!-- Avatar con Iniciales -->
+      <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-bold text-2xl sm:text-3xl flex items-center justify-center shadow-md shadow-blue-500/20 shrink-0">
+        {{ obtenerIniciales(paciente.nombre, paciente.apellido) }}
       </div>
-      <!-- Información -->
-      <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
-        <div>
-          <p class="text-sm text-gray-500 dark:text-gray-500">Nombre</p>
-          <p class="font-medium text-lg dark:text-gray-100">{{ paciente.nombre }}</p>
+
+      <!-- Nombre, DNI y Badges -->
+      <div class="flex-1 text-center sm:text-left min-w-0">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+              {{ paciente.apellido }}, {{ paciente.nombre }}
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              Ficha clínica ID: <span class="font-mono">{{ paciente._id }}</span>
+            </p>
+          </div>
         </div>
-        <div>
-          <p class="text-sm text-gray-500 dark:text-gray-500">Apellido</p>
-          <p class="font-medium text-lg dark:text-gray-100">{{ paciente.apellido }}</p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500 dark:text-gray-500">Género</p>
-          <p class="font-medium text-lg dark:text-gray-100">{{ paciente.genero }}</p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500 dark:text-gray-500">DNI</p>
-          <p class="font-medium text-lg dark:text-gray-100">{{ paciente.dni }}</p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500 dark:text-gray-500">Fecha de Nacimiento</p>
-          <p class="font-medium text-lg dark:text-gray-100">{{ paciente.fechaNacimiento | date:'dd/MM/yyyy':'UTC' }}</p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500 dark:text-gray-500">Teléfono</p>
-          <p class="font-medium text-lg dark:text-gray-100">{{ paciente.telefono }}</p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500 dark:text-gray-500">Email</p>
-          <p class="font-medium text-lg dark:text-gray-100">{{ paciente.email }}</p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500 dark:text-gray-500">Dirección</p>
-          <p class="font-medium text-lg dark:text-gray-100">{{ paciente.direccion }}</p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500 dark:text-gray-500">Obra social</p>
-          <p class="font-medium text-lg dark:text-gray-100">{{ paciente.healthInsurance || 'No informado' }}</p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500 dark:text-gray-500">Fecha de Creación</p>
-          <p class="font-medium text-lg dark:text-gray-100">{{ paciente.createdAt | date:'dd/MM/yyyy':'UTC' }}</p>
+
+        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-3">
+          <!-- DNI Badge -->
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+            <span class="material-symbols-outlined text-sm text-slate-400">badge</span>
+            DNI: {{ paciente.dni || 'No registrado' }}
+          </span>
+
+          <!-- Edad / Fecha Nacimiento -->
+          @if (paciente.fechaNacimiento) {
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300">
+              <span class="material-symbols-outlined text-sm">cake</span>
+              {{ calcularEdad(paciente.fechaNacimiento) }} años
+            </span>
+          }
+
+          <!-- Obra Social -->
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300">
+            <span class="material-symbols-outlined text-sm">health_and_safety</span>
+            {{ paciente.healthInsurance || 'Particular / Sin Obra Social' }}
+          </span>
         </div>
       </div>
-    </section>
-  }
+    </div>
+
+    <!-- Grilla de Información Detallada -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- Fecha de Nacimiento -->
+      <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+        <span class="flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
+          <span class="material-symbols-outlined text-sm text-blue-500">calendar_today</span>
+          Fecha de Nacimiento
+        </span>
+        <p class="text-sm font-semibold text-slate-800 dark:text-slate-200">
+          {{ paciente.fechaNacimiento ? (paciente.fechaNacimiento | date:'dd/MM/yyyy':'UTC') : 'Sin especificar' }}
+        </p>
+      </div>
+
+      <!-- Género -->
+      <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+        <span class="flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
+          <span class="material-symbols-outlined text-sm text-blue-500">wc</span>
+          Género Biológico / Legal
+        </span>
+        <p class="text-sm font-semibold text-slate-800 dark:text-slate-200">
+          {{ paciente.genero || 'No especificado' }}
+        </p>
+      </div>
+
+      <!-- Teléfono -->
+      <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+        <span class="flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
+          <span class="material-symbols-outlined text-sm text-blue-500">phone</span>
+          Teléfono de Contacto
+        </span>
+        @if (paciente.telefono) {
+          <a [href]="'tel:' + paciente.telefono" class="text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+            {{ paciente.telefono }}
+          </a>
+        } @else {
+          <p class="text-sm text-slate-400">Sin teléfono registrado</p>
+        }
+      </div>
+
+      <!-- Correo Electrónico -->
+      <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+        <span class="flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
+          <span class="material-symbols-outlined text-sm text-blue-500">mail</span>
+          Correo Electrónico
+        </span>
+        @if (paciente.email) {
+          <a [href]="'mailto:' + paciente.email" class="text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline truncate block">
+            {{ paciente.email }}
+          </a>
+        } @else {
+          <p class="text-sm text-slate-400">Sin correo electrónico</p>
+        }
+      </div>
+
+      <!-- Dirección / Domicilio -->
+      <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+        <span class="flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
+          <span class="material-symbols-outlined text-sm text-blue-500">location_on</span>
+          Dirección Residencial
+        </span>
+        <p class="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">
+          {{ paciente.direccion || 'Sin domicilio registrado' }}
+        </p>
+      </div>
+
+      <!-- Fecha de Alta en el Sistema -->
+      <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+        <span class="flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
+          <span class="material-symbols-outlined text-sm text-blue-500">app_registration</span>
+          Fecha de Alta
+        </span>
+        <p class="text-sm font-semibold text-slate-800 dark:text-slate-200">
+          {{ paciente.createdAt ? (paciente.createdAt | date:'dd/MM/yyyy':'UTC') : '-' }}
+        </p>
+      </div>
+    </div>
+  </div>
+}

@@ -26,7 +26,28 @@ export class DatosPacienteComponent {
   
   constructor(private pacienteService: PacientesApiService, private snackbarService: SnackbarService){}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
 
+  calcularEdad(fechaNacimiento?: string | Date): number | null {
+    if (!fechaNacimiento) return null;
+    const fecha = new Date(fechaNacimiento);
+    if (isNaN(fecha.getTime())) return null;
+
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - fecha.getFullYear();
+    const mes = hoy.getMonth() - fecha.getMonth();
+    const dia = hoy.getDate() - fecha.getDate();
+
+    if (mes < 0 || (mes === 0 && dia < 0)) {
+      edad--;
+    }
+
+    return edad;
+  }
+
+  obtenerIniciales(nombre?: string, apellido?: string): string {
+    const n = (nombre || '').trim().charAt(0).toUpperCase();
+    const a = (apellido || '').trim().charAt(0).toUpperCase();
+    return `${n}${a}` || 'P';
   }
 }

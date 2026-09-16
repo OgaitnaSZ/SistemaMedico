@@ -18,6 +18,7 @@ export class PacientesComponent {
   cargando = false;
   finalDeLista = false;
   terminoBusqueda = '';
+  cargandoInicial = true;
   pagina = 1;
   limite = 15;
 
@@ -27,7 +28,7 @@ export class PacientesComponent {
 
   ngOnInit(): void {
     // Escuchamos los cambios en la búsqueda con debounce
-    this.busquedaSubject.pipe(debounceTime(400)).subscribe((valor) => {
+    this.busquedaSubject.pipe(debounceTime(400)).subscribe(() => {
       this.pagina = 1;
       this.pacientes = [];
       this.finalDeLista = false;
@@ -39,6 +40,20 @@ export class PacientesComponent {
 
   buscarPacientes() {
     this.busquedaSubject.next(this.terminoBusqueda);
+  }
+
+  limpiarBusqueda() {
+    this.terminoBusqueda = '';
+    this.pagina = 1;
+    this.pacientes = [];
+    this.finalDeLista = false;
+    this.cargarPacientes();
+  }
+
+  obtenerIniciales(nombre?: string, apellido?: string): string {
+    const n = (nombre || '').trim().charAt(0).toUpperCase();
+    const a = (apellido || '').trim().charAt(0).toUpperCase();
+    return `${n}${a}` || 'P';
   }
 
   cargarPacientes(){
@@ -58,10 +73,12 @@ export class PacientesComponent {
           this.pagina++;
         }
         this.cargando = false;
+        this.cargandoInicial = false;
       },
-      (error) => {
-        this.snackbarService.show(error.error.message, 'error');
+      (error: any) => {
+        this.snackbarService.show(error?.error?.message || 'Error al cargar pacientes', 'error');
         this.cargando = false;
+        this.cargandoInicial = false;
       }
     );
   }

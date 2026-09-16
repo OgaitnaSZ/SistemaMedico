@@ -307,32 +307,41 @@ export class TurnosComponent implements OnInit {
     return idPaciente || '';
   }
 
+  getInicialesPaciente(idPaciente: string | Paciente): string {
+    if (typeof idPaciente === 'object' && idPaciente !== null) {
+      const n = idPaciente.nombre ? idPaciente.nombre.charAt(0) : '';
+      const a = idPaciente.apellido ? idPaciente.apellido.charAt(0) : '';
+      return (n + a).toUpperCase() || 'P';
+    }
+    return 'P';
+  }
+
   // Estilos de badges por estado
   getClaseEstado(estado: EstadoTurno): string {
     switch (estado) {
       case 'Confirmado':
-        return 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 border border-green-300 dark:border-green-700';
+        return 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800';
       case 'Completado':
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600';
+        return 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-200 dark:border-slate-700';
       case 'Cancelado':
-        return 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 border border-red-300 dark:border-red-700 line-through';
+        return 'bg-rose-50 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300 border border-rose-200 dark:border-rose-800 line-through';
       case 'Pendiente':
       default:
-        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 border border-blue-300 dark:border-blue-700';
+        return 'bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300 border border-amber-200 dark:border-amber-800';
     }
   }
 
   getDotEstado(estado: EstadoTurno): string {
     switch (estado) {
       case 'Confirmado':
-        return 'bg-green-500';
+        return 'bg-emerald-500';
       case 'Completado':
-        return 'bg-gray-400';
+        return 'bg-slate-400';
       case 'Cancelado':
-        return 'bg-red-500';
+        return 'bg-rose-500';
       case 'Pendiente':
       default:
-        return 'bg-blue-500';
+        return 'bg-amber-500';
     }
   }
 }

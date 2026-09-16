@@ -1,65 +1,231 @@
-<div class="flex flex-col md:flex-row justify-between items-center p-4 md:px-0 gap-4">
-  <h1 class="text-5xl font-medium dark:text-gray-100">Listado de Pacientes</h1>
+<!-- Encabezado de la Sección -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+  <div>
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/60 border border-blue-100 dark:border-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400">
+        <span class="material-symbols-outlined text-2xl">groups</span>
+      </div>
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+          Listado de Pacientes
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+          Directorio clínico de pacientes registrados y fichas médicas
+        </p>
+      </div>
+    </div>
+  </div>
 
-  <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-    <input type="text" placeholder="Buscar por nombre o DNI..."
-    class="w-full sm:w-64 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-100"
-    [(ngModel)]="terminoBusqueda" (ngModelChange)="buscarPacientes()">
-    <a class="bg-blue-500 text-white text-center px-4 py-2 rounded-lg hover:bg-blue-700 transition" routerLink="/pacientes/agregar-paciente">
-      + Nuevo Paciente
+  <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+    <!-- Buscador con icono y botón de limpiar -->
+    <div class="relative min-w-[260px] sm:w-72">
+      <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg pointer-events-none">
+        search
+      </span>
+      <input
+        type="text"
+        placeholder="Buscar por nombre o DNI..."
+        class="w-full pl-10 pr-9 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm"
+        [(ngModel)]="terminoBusqueda"
+        (ngModelChange)="buscarPacientes()"
+      />
+      @if (terminoBusqueda) {
+        <button
+          type="button"
+          (click)="limpiarBusqueda()"
+          class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-full transition-colors"
+          title="Limpiar búsqueda"
+        >
+          <span class="material-symbols-outlined text-base">close</span>
+        </button>
+      }
+    </div>
+
+    <!-- Botón Nuevo Paciente -->
+    <a
+      routerLink="/pacientes/agregar-paciente"
+      class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm font-semibold rounded-xl shadow-sm hover:shadow transition-all duration-150 shrink-0"
+    >
+      <span class="material-symbols-outlined text-lg">person_add</span>
+      <span>Nuevo Paciente</span>
     </a>
   </div>
 </div>
 
-  <!-- Tabla de pacientes -->
-<section class="p-4 md:px-0">
-  @if (pacientes.length > 0) {
-    <div class="mt-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-      <div
-        class="overflow-y-auto max-h-[82vh]"
-        infiniteScroll
-        [infiniteScrollDistance]="2"
-        [infiniteScrollThrottle]="200"
-        (scrolled)="cargarPacientes()"
-        [scrollWindow]="false"
-        >
-        <table class="min-w-full border-collapse border-gray-300">
-          <thead class="text-gray-700 dark:text-gray-300 font-extrabold uppercase text-xs">
-            <tr>
-              <th class="px-6 py-3 text-start">#</th>
-              <th class="px-6 py-3 text-start">Nombre</th>
-              <th class="px-6 py-3">DNI</th>
-              <th class="px-6 py-3">Género</th>
-              <th class="px-6 py-3">Edad</th>
-              <th class="px-6 py-3">Historia</th>
+<!-- Contenedor Principal de la Tabla -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+  
+  <!-- Estado de carga inicial (Skeleton) -->
+  @if (cargandoInicial) {
+    <div class="p-6 space-y-4">
+      <div class="h-10 bg-slate-100 dark:bg-slate-800/60 rounded-xl animate-pulse"></div>
+      @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+        <div class="h-16 bg-slate-50 dark:bg-slate-800/40 rounded-xl animate-pulse flex items-center px-4 gap-4">
+          <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 shrink-0"></div>
+          <div class="space-y-2 flex-1">
+            <div class="h-3.5 bg-slate-200 dark:bg-slate-700 rounded w-1/4"></div>
+            <div class="h-2.5 bg-slate-200 dark:bg-slate-700 rounded w-1/6"></div>
+          </div>
+          <div class="h-6 bg-slate-200 dark:bg-slate-700 rounded-full w-20"></div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Listado con Pacientes cargados -->
+  @if (!cargandoInicial && pacientes.length > 0) {
+    <div
+      class="overflow-x-auto overflow-y-auto max-h-[72vh]"
+      infiniteScroll
+      [infiniteScrollDistance]="2"
+      [infiniteScrollThrottle]="200"
+      (scrolled)="cargarPacientes()"
+      [scrollWindow]="false"
+    >
+      <table class="w-full text-left border-collapse">
+        <thead class="sticky top-0 z-10 bg-slate-50/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">
+          <tr>
+            <th class="py-3.5 px-5 w-16 text-center">#</th>
+            <th class="py-3.5 px-5">Paciente</th>
+            <th class="py-3.5 px-5">DNI</th>
+            <th class="py-3.5 px-5">Género</th>
+            <th class="py-3.5 px-5">Edad</th>
+            <th class="py-3.5 px-5 text-right pr-6">Acción</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 text-sm">
+          @for (paciente of pacientes; track paciente._id; let i = $index) {
+            <tr class="group hover:bg-blue-50/40 dark:hover:bg-slate-800/40 transition-colors">
+              <!-- Índice -->
+              <td class="py-3.5 px-5 text-center text-xs font-medium text-slate-400 dark:text-slate-500">
+                {{ i + 1 }}
+              </td>
+
+              <!-- Nombre y Avatar -->
+              <td class="py-3.5 px-5">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 font-bold text-xs flex items-center justify-center shrink-0 ring-1 ring-blue-500/20">
+                    {{ obtenerIniciales(paciente.nombre, paciente.apellido) }}
+                  </div>
+                  <div class="min-w-0">
+                    <a
+                      [routerLink]="['/pacientes', paciente._id]"
+                      class="font-semibold text-slate-900 dark:text-slate-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate block"
+                    >
+                      {{ paciente.apellido }}, {{ paciente.nombre }}
+                    </a>
+                    @if (paciente.healthInsurance) {
+                      <span class="text-xs text-slate-400 dark:text-slate-500 truncate block">
+                        {{ paciente.healthInsurance }}
+                      </span>
+                    }
+                  </div>
+                </div>
+              </td>
+
+              <!-- DNI -->
+              <td class="py-3.5 px-5">
+                <span class="font-mono text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                  {{ paciente.dni || 'S/D' }}
+                </span>
+              </td>
+
+              <!-- Género -->
+              <td class="py-3.5 px-5">
+                <span class="text-xs font-medium text-slate-600 dark:text-slate-300">
+                  {{ paciente.genero || '-' }}
+                </span>
+              </td>
+
+              <!-- Edad -->
+              <td class="py-3.5 px-5 text-slate-600 dark:text-slate-300">
+                @if (paciente.fechaNacimiento && calcularEdad(paciente.fechaNacimiento) !== null) {
+                  <span class="text-xs font-medium">
+                    {{ calcularEdad(paciente.fechaNacimiento) }} años
+                  </span>
+                } @else {
+                  <span class="text-xs text-slate-400">N/A</span>
+                }
+              </td>
+
+              <!-- Acción: Ver Ficha Clínica -->
+              <td class="py-3.5 px-5 text-right pr-6">
+                <a
+                  [routerLink]="['/pacientes', paciente._id]"
+                  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
+                >
+                  <span class="material-symbols-outlined text-sm">clinical_notes</span>
+                  <span>Ver Ficha</span>
+                </a>
+              </td>
             </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-100">
-            @for (paciente of pacientes ; track paciente; let i = $index) {
-              <tr class="w-full table-fixed hover:bg-gray-50 dark:hover:bg-gray-700">
-                <td class="px-6 py-4 text-gray-900 dark:text-gray-100">{{ i + 1 }}</td>
-                <td class="px-6 py-4 text-gray-900 dark:text-gray-100 whitespace-nowrap">{{ paciente?.nombre }}, {{ paciente?.apellido }}</td>
-                <td class="px-6 py-4 text-gray-900 dark:text-gray-100 text-center">{{ paciente?.dni }}</td>
-                <td class="px-6 py-4 text-gray-900 dark:text-gray-100 text-center">{{ paciente?.genero }}</td>
-                <td class="px-6 py-4 text-gray-900 dark:text-gray-100 text-center">{{ paciente?.fechaNacimiento ? calcularEdad(paciente?.fechaNacimiento) : 'N/A' }}</td>
-                <td class="px-6 py-4 text-gray-900 dark:text-gray-100 text-center flex justify-center gap-3 text-sm">
-                  <button [routerLink]="['/pacientes', paciente._id]" class="text-blue-500 hover:underline"><span class="material-symbols-outlined">lab_profile</span></button>
-                </td>
-              </tr>
-            }
-            @if (cargando) {
-              <tr>
-                <td colspan="6" class="text-center py-3 text-blue-500">Cargando más pacientes...</td>
-              </tr>
-            }
-            @if (finalDeLista && pacientes.length > 0) {
-              <tr>
-                <td colspan="6" class="text-center py-3 text-gray-400 dark:text-gray-500">No hay más pacientes.</td>
-              </tr>
-            }
-          </tbody>
-        </table>
+          }
+
+          <!-- Spinner durante scroll infinito -->
+          @if (cargando && !cargandoInicial) {
+            <tr>
+              <td colspan="6" class="py-4 text-center">
+                <div class="inline-flex items-center gap-2 text-xs font-medium text-blue-600 dark:text-blue-400">
+                  <div class="w-4 h-4 border-2 border-blue-600/30 border-t-blue-600 rounded-full animate-spin"></div>
+                  <span>Cargando más pacientes...</span>
+                </div>
+              </td>
+            </tr>
+          }
+
+          <!-- Fin de la lista -->
+          @if (finalDeLista && pacientes.length > 0) {
+            <tr>
+              <td colspan="6" class="py-4 text-center text-xs text-slate-400 dark:text-slate-500">
+                Has llegado al final del directorio ({{ pacientes.length }} pacientes cargados)
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  <!-- Estado vacío: Sin resultados para el filtro de búsqueda -->
+  @if (!cargandoInicial && pacientes.length === 0 && terminoBusqueda) {
+    <div class="p-12 text-center">
+      <div class="w-14 h-14 rounded-2xl bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-900/40 text-amber-500 mx-auto flex items-center justify-center mb-3">
+        <span class="material-symbols-outlined text-2xl">search_off</span>
+      </div>
+      <h3 class="text-base font-bold text-slate-900 dark:text-slate-100">Sin resultados de búsqueda</h3>
+      <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
+        No se encontraron pacientes que coincidan con "<span class="font-medium text-slate-700 dark:text-slate-300">{{ terminoBusqueda }}</span>".
+      </p>
+      <button
+        type="button"
+        (click)="limpiarBusqueda()"
+        class="mt-4 inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50 hover:bg-blue-100 dark:hover:bg-blue-900/50 rounded-xl transition-colors"
+      >
+        <span class="material-symbols-outlined text-sm">refresh</span>
+        Limpiar búsqueda
+      </button>
+    </div>
+  }
+
+  <!-- Estado vacío: Sin pacientes registrados todavía -->
+  @if (!cargandoInicial && pacientes.length === 0 && !terminoBusqueda) {
+    <div class="p-14 text-center">
+      <div class="w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-950/50 border border-blue-100 dark:border-blue-900/40 text-blue-600 dark:text-blue-400 mx-auto flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-3xl">person_add</span>
+      </div>
+      <h3 class="text-base font-bold text-slate-900 dark:text-slate-100">No hay pacientes registrados</h3>
+      <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-md mx-auto">
+        Comience agregando su primer paciente o importe una nómina completa desde un archivo Excel.
+      </p>
+      <div class="mt-5 flex items-center justify-center gap-3">
+        <a
+          routerLink="/pacientes/agregar-paciente"
+          class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl shadow-sm transition-all"
+        >
+          <span class="material-symbols-outlined text-sm">add</span>
+          Crear Primer Paciente
+        </a>
       </div>
     </div>
   }
-</section>
+</div>
