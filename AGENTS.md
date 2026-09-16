@@ -99,7 +99,7 @@ Representative examples:
 
 ## Data Fetching and APIs
 - Frontend HTTP calls go through services in `frontend/src/app/core/services/`.
-- Service URLs are hardcoded to `https://sistemamedico.onrender.com/api/...`.
+- Service URLs are hardcoded to `http://localhost:4000/api/...`.
 - Auth headers are built from the token stored in localStorage.
 - Most requests are simple `HttpClient.get/post/put/delete` calls with the bearer token.
 - File uploads use `FormData` and `multipart/form-data`.

@@ -7,8 +7,9 @@ const { handleHttpError } = require("../utils/handleError");
 exports.loginUsuario = async (req, res) =>{ 
     try {
         req = matchedData(req);
-        const user = await Usuario.findOne({usuario: req.usuario});
+        const user = await Usuario.findOne({user: req.usuario});
         
+        console.log(user)
         if(!user){
             handleHttpError(res, "USUARIO NO EXISTE", 404)
             return

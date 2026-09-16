@@ -8,7 +8,7 @@ import { Paciente } from '../interfaces/paciente.model';
 })
 
 export class PacientesApiService {
-  private apiUrl = 'https://sistemamedico.onrender.com/api/pacientes/';
+  private apiUrl = 'http://localhost:4000/api/pacientes/';
 
   constructor(private http: HttpClient) {}
 
