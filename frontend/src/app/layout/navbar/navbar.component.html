@@ -49,11 +49,23 @@
           <li>
             <a
               routerLink="/pacientes"
+              [routerLinkActiveOptions]="{ exact: true }"
               routerLinkActive="bg-blue-600 text-white font-semibold shadow-xs"
               class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/70 transition group text-sm font-medium"
             >
               <span class="material-symbols-outlined text-xl transition-transform group-hover:scale-110">groups</span>
               <span>Pacientes</span>
+            </a>
+          </li>
+
+          <li>
+            <a
+              routerLink="/pacientes/importar-excel"
+              routerLinkActive="bg-blue-600 text-white font-semibold shadow-xs"
+              class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/70 transition group text-sm font-medium"
+            >
+              <span class="material-symbols-outlined text-xl transition-transform group-hover:scale-110">upload_file</span>
+              <span>Importar Excel</span>
             </a>
           </li>
         </ul>

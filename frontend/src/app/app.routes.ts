@@ -21,6 +21,7 @@ export const routes: Routes = [
             { path: 'configuracion', component: ConfiguracionComponent },
             { path: 'pacientes', component: PacientesComponent },
             { path: 'pacientes/agregar-paciente', component: AgregarPacientesComponent },
+            { path: 'pacientes/importar-excel', component: AgregarPacientesComponent },
             { path: 'pacientes/modificar-paciente/:id', component: FormPacientesComponent },
             { path: 'pacientes/:id', component: PacienteComponent }
         ]

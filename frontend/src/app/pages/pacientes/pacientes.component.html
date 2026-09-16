@@ -41,6 +41,15 @@
       }
     </div>
 
+    <!-- Botón Importar Excel -->
+    <a
+      routerLink="/pacientes/importar-excel"
+      class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white text-sm font-semibold rounded-xl shadow-sm hover:shadow transition-all duration-150 shrink-0"
+    >
+      <span class="material-symbols-outlined text-lg">upload_file</span>
+      <span>Importar Excel</span>
+    </a>
+
     <!-- Botón Nuevo Paciente -->
     <a
       routerLink="/pacientes/agregar-paciente"
@@ -217,13 +226,20 @@
       <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-md mx-auto">
         Comience agregando su primer paciente o importe una nómina completa desde un archivo Excel.
       </p>
-      <div class="mt-5 flex items-center justify-center gap-3">
+      <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
         <a
           routerLink="/pacientes/agregar-paciente"
           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl shadow-sm transition-all"
         >
-          <span class="material-symbols-outlined text-sm">add</span>
+          <span class="material-symbols-outlined text-sm">person_add</span>
           Crear Primer Paciente
+        </a>
+        <a
+          routerLink="/pacientes/importar-excel"
+          class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow-sm transition-all"
+        >
+          <span class="material-symbols-outlined text-sm">upload_file</span>
+          Importar desde Excel
         </a>
       </div>
     </div>
