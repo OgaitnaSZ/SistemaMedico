@@ -7,6 +7,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { authGuard } from './auth.guard';
 import { FormPacientesComponent } from './pages/pacientes/agregar-pacientes/form-pacientes/form-pacientes.component';
 import { AgregarPacientesComponent } from './pages/pacientes/agregar-pacientes/agregar-pacientes.component';
+import { TurnosComponent } from './pages/turnos/turnos.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent},
@@ -16,6 +17,7 @@ export const routes: Routes = [
         children: [
             { path: '', component: DashboardComponent },
             { path: 'dashboard', component: DashboardComponent },
+            { path: 'turnos', component: TurnosComponent },
             { path: 'configuracion', component: ConfiguracionComponent },
             { path: 'pacientes', component: PacientesComponent },
             { path: 'pacientes/agregar-paciente', component: AgregarPacientesComponent },

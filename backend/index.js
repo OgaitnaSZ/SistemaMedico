@@ -32,6 +32,7 @@ app.use('/api/usuarios', require('./routes/usuario'));
 app.use('/api/consultas', require('./routes/consulta'));
 app.use('/api/archivos', require('./routes/archivo'));
 app.use('/api/dashboard', require('./routes/dashboard'));
+app.use('/api/turnos', require('./routes/turno'));
 
 // Correr el servidor
 const port = 4000;

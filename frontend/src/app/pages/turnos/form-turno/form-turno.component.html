@@ -1,0 +1,186 @@
+<div class="bg-white dark:bg-gray-800 rounded-xl p-6 text-gray-800 dark:text-gray-100 shadow-md">
+  <div class="flex justify-between items-center mb-6 border-b pb-3 dark:border-gray-700">
+    <h3 class="text-2xl font-semibold flex items-center gap-2">
+      <span class="material-symbols-outlined text-blue-500">
+        {{ modoEdicion ? 'edit_calendar' : 'calendar_add_on' }}
+      </span>
+      {{ modoEdicion ? 'Editar Turno' : 'Agendar Nuevo Turno' }}
+    </h3>
+    <button (click)="cancelar()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 material-symbols-outlined">
+      close
+    </button>
+  </div>
+
+  <form (ngSubmit)="guardar()" class="space-y-4">
+    <!-- Selector de Paciente -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        Paciente <span class="text-red-500">*</span>
+      </label>
+
+      @if (pacienteSeleccionado) {
+        <div class="flex items-center justify-between p-3 bg-blue-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-lg">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">person</span>
+            <div>
+              <p class="font-semibold text-gray-900 dark:text-gray-100">
+                {{ pacienteSeleccionado.nombre }} {{ pacienteSeleccionado.apellido }}
+              </p>
+              <p class="text-xs text-gray-500 dark:text-gray-300">
+                DNI: {{ pacienteSeleccionado.dni }} 
+                @if (pacienteSeleccionado.healthInsurance) {
+                  | Obra Social: {{ pacienteSeleccionado.healthInsurance }}
+                }
+              </p>
+            </div>
+          </div>
+          <button type="button" (click)="deseleccionarPaciente()" class="text-sm text-red-500 hover:text-red-700 font-medium">
+            Cambiar
+          </button>
+        </div>
+      } @else {
+        <div class="relative">
+          <input
+            type="text"
+            placeholder="Buscar por nombre, apellido o DNI..."
+            [ngModel]="terminoBusqueda"
+            (ngModelChange)="onInputBusqueda($event)"
+            name="buscarPaciente"
+            autocomplete="off"
+            class="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:text-gray-100"
+          >
+
+          @if (buscandoPacientes) {
+            <div class="absolute right-3 top-3 text-sm text-gray-400">Buscando...</div>
+          }
+
+          @if (mostrarResultadosPacientes && pacientesEncontrados.length > 0) {
+            <ul class="absolute z-50 left-0 right-0 mt-1 max-h-52 overflow-y-auto bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg divide-y divide-gray-100 dark:divide-gray-600">
+              @for (paciente of pacientesEncontrados; track paciente._id) {
+                <li
+                  (click)="seleccionarPaciente(paciente)"
+                  class="p-2.5 hover:bg-blue-50 dark:hover:bg-gray-600 cursor-pointer transition flex justify-between items-center"
+                >
+                  <div>
+                    <span class="font-medium text-gray-900 dark:text-gray-100">
+                      {{ paciente.nombre }} {{ paciente.apellido }}
+                    </span>
+                    <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">
+                      (DNI: {{ paciente.dni }})
+                    </span>
+                  </div>
+                  @if (paciente.healthInsurance) {
+                    <span class="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-0.5 rounded text-gray-700 dark:text-gray-200">
+                      {{ paciente.healthInsurance }}
+                    </span>
+                  }
+                </li>
+              }
+            </ul>
+          }
+
+          @if (mostrarResultadosPacientes && !buscandoPacientes && terminoBusqueda.length >= 2 && pacientesEncontrados.length === 0) {
+            <div class="absolute z-50 left-0 right-0 mt-1 p-3 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg shadow text-sm text-gray-500 dark:text-gray-400 text-center">
+              No se encontraron pacientes con ese criterio.
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Fecha y Hora -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Fecha <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="date"
+          [(ngModel)]="fecha"
+          name="fecha"
+          required
+          class="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:text-gray-100"
+        >
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Hora <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="time"
+          [(ngModel)]="hora"
+          name="hora"
+          required
+          class="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:text-gray-100"
+        >
+      </div>
+    </div>
+
+    <!-- Estado y Motivo -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Estado
+        </label>
+        <select
+          [(ngModel)]="estado"
+          name="estado"
+          class="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:text-gray-100"
+        >
+          @for (est of estados; track est) {
+            <option [value]="est">{{ est }}</option>
+          }
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Motivo
+        </label>
+        <input
+          type="text"
+          [(ngModel)]="motivo"
+          name="motivo"
+          placeholder="Ej: Control general, Seguimiento..."
+          class="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:text-gray-100"
+        >
+      </div>
+    </div>
+
+    <!-- Notas -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        Notas u Observaciones (opcional)
+      </label>
+      <textarea
+        [(ngModel)]="notas"
+        name="notas"
+        rows="3"
+        placeholder="Indicaciones previas, requerimientos de estudios..."
+        class="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:text-gray-100"
+      ></textarea>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="flex justify-end gap-3 pt-4 border-t dark:border-gray-700">
+      <button
+        type="button"
+        (click)="cancelar()"
+        class="px-5 py-2.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+      >
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        [disabled]="guardando"
+        class="px-5 py-2.5 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition disabled:opacity-50 flex items-center gap-2"
+      >
+        @if (guardando) {
+          <span class="material-symbols-outlined animate-spin text-sm">progress_activity</span>
+        }
+        {{ modoEdicion ? 'Actualizar Turno' : 'Agendar Turno' }}
+      </button>
+    </div>
+  </form>
+</div>

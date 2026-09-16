@@ -291,6 +291,102 @@ const swaggerDefinition = {
                         }
                     }
                 }
+            },
+            turno: {
+                type: "object",
+                required: ["idPaciente", "fecha", "hora"],
+                properties: {
+                    _id: {
+                        type: "string"
+                    },
+                    idDoctor: {
+                        type: "string"
+                    },
+                    idPaciente: {
+                        type: "string"
+                    },
+                    fecha: {
+                        type: "string",
+                        format: "date"
+                    },
+                    hora: {
+                        type: "string",
+                        example: "10:30"
+                    },
+                    estado: {
+                        type: "string",
+                        enum: ["Pendiente", "Confirmado", "Completado", "Cancelado"],
+                        example: "Pendiente"
+                    },
+                    motivo: {
+                        type: "string"
+                    },
+                    notas: {
+                        type: "string"
+                    },
+                    createdAt: {
+                        type: "string",
+                        format: "date"
+                    }
+                }
+            },
+            turnoNew: {
+                type: "object",
+                required: ["idPaciente", "fecha", "hora"],
+                properties: {
+                    idPaciente: {
+                        type: "string"
+                    },
+                    fecha: {
+                        type: "string",
+                        format: "date"
+                    },
+                    hora: {
+                        type: "string",
+                        example: "10:30"
+                    },
+                    estado: {
+                        type: "string",
+                        enum: ["Pendiente", "Confirmado", "Completado", "Cancelado"],
+                        default: "Pendiente"
+                    },
+                    motivo: {
+                        type: "string"
+                    },
+                    notas: {
+                        type: "string"
+                    }
+                }
+            },
+            turnoUpdate: {
+                type: "object",
+                required: ["_id", "idPaciente", "fecha", "hora"],
+                properties: {
+                    _id: {
+                        type: "string"
+                    },
+                    idPaciente: {
+                        type: "string"
+                    },
+                    fecha: {
+                        type: "string",
+                        format: "date"
+                    },
+                    hora: {
+                        type: "string",
+                        example: "10:30"
+                    },
+                    estado: {
+                        type: "string",
+                        enum: ["Pendiente", "Confirmado", "Completado", "Cancelado"]
+                    },
+                    motivo: {
+                        type: "string"
+                    },
+                    notas: {
+                        type: "string"
+                    }
+                }
             }
         }
     },

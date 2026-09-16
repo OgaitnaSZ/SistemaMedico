@@ -9,6 +9,89 @@
   <app-top-card [value]="totalArchivos" label="Archivos" icon="description" class="md:w-1/3"></app-top-card>
 </section>
 
+<!-- Próximo Turno Card -->
+<section class="p-4 md:px-0">
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-5 border-l-4 border-blue-500">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      
+      @if (proximoTurno) {
+        <div class="flex items-start sm:items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-2xl">alarm</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">Próximo Turno</span>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold" [ngClass]="getClaseEstadoTurno(proximoTurno.estado)">
+                {{ proximoTurno.estado }}
+              </span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mt-0.5">
+              {{ getNombrePacienteProximo(proximoTurno.idPaciente) }}
+            </h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400">
+              <span class="font-medium text-gray-700 dark:text-gray-300">
+                {{ proximoTurno.fecha | date:'dd/MM/yyyy':'UTC' }} a las {{ proximoTurno.hora }} hs
+              </span>
+              @if (getDniPacienteProximo(proximoTurno.idPaciente)) {
+                • DNI: {{ getDniPacienteProximo(proximoTurno.idPaciente) }}
+              }
+              @if (proximoTurno.motivo) {
+                • <span class="italic">{{ proximoTurno.motivo }}</span>
+              }
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+          @if (getIdPacienteProximo(proximoTurno.idPaciente)) {
+            <a
+              [routerLink]="['/pacientes', getIdPacienteProximo(proximoTurno.idPaciente)]"
+              class="px-3.5 py-2 text-xs font-semibold text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition inline-flex items-center gap-1"
+            >
+              <span class="material-symbols-outlined text-sm">person</span>
+              Ver Paciente
+            </a>
+          }
+          <a
+            routerLink="/turnos"
+            class="px-3.5 py-2 text-xs font-semibold text-white bg-blue-500 hover:bg-blue-600 rounded-lg transition inline-flex items-center gap-1 shadow-sm"
+          >
+            <span class="material-symbols-outlined text-sm">calendar_month</span>
+            Ver en Agenda
+          </a>
+        </div>
+      } @else {
+        <div class="flex items-center gap-4 py-1">
+          <div class="w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-400 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-2xl">event_available</span>
+          </div>
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Agenda de Turnos</span>
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">
+              No tenés turnos próximos programados
+            </h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400">
+              Tu agenda está libre por el momento.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <a
+            routerLink="/turnos"
+            class="px-4 py-2 text-xs font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/50 rounded-lg transition inline-flex items-center gap-1"
+          >
+            <span class="material-symbols-outlined text-sm">add</span>
+            Agendar Turno
+          </a>
+        </div>
+      }
+
+    </div>
+  </div>
+</section>
+
 <!-- Gráfico + Paciente -->
 <div class="flex flex-col md:flex-row gap-4 p-4 md:px-0 w-full ">
     <!-- Gráfico  -->

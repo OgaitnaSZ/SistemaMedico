@@ -6,6 +6,7 @@ const fs = require('fs');
 /* tabu :( */
 const Consulta = require('../models/Consulta');
 const Archivo = require('../models/Archivo');
+const Turno = require('../models/Turno');
 
 exports.crearPaciente = async (req, res) => {
     try {
@@ -106,6 +107,9 @@ exports.eliminarPaciente = async (req, res) => {
             eliminarArchivosPorConsulta(consulta._id); 
             await Consulta.findByIdAndDelete(consulta._id);
         }
+
+        // Eliminar turnos asociados
+        await Turno.deleteMany({ idPaciente: id });
 
         // Eliminar paciente
         await Paciente.findByIdAndDelete(id);

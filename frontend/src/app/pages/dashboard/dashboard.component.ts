@@ -8,6 +8,9 @@ import { DashboardService } from '../../core/services/dashboard.service';
 import { LoginService } from '../../core/services/login.service';
 import { Dashboard } from '../../core/interfaces/dashboard.model';
 import { SnackbarService } from '../../core/services/snackbar.service';
+import { TurnosApiService } from '../../core/services/turnos.service';
+import { Turno, EstadoTurno } from '../../core/interfaces/turno.model';
+import { Paciente } from '../../core/interfaces/paciente.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +18,12 @@ import { SnackbarService } from '../../core/services/snackbar.service';
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent {
-  constructor(private dashboardService: DashboardService, private login: LoginService, private snackbarService: SnackbarService){}
+  constructor(
+    private dashboardService: DashboardService,
+    private login: LoginService,
+    private snackbarService: SnackbarService,
+    private turnosService: TurnosApiService
+  ){}
 
   nombre: string = 'Doctor';
   
@@ -30,9 +38,61 @@ export class DashboardComponent {
   totalConsultas: number = 0;
   totalArchivos: number = 0;
 
+  proximoTurno: Turno | null = null;
+  cargandoProximoTurno: boolean = true;
+
   ngOnInit(){
     this.nombre = this.login.getUserName();
     this.cargarEstadisticas();
+    this.cargarProximoTurno();
+  }
+
+  cargarProximoTurno(): void {
+    this.cargandoProximoTurno = true;
+    this.turnosService.getProximoTurno().subscribe({
+      next: (res) => {
+        this.proximoTurno = res.turno || null;
+        this.cargandoProximoTurno = false;
+      },
+      error: () => {
+        this.cargandoProximoTurno = false;
+      }
+    });
+  }
+
+  getNombrePacienteProximo(idPaciente: string | Paciente): string {
+    if (typeof idPaciente === 'object' && idPaciente !== null) {
+      return `${idPaciente.nombre} ${idPaciente.apellido}`;
+    }
+    return 'Paciente';
+  }
+
+  getDniPacienteProximo(idPaciente: string | Paciente): string {
+    if (typeof idPaciente === 'object' && idPaciente !== null) {
+      return idPaciente.dni || '';
+    }
+    return '';
+  }
+
+  getIdPacienteProximo(idPaciente: string | Paciente): string {
+    if (typeof idPaciente === 'object' && idPaciente !== null) {
+      return idPaciente._id || '';
+    }
+    return idPaciente || '';
+  }
+
+  getClaseEstadoTurno(estado?: EstadoTurno): string {
+    switch (estado) {
+      case 'Confirmado':
+        return 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 border border-green-300 dark:border-green-700';
+      case 'Completado':
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600';
+      case 'Cancelado':
+        return 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 border border-red-300 dark:border-red-700';
+      case 'Pendiente':
+      default:
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 border border-blue-300 dark:border-blue-700';
+    }
   }
 
   cargarEstadisticas(){
